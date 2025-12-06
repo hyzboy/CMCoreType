@@ -48,13 +48,6 @@ namespace hgl
         void Black(){r=0,g=0,b=0;}                                                                  ///<黑色
         void White(){r=255,g=255,b=255;}                                                            ///<白色
 
-        void Red(){r=255,g=0,b=0;}                                                                  ///<红色
-        void Green(){r=0,g=255,b=0;}                                                                ///<绿色
-        void Blue(){r=0,g=0,b=255;}                                                                 ///<蓝色
-
-        void Yellow(){r=255,g=255,b=0;}                                                             ///<黄色
-        void Purple(){r=255,g=0,b=255;}                                                             ///<紫色
-
         uint8 ToGrey() const;                                                                       ///<转换为灰度值
         void Grey();                                                                                ///<将当前色彩变成灰色
 

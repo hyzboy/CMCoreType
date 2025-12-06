@@ -49,13 +49,6 @@ namespace hgl
         void Black(){r=0,g=0,b=0;}                                                                  ///<黑色
         void White(){r=1,g=1,b=1;}                                                                  ///<白色
 
-        void Red(){r=1,g=0,b=0;}                                                                    ///<红色
-        void Green(){r=0,g=1,b=0;}                                                                  ///<绿色
-        void Blue(){r=0,g=0,b=1;}                                                                   ///<蓝色
-
-        void Yellow(){r=1,g=1,b=0;}                                                                 ///<黄色
-        void Purple(){r=1,g=0,b=1;}                                                                 ///<紫色
-
         float ToGrey(){return RGB2Lum(r,g,b);}
         void Grey();                                                                                ///<将当前色彩变成灰色
 
