@@ -10,11 +10,9 @@
 
 #include<hgl/CoreType.h>
 
-namespace hgl
+namespace hgl::math
 {
     /**
-     * 将数值限制在指定范围内
-     * @param value 要限制的值
      * @param min_value 最小值
      * @param max_value 最大值
      * @return 限制后的值
@@ -62,4 +60,4 @@ namespace hgl
         if(value>0xFFFF)return 0xFFFF;
         return static_cast<uint16>(value);
     }
-}//namespace hgl
+}//namespace hgl::math

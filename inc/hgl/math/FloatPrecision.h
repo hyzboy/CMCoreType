@@ -14,7 +14,7 @@
 #include<limits>
 #include<cmath>
 
-namespace hgl
+namespace hgl::math
 {
     // ==================== 浮点数极限值 ====================
     
@@ -97,4 +97,4 @@ namespace hgl
                 return (false);
         return (true);
     }
-}//namespace hgl
+}//namespace hgl::math

@@ -2,7 +2,7 @@
 
 #include<hgl/CoreType.h>
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 浮点数验证函数 - 检测NaN、无穷大、零等特殊值
@@ -183,4 +183,4 @@ namespace hgl
         uint64 bits = *(uint64*)&value;
         return (bits & 0x7FF0000000000000) != 0x7FF0000000000000;
     }
-}//namespace hgl
+}//namespace hgl::math

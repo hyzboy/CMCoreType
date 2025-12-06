@@ -2,7 +2,7 @@
 
 #include<hgl/CoreType.h>
 
-namespace hgl
+namespace hgl::math
 {
     /**
      * 浮点数位操作 - Split/Merge浮点数的符号位、指数位和尾数位
@@ -46,4 +46,4 @@ namespace hgl
 
         return *(double *)&value;
     }
-}//namespace hgl
+}//namespace hgl::math
