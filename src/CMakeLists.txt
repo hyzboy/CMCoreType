@@ -117,6 +117,9 @@ add_library(CMCoreType STATIC
                     ${COLOR_HEADER_FILES}
                     ${COLOR_SOURCE_FILES})
 
+# Set C++ standard to C++20
+set_target_properties(CMCoreType PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
+
 if(WIN32 AND DEFINED HGL_MATH_LIB)
 	target_link_libraries(CMCoreType PRIVATE ${HGL_MATH_LIB})
 endif()
