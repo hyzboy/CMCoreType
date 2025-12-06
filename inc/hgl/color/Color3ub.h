@@ -10,7 +10,7 @@ namespace hgl
     */
     class Color3ub                                                                                  ///RGB三原色类(0-255范围)
     {
-        void Clamp();
+        void clamp();
 
     public:
 
@@ -27,31 +27,31 @@ namespace hgl
     public:
 
         Color3ub(){r=0,g=0,b=0;}                                                                    ///<本类构造函数
-        Color3ub(uint8 l){r=l,g=l,b=l;Clamp();}                                                    ///<本类构造函数
-        Color3ub(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;Clamp();}                             ///<本类构造函数
-        Color3ub(const Color3ub &v){r=v.r;g=v.g;b=v.b;Clamp();}                                   ///<本类构造函数
+        Color3ub(uint8 l){r=l,g=l,b=l;clamp();}                                                    ///<本类构造函数
+        Color3ub(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;clamp();}                             ///<本类构造函数
+        Color3ub(const Color3ub &v){r=v.r;g=v.g;b=v.b;clamp();}                                   ///<本类构造函数
         Color3ub(const Color3f &v);                                                                ///<从Color3f构造
 
-        void Zero(){r=0,g=0,b=0;}                                                                   ///<全清为0
-        void One() {r=255,g=255,b=255;}                                                             ///<全清为255
-        void Rand();                                                                                ///<全随机
+        void setZero(){r=0,g=0,b=0;}                                                               ///<全清为0
+        void setOne() {r=255,g=255,b=255;}                                                         ///<全清为255
+        void rnd();                                                                                ///<全随机
 
-        void Set(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;Clamp();}                              ///<设置颜色
-        void Set3f(float vr,float vg,float vb);                                                    ///<按0.0-1.0的范围值设置颜色
+        void set(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;clamp();}                              ///<设置颜色
+        void setf(float vr,float vg,float vb);                                                     ///<按0.0-1.0的范围值设置颜色
 
-        void SetLum(uint8 v){if(v<0)Zero();else if(v>255)One();else{r=g=b=v;}}                     ///<设置颜色
+        void setLum(uint8 v){if(v<0)setZero();else if(v>255)setOne();else{r=g=b=v;}}               ///<设置颜色
 
-        void To(uint8,uint8,uint8,float);                                                          ///<转换到另一颜色
-        void To(const uint8 *rgb,float v){To(*rgb,*(rgb+1),*(rgb+2),v);}                           ///<转换到另一颜色
-        void To(Color3ub &c,float v){To(c.r,c.g,c.b,v);}                                           ///<转换到另一颜色
+        void lerp(uint8,uint8,uint8,float);                                                        ///<插值到另一颜色
+        void lerp(const uint8 *rgb,float v){lerp(*rgb,*(rgb+1),*(rgb+2),v);}                        ///<插值到另一颜色
+        void lerp(const Color3ub &c,float v){lerp(c.r,c.g,c.b,v);}                                  ///<插值到另一颜色
 
-        void Black(){r=0,g=0,b=0;}                                                                  ///<黑色
-        void White(){r=255,g=255,b=255;}                                                            ///<白色
+        void setBlack(){r=0,g=0,b=0;}                                                               ///<黑色
+        void setWhite(){r=255,g=255,b=255;}                                                         ///<白色
 
-        uint8 ToGrey() const;                                                                       ///<转换为灰度值
-        void Grey();                                                                                ///<将当前色彩变成灰色
+        uint8 toGray() const;                                                                       ///<转换为灰度值
+        void makeGray();                                                                             ///<将当前色彩变成灰色
 
-        Color3f ToColor3f() const;                                                                  ///<转换为Color3f
+        Color3f toColor3f() const;                                                                  ///<转换为Color3f
 
         //操作符重载
         const Color3ub &operator = (const uint8 *v){r=*v++;g=*v++;b=*v;return *this;}
@@ -61,13 +61,13 @@ namespace hgl
         bool operator == (const Color3ub &)const;
         bool operator != (const Color3ub &)const;
 
-        void operator += (const Color3ub &v){r+=v.r;g+=v.g;b+=v.b;Clamp();}
-        void operator -= (const Color3ub &v){r-=v.r;g-=v.g;b-=v.b;Clamp();}
-        void operator *= (const Color3ub &v){r*=v.r;g*=v.g;b*=v.b;Clamp();}
-        void operator /= (const Color3ub &v){r/=v.r;g/=v.g;b/=v.b;Clamp();}
+        void operator += (const Color3ub &v){r+=v.r;g+=v.g;b+=v.b;clamp();}
+        void operator -= (const Color3ub &v){r-=v.r;g-=v.g;b-=v.b;clamp();}
+        void operator *= (const Color3ub &v){r*=v.r;g*=v.g;b*=v.b;clamp();}
+        void operator /= (const Color3ub &v){r/=v.r;g/=v.g;b/=v.b;clamp();}
 
-        void operator *= (float v){r=uint8(r*v);g=uint8(g*v);b=uint8(b*v);Clamp();}
-        void operator /= (float v){r=uint8(r/v);g=uint8(g/v);b=uint8(b/v);Clamp();}
+        void operator *= (float v){r=uint8(r*v);g=uint8(g*v);b=uint8(b*v);clamp();}
+        void operator /= (float v){r=uint8(r/v);g=uint8(g/v);b=uint8(b/v);clamp();}
 
         Color3ub operator + (const Color3ub &v){return(Color3ub(r+v.r,g+v.g,b+v.b));}
         Color3ub operator - (const Color3ub &v){return(Color3ub(r-v.r,g-v.g,b-v.b));}

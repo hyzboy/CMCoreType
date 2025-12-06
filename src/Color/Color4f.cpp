@@ -11,11 +11,11 @@ namespace hgl
         g = float(v.g) / 255.0f;
         b = float(v.b) / 255.0f;
         a = float(v.a) / 255.0f;
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color4f::Clamp()
+    void Color4f::clamp()
     {
         if(r<0)r=0;if(r>1)r=1;
         if(g<0)g=0;if(g>1)g=1;
@@ -28,7 +28,7 @@ namespace hgl
     * @param nr,ng,nb 新的颜色
     * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color4f::To(float nr,float ng,float nb,float pos)
+    void Color4f::lerp(float nr,float ng,float nb,float pos)
     {
         if(pos<=0)return;
         if(pos>=1)
@@ -44,7 +44,7 @@ namespace hgl
         b+=(nb-b)*pos;
     }
     //--------------------------------------------------------------------------------------------------
-    void Color4f::Grey()
+    void Color4f::makeGrey()
     {
         float lum=RGB2Lum(r,g,b);
 
@@ -53,7 +53,7 @@ namespace hgl
         b=lum;
     }
     //--------------------------------------------------------------------------------------------------
-    Color4ub Color4f::ToColor4ub() const
+    Color4ub Color4f::toColor4ub() const
     {
         return Color4ub(uint8(r * 255.0f), uint8(g * 255.0f), uint8(b * 255.0f), uint8(a * 255.0f));
     }
@@ -65,7 +65,7 @@ namespace hgl
         g = float(v.g) / 255.0f;
         b = float(v.b) / 255.0f;
         a = float(v.a) / 255.0f;
-        Clamp();
+        clamp();
         return *this;
     }
 

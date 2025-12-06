@@ -21,7 +21,7 @@ namespace hgl
     */
     class Color4f                                                                                   ///RGBA四原色类
     {
-        void Clamp();
+        void clamp();
 
     public:
 
@@ -38,40 +38,40 @@ namespace hgl
     public:
 
         Color4f(){r=0,g=0,b=0,a=1;}                                                                 ///<本类构造函数
-        Color4f(float v){r=v,g=v,b=v,a=1;Clamp();}                                                  ///<本类构造函数
-        Color4f(float vr,float vg,float vb,float va){r=vr,g=vg,b=vb;a=va;Clamp();}                  ///<本类构造函数
-        Color4f(const Color3f &v,float va=1){Set(v,va);}                                            ///<本类构造函数
+        Color4f(float v){r=v,g=v,b=v,a=1;clamp();}                                                  ///<本类构造函数
+        Color4f(float vr,float vg,float vb,float va){r=vr,g=vg,b=vb;a=va;clamp();}                  ///<本类构造函数
+        Color4f(const Color3f &v,float va=1){setFrom3f(v,va);}                                       ///<本类构造函数
         Color4f(const Color4ub &v);                                                                 ///<从Color4ub构造
 
-        void Zero(){r=0,g=0,b=0,a=0;}                                                               ///<全清为0
-        void One() {r=1,g=1,b=1,a=1;}                                                               ///<全清为1
+        void setZero(){r=0,g=0,b=0,a=0;}                                                            ///<全清为0
+        void setOne() {r=1,g=1,b=1,a=1;}                                                            ///<全清为1
 
-        void MergeAlpha(const Color4f &v,float va){r=v.r;g=v.g;b=v.b;a=v.a*va;Clamp();}             ///<混合Alpha
+        void blendA(const Color4f &v,float va){r=v.r;g=v.g;b=v.b;a=v.a*va;clamp();}                 ///<混合Alpha
 
-        void Set(const float *rgba){r=rgba[0];g=rgba[1];b=rgba[2];a=rgba[3];Clamp();}
-        void Set(const Color3f &v,float va=1){r=v.r;g=v.g;b=v.b;a=va;Clamp();}                      ///<设置颜色
-        void Set(float vr,float vg,float vb){r=vr,g=vg,b=vb;Clamp();}                               ///<设置颜色
-        void Set(float vr,float vg,float vb,float va){r=vr,g=vg,b=vb;a=va;Clamp();}                 ///<设置颜色
-        void Set4i(int vr,int vg,int vb,int va)                                                     ///<按0-255的范围值设置颜色
-            {r=float(vr)/255.0f,g=float(vg)/255.0f,b=float(vb)/255.0f;a=float(va)/255.0f;Clamp();}
+        void set(const float *rgba){r=rgba[0];g=rgba[1];b=rgba[2];a=rgba[3];clamp();}
+        void setFrom3f(const Color3f &v,float va=1){r=v.r;g=v.g;b=v.b;a=va;clamp();}                ///<设置颜色
+        void set(float vr,float vg,float vb){r=vr,g=vg,b=vb;clamp();}                                ///<设置颜色
+        void set(float vr,float vg,float vb,float va){r=vr,g=vg,b=vb;a=va;clamp();}                  ///<设置颜色
+        void set255(int vr,int vg,int vb,int va)                                                    ///<按0-255的范围值设置颜色
+            {r=float(vr)/255.0f,g=float(vg)/255.0f,b=float(vb)/255.0f;a=float(va)/255.0f;clamp();}
 
-        void SetLum(float v){if(v<0)Zero();else if(v>1)One();else{r=v;g=v;b=v;}}                    ///<设置颜色
+        void setLum(float v){if(v<0)setZero();else if(v>1)setOne();else{r=v;g=v;b=v;}}               ///<设置颜色
 
-        void To(float,float,float,float);                                                           ///<转换到另一颜色
-        void To(const Color4f &c,float v){To(c.r,c.g,c.b,v);}                                       ///<转换到另一颜色
-        void To(const Color3f &c,float v){To(c.r,c.g,c.b,v);}                                       ///<转换到另一颜色
+        void lerp(float,float,float,float);                                                         ///<插值到另一颜色
+        void lerp(const Color4f &c,float v){lerp(c.r,c.g,c.b,v);}                                   ///<插值到另一颜色
+        void lerp(const Color3f &c,float v){lerp(c.r,c.g,c.b,v);}                                   ///<插值到另一颜色
 
-        uint32 ToRGBA8()const{ return HGL_FLOAT_TO_RGBA8(r, g, b, a); }                             ///<输出一个rgba8格式的颜色数据
-        uint32 ToBGRA8()const{ return HGL_FLOAT_TO_BGRA8(r, g, b, a); }                             ///<输出一个bgra8格式的颜色数据
-        uint32 ToARGB8()const{ return HGL_FLOAT_TO_ARGB8(r, g, b, a); }                             ///<输出一个argb8格式的颜色数据
-        uint32 ToABGR8()const{ return HGL_FLOAT_TO_ABGR8(r, g, b, a); }                             ///<输出一个abgr8格式的颜色数据
+        uint32 toRGBA8()const{ return HGL_FLOAT_TO_RGBA8(r, g, b, a); }                             ///<输出一个rgba8格式的颜色数据
+        uint32 toBGRA8()const{ return HGL_FLOAT_TO_BGRA8(r, g, b, a); }                             ///<输出一个bgra8格式的颜色数据
+        uint32 toARGB8()const{ return HGL_FLOAT_TO_ARGB8(r, g, b, a); }                             ///<输出一个argb8格式的颜色数据
+        uint32 toABGR8()const{ return HGL_FLOAT_TO_ABGR8(r, g, b, a); }                             ///<输出一个abgr8格式的颜色数据
 
-        uint32 ToShaderRGBA8()const{return ToRGBA8();}                                              ///<输出一个shader rgba8格式的颜色数据
+        uint32 toShaderRGBA8()const{return toRGBA8();}                                              ///<输出一个shader rgba8格式的颜色数据
 
-        float ToGrey(){return RGB2Lum(r,g,b);}
-        void Grey();                                                                                ///<将当前色彩变成灰色
+        float lum(){return RGB2Lum(r,g,b);}                                                         ///<灰度值
+        void makeGrey();                                                                             ///<将当前色彩变成灰色
 
-        Color4ub ToColor4ub() const;                                                                ///<转换为Color4ub
+        Color4ub toColor4ub() const;                                                                ///<转换为Color4ub
 
         //操作符重载
         const Color4f &operator = (const float *v){r=*v++;g=*v++;b=*v++;a=*v;return *this;}
@@ -82,18 +82,18 @@ namespace hgl
         bool operator == (const Color4f &)const;
         bool operator != (const Color4f &)const;
 
-        void operator += (const Color4f &v){r+=v.r;g+=v.g;b+=v.b;a+=v.a;Clamp();}
-        void operator -= (const Color4f &v){r-=v.r;g-=v.g;b-=v.b;a-=v.a;Clamp();}
-        void operator *= (const Color4f &v){r*=v.r;g*=v.g;b*=v.b;a*=v.a;Clamp();}
-        void operator /= (const Color4f &v){r/=v.r;g/=v.g;b/=v.b;a/=v.a;Clamp();}
+        void operator += (const Color4f &v){r+=v.r;g+=v.g;b+=v.b;a+=v.a;clamp();}
+        void operator -= (const Color4f &v){r-=v.r;g-=v.g;b-=v.b;a-=v.a;clamp();}
+        void operator *= (const Color4f &v){r*=v.r;g*=v.g;b*=v.b;a*=v.a;clamp();}
+        void operator /= (const Color4f &v){r/=v.r;g/=v.g;b/=v.b;a/=v.a;clamp();}
 
-        void operator += (const Color3f &v){r+=v.r;g+=v.g;b+=v.b;Clamp();}
-        void operator -= (const Color3f &v){r-=v.r;g-=v.g;b-=v.b;Clamp();}
-        void operator *= (const Color3f &v){r*=v.r;g*=v.g;b*=v.b;Clamp();}
-        void operator /= (const Color3f &v){r/=v.r;g/=v.g;b/=v.b;Clamp();}
+        void operator += (const Color3f &v){r+=v.r;g+=v.g;b+=v.b;clamp();}
+        void operator -= (const Color3f &v){r-=v.r;g-=v.g;b-=v.b;clamp();}
+        void operator *= (const Color3f &v){r*=v.r;g*=v.g;b*=v.b;clamp();}
+        void operator /= (const Color3f &v){r/=v.r;g/=v.g;b/=v.b;clamp();}
 
-        void operator *= (float v){r*=v;g*=v;b*=v;a*=v;Clamp();}
-        void operator /= (float v){r/=v;g/=v;b/=v;a/=v;Clamp();}
+        void operator *= (float v){r*=v;g*=v;b*=v;a*=v;clamp();}
+        void operator /= (float v){r/=v;g/=v;b/=v;a/=v;clamp();}
 
         Color4f operator + (const Color4f &v){return(Color4f(r+v.r,g+v.g,b+v.b,a+v.a));}
         Color4f operator - (const Color4f &v){return(Color4f(r-v.r,g-v.g,b-v.b,a-v.a));}

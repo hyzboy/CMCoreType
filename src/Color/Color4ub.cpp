@@ -3,7 +3,7 @@
 #include<hgl/color/Lum.h>
 namespace hgl
 {
-    void Color4ub::Clamp()
+    void Color4ub::clamp()
     {
         // uint8 values are naturally clamped to 0-255, but we check for arithmetic overflow
         // This is mostly for consistency with the float version
@@ -16,17 +16,17 @@ namespace hgl
         g = uint8(v.g * 255.0f);
         b = uint8(v.b * 255.0f);
         a = uint8(v.a * 255.0f);
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color4ub::Set4f(float vr, float vg, float vb, float va)
+    void Color4ub::setf(float vr, float vg, float vb, float va)
     {
         r = uint8(vr * 255.0f);
         g = uint8(vg * 255.0f);
         b = uint8(vb * 255.0f);
         a = uint8(va * 255.0f);
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace hgl
     * @param nr,ng,nb 新的颜色
     * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color4ub::To(uint8 nr, uint8 ng, uint8 nb, float pos)
+    void Color4ub::lerp(uint8 nr, uint8 ng, uint8 nb, float pos)
     {
         if(pos<=0)return;
         if(pos>=1)
@@ -52,7 +52,7 @@ namespace hgl
     }
 
     //--------------------------------------------------------------------------------------------------
-    uint8 Color4ub::ToGrey() const
+    uint8 Color4ub::toGray() const
     {
         // Convert to float, apply RGB2Lum, then back to uint8
         float fr = float(r) / 255.0f;
@@ -62,16 +62,16 @@ namespace hgl
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color4ub::Grey()
+    void Color4ub::makeGray()
     {
-        uint8 lum = ToGrey();
+        uint8 lum = toGray();
         r = lum;
         g = lum;
         b = lum;
     }
 
     //--------------------------------------------------------------------------------------------------
-    Color4f Color4ub::ToColor4f() const
+    Color4f Color4ub::toColor4f() const
     {
         return Color4f(float(r)/255.0f, float(g)/255.0f, float(b)/255.0f, float(a)/255.0f);
     }
@@ -83,7 +83,7 @@ namespace hgl
         g = uint8(v.g * 255.0f);
         b = uint8(v.b * 255.0f);
         a = uint8(v.a * 255.0f);
-        Clamp();
+        clamp();
         return *this;
     }
 

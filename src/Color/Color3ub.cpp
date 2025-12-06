@@ -4,7 +4,7 @@
 #include<cstdlib>
 namespace hgl
 {
-    void Color3ub::Clamp()
+    void Color3ub::clamp()
     {
         // uint8 values are naturally clamped to 0-255, but we check for arithmetic overflow
         // This is mostly for consistency with the float version
@@ -16,20 +16,20 @@ namespace hgl
         r = uint8(v.r * 255.0f);
         g = uint8(v.g * 255.0f);
         b = uint8(v.b * 255.0f);
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color3ub::Set3f(float vr, float vg, float vb)
+    void Color3ub::setf(float vr, float vg, float vb)
     {
         r = uint8(vr * 255.0f);
         g = uint8(vg * 255.0f);
         b = uint8(vb * 255.0f);
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color3ub::Rand()
+    void Color3ub::rnd()
     {
         r = uint8(rand() % 256);
         g = uint8(rand() % 256);
@@ -42,7 +42,7 @@ namespace hgl
     * @param nr,ng,nb 新的颜色
     * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color3ub::To(uint8 nr, uint8 ng, uint8 nb, float pos)
+    void Color3ub::lerp(uint8 nr, uint8 ng, uint8 nb, float pos)
     {
         if(pos<=0)return;
         if(pos>=1)
@@ -59,7 +59,7 @@ namespace hgl
     }
 
     //--------------------------------------------------------------------------------------------------
-    uint8 Color3ub::ToGrey() const
+    uint8 Color3ub::toGray() const
     {
         // Convert to float, apply RGB2Lum, then back to uint8
         float fr = float(r) / 255.0f;
@@ -69,16 +69,16 @@ namespace hgl
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color3ub::Grey()
+    void Color3ub::makeGray()
     {
-        uint8 lum = ToGrey();
+        uint8 lum = toGray();
         r = lum;
         g = lum;
         b = lum;
     }
 
     //--------------------------------------------------------------------------------------------------
-    Color3f Color3ub::ToColor3f() const
+    Color3f Color3ub::toColor3f() const
     {
         return Color3f(float(r)/255.0f, float(g)/255.0f, float(b)/255.0f);
     }
@@ -89,7 +89,7 @@ namespace hgl
         r = uint8(v.r * 255.0f);
         g = uint8(v.g * 255.0f);
         b = uint8(v.b * 255.0f);
-        Clamp();
+        clamp();
         return *this;
     }
 

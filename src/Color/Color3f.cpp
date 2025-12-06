@@ -10,11 +10,11 @@ namespace hgl
         r = float(v.r) / 255.0f;
         g = float(v.g) / 255.0f;
         b = float(v.b) / 255.0f;
-        Clamp();
+        clamp();
     }
 
     //--------------------------------------------------------------------------------------------------
-    void Color3f::Clamp()
+    void Color3f::clamp()
     {
         if(r<0)r=0;if(r>1)r=1;
         if(g<0)g=0;if(g>1)g=1;
@@ -26,7 +26,7 @@ namespace hgl
     * @param nr,ng,nb 新的颜色
     * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color3f::To(float nr,float ng,float nb,float pos)
+    void Color3f::lerp(float nr,float ng,float nb,float pos)
     {
         if(pos<=0)return;
         if(pos>=1)
@@ -42,7 +42,7 @@ namespace hgl
         b+=(nb-b)*pos;
     }
     //--------------------------------------------------------------------------------------------------
-    void Color3f::Grey()
+    void Color3f::makeGrey()
     {
         float lum=RGB2Lum(r,g,b);
 
@@ -51,7 +51,7 @@ namespace hgl
         b=lum;
     }
     //--------------------------------------------------------------------------------------------------
-    Color3ub Color3f::ToColor3ub() const
+    Color3ub Color3f::toColor3ub() const
     {
         return Color3ub(uint8(r * 255.0f), uint8(g * 255.0f), uint8(b * 255.0f));
     }
@@ -62,7 +62,7 @@ namespace hgl
         r = float(v.r) / 255.0f;
         g = float(v.g) / 255.0f;
         b = float(v.b) / 255.0f;
-        Clamp();
+        clamp();
         return *this;
     }
 
