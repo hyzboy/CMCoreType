@@ -3,17 +3,22 @@
 #define HGL_COMPILER_NAME            OS_TEXT("Microsoft C/C++")
 #define HGL_LIB_COMPILER_NAME        OS_TEXT("MSC")
 
-#if _MSC_VER < 1900                            //Visual C++ 2017
-    #error Please upgrade your compiler or development tools to Microsoft C/C++ 19.1 (Visual C++ 2017) or later.
+/*
+ Minimum required: C++20
+ - Prefer checking _MSVC_LANG (language standard macro) and require >= C++20 (202002L)
+ - If _MSVC_LANG is not available, require MSVC toolset corresponding to Visual C++ 2022 or newer (_MSC_VER >= 1930)
+*/
+#if defined(_MSVC_LANG)
+    #if _MSVC_LANG < 202002L
+        #error Please compile with C++20 support (use the compiler flag /std:c++20 or newer).
+    #endif
+
+    #define HGL_LIB_COMPILER_VERSION    OS_TEXT("C++20")
 #else
-    #if _MSC_VER >= 1920
-        #define HGL_LIB_COMPILER_VERSION    OS_TEXT("19.2")      //Visual C++ 2019
-    #elif _MSC_VER >= 1910
-        #define HGL_LIB_COMPILER_VERSION    OS_TEXT("19.1")      //Visual C++ 2017
-    #elif _MSC_VER >= 1900
-        #define HGL_LIB_COMPILER_VERSION    OS_TEXT("19.0")      //Visual C++ 2015
+    #if _MSC_VER < 1930                            // Visual C++ 2022 (MSVC 19.3x)
+        #error Please upgrade your compiler or development tools to Visual C++ 2022 (MSVC 19.3) or later.
     #else
-        #define HGL_LIB_COMPILER_VERSION    OS_TEXT("Unknow")
+        #define HGL_LIB_COMPILER_VERSION    OS_TEXT("19.3")      //Visual C++ 2022
     #endif//_MSC_VER
 #endif//_MSC_VER
 
