@@ -2,6 +2,7 @@
 #include<hgl/color/Color3ub.h>
 #include<hgl/color/Color.h>
 #include<hgl/math/FloatPrecision.h>
+#include<cstdlib>
 namespace hgl
 {
     //--------------------------------------------------------------------------------------------------
@@ -21,15 +22,22 @@ namespace hgl
         if(b<0)b=0;if(b>1)b=1;
     }
     //--------------------------------------------------------------------------------------------------
+    void Color3f::rnd()
+    {
+        r = float(rand()) / RAND_MAX;
+        g = float(rand()) / RAND_MAX;
+        b = float(rand()) / RAND_MAX;
+    }
+    //--------------------------------------------------------------------------------------------------
     /**
     * 求当前颜色过渡到另一颜色时某一比例时的颜色
     * @param nr,ng,nb 新的颜色
-    * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
+    * @param t 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color3f::lerp(float nr,float ng,float nb,float pos)
+    void Color3f::lerp(float nr,float ng,float nb,float t)
     {
-        if(pos<=0)return;
-        if(pos>=1)
+        if(t<=0)return;
+        if(t>=1)
         {
             r=nr;
             g=ng;
@@ -37,9 +45,9 @@ namespace hgl
             return;
         }
 
-        r+=(nr-r)*pos;
-        g+=(ng-g)*pos;
-        b+=(nb-b)*pos;
+        r+=(nr-r)*t;
+        g+=(ng-g)*t;
+        b+=(nb-b)*t;
     }
     //--------------------------------------------------------------------------------------------------
     void Color3f::makeGrey()
@@ -85,4 +93,14 @@ namespace hgl
         return(false);
     }
     //--------------------------------------------------------------------------------------------------
+}
+
+namespace hgl
+{
+    const Color3f BlackColor3f(0,0,0);
+    const Color3f WhiteColor3f(1,1,1);
+    const Color3f RedColor3f(1,0,0);
+    const Color3f GreenColor3f(0,1,0);
+    const Color3f BlueColor3f(0,0,1);
+    const Color3f YellowColor3f(1,1,0);
 }

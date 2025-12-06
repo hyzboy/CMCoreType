@@ -33,12 +33,12 @@ namespace hgl
     /**
     * 求当前颜色过渡到另一颜色时某一比例时的颜色
     * @param nr,ng,nb 新的颜色
-    * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
+    * @param t 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color4ub::lerp(uint8 nr, uint8 ng, uint8 nb, float pos)
+    void Color4ub::lerp(uint8 nr, uint8 ng, uint8 nb, float t)
     {
-        if(pos<=0)return;
-        if(pos>=1)
+        if(t<=0)return;
+        if(t>=1)
         {
             r=nr;
             g=ng;
@@ -46,9 +46,9 @@ namespace hgl
             return;
         }
 
-        r = uint8(r + (nr-r)*pos);
-        g = uint8(g + (ng-g)*pos);
-        b = uint8(b + (nb-b)*pos);
+        r = uint8(r + (nr-r)*t);
+        g = uint8(g + (ng-g)*t);
+        b = uint8(b + (nb-b)*t);
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -109,4 +109,14 @@ namespace hgl
         return(false);
     }
     //--------------------------------------------------------------------------------------------------
+}
+
+namespace hgl
+{
+    const Color4ub BlackColor4ub(0,0,0,255);
+    const Color4ub WhiteColor4ub(255,255,255,255);
+    const Color4ub RedColor4ub(255,0,0,255);
+    const Color4ub GreenColor4ub(0,255,0,255);
+    const Color4ub BlueColor4ub(0,0,255,255);
+    const Color4ub YellowColor4ub(255,255,0,255);
 }

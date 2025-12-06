@@ -27,9 +27,9 @@ namespace hgl
     public:
 
         Color3ub(){r=0,g=0,b=0;}                                                                    ///<本类构造函数
-        Color3ub(uint8 l){r=l,g=l,b=l;clamp();}                                                    ///<本类构造函数
+        Color3ub(uint8 l){r=l,g=l,b=l;}                                                           ///<本类构造函数
         Color3ub(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;clamp();}                             ///<本类构造函数
-        Color3ub(const Color3ub &v){r=v.r;g=v.g;b=v.b;clamp();}                                   ///<本类构造函数
+        Color3ub(const Color3ub &v){r=v.r;g=v.g;b=v.b;}                                         ///<本类构造函数
         Color3ub(const Color3f &v);                                                                ///<从Color3f构造
 
         void setZero(){r=0,g=0,b=0;}                                                               ///<全清为0
@@ -39,11 +39,11 @@ namespace hgl
         void set(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;clamp();}                              ///<设置颜色
         void setf(float vr,float vg,float vb);                                                     ///<按0.0-1.0的范围值设置颜色
 
-        void setLum(uint8 v){if(v<0)setZero();else if(v>255)setOne();else{r=g=b=v;}}               ///<设置颜色
+        void setLum(uint8 v){r=g=b=v;}                                                        ///<设置颜色
 
-        void lerp(uint8,uint8,uint8,float);                                                        ///<插值到另一颜色
-        void lerp(const uint8 *rgb,float v){lerp(*rgb,*(rgb+1),*(rgb+2),v);}                        ///<插值到另一颜色
-        void lerp(const Color3ub &c,float v){lerp(c.r,c.g,c.b,v);}                                  ///<插值到另一颜色
+        void lerp(uint8 nr, uint8 ng, uint8 nb, float t);                                         ///<插值到另一颜色(t:0=当前,1=目标)
+        void lerp(const uint8 *rgb, float t){lerp(*rgb,*(rgb+1),*(rgb+2),t);}                        ///<插值到另一颜色
+        void lerp(const Color3ub &c, float t){lerp(c.r,c.g,c.b,t);}                                  ///<插值到另一颜色
 
         void setBlack(){r=0,g=0,b=0;}                                                               ///<黑色
         void setWhite(){r=255,g=255,b=255;}                                                         ///<白色
@@ -81,12 +81,12 @@ namespace hgl
         operator const uint8 *() const {return((const uint8 *)this);}                              //使得本类可以直接当做const uint8 *使用
     };//class Color3ub
 
-    const Color3ub BlackColor3ub(0,0,0);
-    const Color3ub WhiteColor3ub(255,255,255);
-    const Color3ub RedColor3ub(255,0,0);
-    const Color3ub GreenColor3ub(0,255,0);
-    const Color3ub BlueColor3ub(0,0,255);
-    const Color3ub YellowColor3ub(255,255,0);
+    extern const Color3ub BlackColor3ub;
+    extern const Color3ub WhiteColor3ub;
+    extern const Color3ub RedColor3ub;
+    extern const Color3ub GreenColor3ub;
+    extern const Color3ub BlueColor3ub;
+    extern const Color3ub YellowColor3ub;
 
     #define DEF_RGB_U8_TO_COLOR3UB(r,g,b)        Color3ub(r,g,b)
 }//namespace hgl

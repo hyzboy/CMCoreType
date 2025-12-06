@@ -26,12 +26,12 @@ namespace hgl
     /**
     * 求当前颜色过渡到另一颜色时某一比例时的颜色
     * @param nr,ng,nb 新的颜色
-    * @param pos 过渡比例,0时为当前的颜色,1时为nr,ng,nb
+    * @param t 过渡比例,0时为当前的颜色,1时为nr,ng,nb
     */
-    void Color4f::lerp(float nr,float ng,float nb,float pos)
+    void Color4f::lerp(float nr,float ng,float nb,float t)
     {
-        if(pos<=0)return;
-        if(pos>=1)
+        if(t<=0)return;
+        if(t>=1)
         {
             r=nr;
             g=ng;
@@ -39,9 +39,9 @@ namespace hgl
             return;
         }
 
-        r+=(nr-r)*pos;
-        g+=(ng-g)*pos;
-        b+=(nb-b)*pos;
+        r+=(nr-r)*t;
+        g+=(ng-g)*t;
+        b+=(nb-b)*t;
     }
     //--------------------------------------------------------------------------------------------------
     void Color4f::makeGrey()

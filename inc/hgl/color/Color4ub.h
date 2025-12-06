@@ -56,9 +56,9 @@ namespace hgl
 
         void setLum(uint8 v){if(v<0)setZero();else if(v>255)setOne();else{r=v;g=v;b=v;}}           ///<设置颜色
 
-        void lerp(uint8,uint8,uint8,float);                                                        ///<插值到另一颜色
-        void lerp(const Color4ub &c,float v){lerp(c.r,c.g,c.b,v);}                                  ///<插值到另一颜色
-        void lerp(const Color3ub &c,float v){lerp(c.r,c.g,c.b,v);}                                  ///<插值到另一颜色
+        void lerp(uint8 nr, uint8 ng, uint8 nb, float t);                                         ///<插值到另一颜色(t:0=当前,1=目标)
+        void lerp(const Color4ub &c, float t){lerp(c.r,c.g,c.b,t);}                                 ///<插值到另一颜色
+        void lerp(const Color3ub &c, float t){lerp(c.r,c.g,c.b,t);}                                 ///<插值到另一颜色
 
         uint32 toRGBA8()const{ return HGL_U8_TO_RGBA8(r, g, b, a); }                               ///<输出一个rgba8格式的颜色数据
         uint32 toBGRA8()const{ return HGL_U8_TO_BGRA8(r, g, b, a); }                               ///<输出一个bgra8格式的颜色数据
@@ -103,6 +103,13 @@ namespace hgl
         operator uint8 *() const {return((uint8 *)this);}                                          //使得本类可以直接当做uint8 *使用
         operator const uint8 *() const {return((const uint8 *)this);}                              //使得本类可以直接当做const uint8 *使用
     };//class Color4ub
+
+    extern const Color4ub BlackColor4ub;
+    extern const Color4ub WhiteColor4ub;
+    extern const Color4ub RedColor4ub;
+    extern const Color4ub GreenColor4ub;
+    extern const Color4ub BlueColor4ub;
+    extern const Color4ub YellowColor4ub;
 
     #define DEF_RGBA_U8_TO_COLOR4UB(r,g,b,a)     Color4ub(r,g,b,a)
 }//namespace hgl

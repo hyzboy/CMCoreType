@@ -29,7 +29,7 @@ namespace hgl
         Color3f(){r=0,g=0,b=0;}                                                                     ///<本类构造函数
         Color3f(float l){r=l,g=l,b=l;clamp();}                                                      ///<本类构造函数
         Color3f(float vr,float vg,float vb){r=vr,g=vg,b=vb;clamp();}                                ///<本类构造函数
-        Color3f(const Color3f &v){r=v.r;g=v.g;b=v.b;clamp();}                                       ///<本类构造函数
+        Color3f(const Color3f &v){r=v.r;g=v.g;b=v.b;}                                           ///<本类构造函数
         Color3f(const Color3ub &v);                                                                 ///<从Color3ub构造
 
         void setZero(){r=0,g=0,b=0;}                                                               ///<全清为0
@@ -42,9 +42,9 @@ namespace hgl
 
         void setLum(float v){if(v<0)setZero();else if(v>1)setOne();else{r=g=b=v;}}                  ///<设置颜色
 
-        void lerp(float,float,float,float);                                                         ///<插值到另一颜色
-        void lerp(const float *rgb,float v){lerp(*rgb,*(rgb+1),*(rgb+2),v);}                         ///<插值到另一颜色
-        void lerp(const Color3f &c,float v){lerp(c.r,c.g,c.b,v);}                                   ///<插值到另一颜色
+        void lerp(float nr, float ng, float nb, float t);                                         ///<插值到另一颜色(t:0=当前,1=目标)
+        void lerp(const float *rgb, float t){lerp(*rgb,*(rgb+1),*(rgb+2),t);}                        ///<插值到另一颜色
+        void lerp(const Color3f &c, float t){lerp(c.r,c.g,c.b,t);}                                  ///<插值到另一颜色
 
         void setBlack(){r=0,g=0,b=0;}                                                               ///<黑色
         void setWhite(){r=1,g=1,b=1;}                                                               ///<白色
@@ -82,12 +82,12 @@ namespace hgl
         operator const float *() const {return((const float *)this);}                               //使得本类可以直接当做const float *使用
     };//class Color3f
 
-    const Color3f BlackColor3f(0,0,0);
-    const Color3f WhiteColor3f(1,1,1);
-    const Color3f RedColor3f(1,0,0);
-    const Color3f GreenColor3f(0,1,0);
-    const Color3f BlueColor3f(0,0,1);
-    const Color3f YellowColor3f(1,1,0);
+    extern const Color3f BlackColor3f;
+    extern const Color3f WhiteColor3f;
+    extern const Color3f RedColor3f;
+    extern const Color3f GreenColor3f;
+    extern const Color3f BlueColor3f;
+    extern const Color3f YellowColor3f;
 
     #define DEF_RGB_U8_TO_COLOR3F(r,g,b)        Color3f(float(r)/255.0f,float(g)/255.0f,float(b)/255.0f)
 }//namespace hgl
