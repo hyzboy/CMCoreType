@@ -18,19 +18,19 @@ namespace hgl::math
 {
     // ==================== 浮点数极限值 ====================
     
-    constexpr const float   HGL_FLOAT_MIN       = std::numeric_limits<float>::min();             ///<最小浮点数
-    constexpr const float   HGL_FLOAT_MAX       = std::numeric_limits<float>::max();             ///<最大浮点数
-    constexpr const float   HGL_FLOAT_EPSILON   = std::numeric_limits<float>::epsilon();         ///<浮点数精度最小值
+    constexpr float   HGL_FLOAT_MIN       = std::numeric_limits<float>::min();             ///<最小浮点数
+    constexpr float   HGL_FLOAT_MAX       = std::numeric_limits<float>::max();             ///<最大浮点数
+    constexpr float   HGL_FLOAT_EPSILON   = std::numeric_limits<float>::epsilon();         ///<浮点数精度最小值
 
-    constexpr const double  HGL_DOUBLE_MIN      = std::numeric_limits<double>::min();            ///<最小双精度浮点数
-    constexpr const double  HGL_DOUBLE_MAX      = std::numeric_limits<double>::max();            ///<最大双精度浮点数
-    constexpr const double  HGL_DOUBLE_EPSILON  = std::numeric_limits<double>::epsilon();        ///<双精度浮点数精度最小值
+    constexpr double  HGL_DOUBLE_MIN      = std::numeric_limits<double>::min();            ///<最小双精度浮点数
+    constexpr double  HGL_DOUBLE_MAX      = std::numeric_limits<double>::max();            ///<最大双精度浮点数
+    constexpr double  HGL_DOUBLE_EPSILON  = std::numeric_limits<double>::epsilon();        ///<双精度浮点数精度最小值
 
     // ==================== 误差阈值 ====================
     
-    constexpr const float   HGL_HALF_FLOAT_ERROR = 0.001f;                                       ///<半精度浮点数最小误差值
-    constexpr const float   HGL_FLOAT_ERROR      = 0.0001f;                                      ///<浮点数最小误差值
-    constexpr const double  HGL_DOUBLE_ERROR     = 0.00000001;                                   ///<双精度浮点数最小误差值
+    constexpr float   HGL_HALF_FLOAT_ERROR = 0.001f;                                       ///<半精度浮点数最小误差值
+    constexpr float   HGL_FLOAT_ERROR      = 0.0001f;                                      ///<浮点数最小误差值
+    constexpr double  HGL_DOUBLE_ERROR     = 0.00000001;                                   ///<双精度浮点数最小误差值
 
     // ==================== 近似零检测 ====================
     
@@ -40,9 +40,9 @@ namespace hgl::math
      * @param err 误差阈值，默认为 HGL_FLOAT_ERROR
      * @return 如果 |value| <= err 返回 true
      */
-    inline bool IsNearlyZero(const float value, const float err = HGL_FLOAT_ERROR)
+    inline bool IsNearlyZero(float value, float err = HGL_FLOAT_ERROR)
     {
-        return (fabsf(value) <= err);
+        return (std::fabs(value) <= err);
     }
 
     /**
@@ -51,9 +51,9 @@ namespace hgl::math
      * @param err 误差阈值，默认为 HGL_DOUBLE_ERROR
      * @return 如果 |value| <= err 返回 true
      */
-    inline bool IsNearlyZero(const double value, const double err = HGL_DOUBLE_ERROR)
+    inline bool IsNearlyZero(double value, double err = HGL_DOUBLE_ERROR)
     {
-        return (fabs(value) <= err);
+        return (std::fabs(value) <= err);
     }
 
     // ==================== 近似相等检测 ====================
@@ -65,9 +65,9 @@ namespace hgl::math
      * @param err 误差阈值，默认为 HGL_FLOAT_ERROR
      * @return 如果 |a - b| <= err 返回 true
      */
-    inline bool IsNearlyEqual(const float a, const float b, const float err = HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqual(float a, float b, float err = HGL_FLOAT_ERROR)
     {
-        return (fabsf(a - b) <= err);
+        return (std::fabs(a - b) <= err);
     }
 
     /**
@@ -77,9 +77,9 @@ namespace hgl::math
      * @param err 误差阈值，默认为 HGL_DOUBLE_ERROR
      * @return 如果 |a - b| <= err 返回 true
      */
-    inline bool IsNearlyEqual(const double a, const double b, const double err = HGL_DOUBLE_ERROR)
+    inline bool IsNearlyEqual(double a, double b, double err = HGL_DOUBLE_ERROR)
     {
-        return (fabs(a - b) <= err);
+        return (std::fabs(a - b) <= err);
     }
 
     /**
@@ -90,11 +90,11 @@ namespace hgl::math
      * @param err 误差阈值，默认为 HGL_FLOAT_ERROR
      * @return 如果所有对应元素都近似相等返回 true
      */
-    inline bool IsNearlyEqualArray(const float *a, const float *b, const int count, const float err = HGL_FLOAT_ERROR)
+    inline bool IsNearlyEqualArray(const float *a, const float *b, int count, float err = HGL_FLOAT_ERROR)
     {
         for (int i = 0; i < count; i++)
-            if (fabsf(a[i] - b[i]) > err)
-                return (false);
-        return (true);
+            if (std::fabs(a[i] - b[i]) > err)
+                return false;
+        return true;
     }
 }//namespace hgl::math
