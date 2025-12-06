@@ -1,18 +1,12 @@
 ﻿#pragma once
 
-#include<cmath>
+#include<hgl/color/sRGBConvert.h>
+#include<concepts>
 
 namespace hgl
 {
-    // Gamma correction constants
-    constexpr const double GAMMA      =2.4;
-    constexpr const double INV_GAMMA  =1.0/GAMMA;
-    constexpr const double SRGB_ALPHA =0.055;
-
-    // sRGB threshold values
-    constexpr const double SRGB_LINEAR_THRESHOLD    = 0.04045;
-    constexpr const double SRGB_LINEAR_DIVISOR      = 12.92;
-    constexpr const double LINEAR_SRGB_THRESHOLD    = 0.0031308;
+    // ===== XYZ 转换矩阵常量 (D65 标准) =====
+    // 这些常量用于色彩空间的更高级转换，与 sRGB↔Linear 分离
 
     // sRGB to XYZ (D65) conversion matrix coefficients
     constexpr const double SRGB2XYZ_X_R = 0.4124;
@@ -40,109 +34,42 @@ namespace hgl
     constexpr const double XYZ2SRGB_B_Y = -0.2040;
     constexpr const double XYZ2SRGB_B_Z =  1.0570;
 
-    template<typename T>
-    constexpr T sRGB2Linear(const T &in)
-    {
-        if(in<=SRGB_LINEAR_THRESHOLD)
-            return (double)in/SRGB_LINEAR_DIVISOR;
-        else
-            return pow((double(in)+SRGB_ALPHA)/(1.0+SRGB_ALPHA), GAMMA);
-    }
-
-    template<>
-    constexpr uint8 sRGB2Linear(const uint8 &in)
-    {
-        if(in<=0x0A)
-            return in/SRGB_LINEAR_DIVISOR;
-        else
-            return pow((double(in)+SRGB_ALPHA)/(1.0+SRGB_ALPHA), GAMMA);
-    }
-
-    template<typename T>
-    constexpr T sRGB2Linear(const T &in,const double &gamma,const double &srgb_alpha)
-    {
-        if(in<=SRGB_LINEAR_THRESHOLD)
-            return (double)in/SRGB_LINEAR_DIVISOR;
-        else
-            return pow((double(in)+srgb_alpha)/(1.0+srgb_alpha),gamma);
-    }
-
-    template<>
-    constexpr uint8 sRGB2Linear(const uint8 &in,const double &gamma,const double &srgb_alpha)
-    {
-        if(in<=0x0A)
-            return in/SRGB_LINEAR_DIVISOR;
-        else
-            return pow((double(in)+srgb_alpha)/(1.0+srgb_alpha), gamma);
-    }
+    // ===== C++20 概念 =====
     
+    /**
+    * 矩阵操作数概念 - 支持浮点数和整数类型
+    */
     template<typename T>
-    constexpr T Linear2sRGB(const T &in)
+    concept MatrixOperand = std::floating_point<T> || std::integral<T>;
+
+    // ===== XYZ 颜色空间转换函数 =====
+
+    /**
+    * 将 sRGB RGB 转换为 XYZ 颜色空间 (D65 标准)
+    * 使用 C++20 模板和概念确保类型安全
+    * @param r, g, b sRGB 颜色分量
+    * @param x, y, z 输出 XYZ 颜色分量
+    */
+    template<MatrixOperand T>
+    constexpr inline void sRGB2LinearFast(T &x, T &y, T &z, const T &r, const T &g, const T &b) noexcept
     {
-        if(in<=LINEAR_SRGB_THRESHOLD)
-            return double(in)*SRGB_LINEAR_DIVISOR;
-        else
-            return pow(double(in), INV_GAMMA)*(1.0+SRGB_ALPHA)-SRGB_ALPHA;
+        x = static_cast<T>(SRGB2XYZ_X_R*r + SRGB2XYZ_X_G*g + SRGB2XYZ_X_B*b);
+        y = static_cast<T>(SRGB2XYZ_Y_R*r + SRGB2XYZ_Y_G*g + SRGB2XYZ_Y_B*b);
+        z = static_cast<T>(SRGB2XYZ_Z_R*r + SRGB2XYZ_Z_G*g + SRGB2XYZ_Z_B*b);
     }
 
-    template<>
-    constexpr uint8 Linear2sRGB(const uint8 &in)
+    /**
+    * 将 XYZ 颜色空间转换为 sRGB RGB (D65 标准)
+    * 使用 C++20 模板和概念确保类型安全
+    * @param x, y, z XYZ 颜色分量
+    * @param r, g, b 输出 sRGB 颜色分量
+    */
+    template<MatrixOperand T>
+    constexpr inline void Linear2sRGBFast(T &r, T &g, T &b, const T &x, const T &y, const T &z) noexcept
     {
-        if(in<=0x03)
-            return double(in)*SRGB_LINEAR_DIVISOR;
-        else
-            return pow(double(in), INV_GAMMA)*(1.0+SRGB_ALPHA)-SRGB_ALPHA;
-    }
-    
-    template<typename T>
-    constexpr T Linear2sRGB(const T &in,const double &inv_gamma,const double &srgb_alpha)
-    {
-        if(in<=LINEAR_SRGB_THRESHOLD)
-            return double(in)*SRGB_LINEAR_DIVISOR;
-        else
-            return pow(double(in),inv_gamma)*(1.0+srgb_alpha)-srgb_alpha;
+        r = static_cast<T>(XYZ2SRGB_R_X*x + XYZ2SRGB_R_Y*y + XYZ2SRGB_R_Z*z);
+        g = static_cast<T>(XYZ2SRGB_G_X*x + XYZ2SRGB_G_Y*y + XYZ2SRGB_G_Z*z);
+        b = static_cast<T>(XYZ2SRGB_B_X*x + XYZ2SRGB_B_Y*y + XYZ2SRGB_B_Z*z);
     }
 
-    template<>
-    constexpr uint8 Linear2sRGB(const uint8 &in,const double &inv_gamma,const double &srgb_alpha)
-    {
-        if(in<=0x03)
-            return double(in)*SRGB_LINEAR_DIVISOR;
-        else
-            return pow(double(in), inv_gamma)*(1.0+srgb_alpha)-srgb_alpha;
-    }
-
-    template<typename T>
-    constexpr T sRGB2LinearCheaper(const T &in,const double &gamma=GAMMA)
-    {
-        return (T)pow(double(in),gamma);
-    }
-
-    template<typename T>
-    constexpr T Linear2sRGBCheaper(const T &in,const double &inv_gamma=INV_GAMMA)
-    {
-        return (T)pow((double)in,inv_gamma);
-    }
-
-    template<typename T>
-    constexpr T sRGB2LinearCheapest(const T &in)
-    {
-        return in*in;
-    }
-
-    template<typename T>
-    inline void sRGB2LinearFast(T &x,T &y,T &z,const T &r,const T &g,const T &b)
-    {
-        x=SRGB2XYZ_X_R*r+SRGB2XYZ_X_G*g+SRGB2XYZ_X_B*b;
-        y=SRGB2XYZ_Y_R*r+SRGB2XYZ_Y_G*g+SRGB2XYZ_Y_B*b;
-        z=SRGB2XYZ_Z_R*r+SRGB2XYZ_Z_G*g+SRGB2XYZ_Z_B*b;
-    }
-
-    template<typename T>
-    inline void Linear2sRGBFast(T &r,T &g,T &b,const T &x,const T &y,const T &z)
-    {
-        r=XYZ2SRGB_R_X*x+XYZ2SRGB_R_Y*y+XYZ2SRGB_R_Z*z;
-        g=XYZ2SRGB_G_X*x+XYZ2SRGB_G_Y*y+XYZ2SRGB_G_Z*z;
-        b=XYZ2SRGB_B_X*x+XYZ2SRGB_B_Y*y+XYZ2SRGB_B_Z*z;
-    }
 }//namespace hgl
