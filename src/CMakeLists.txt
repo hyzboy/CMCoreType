@@ -85,6 +85,15 @@ SOURCE_GROUP("Text\\StrChar" FILES ${STR_CHAR_FILES})
 SET(TIME_FILES  ${TYPECORE_HGL_PATH}/time/TimeConst.h)
 
 source_group("Time" FILES ${TIME_FILES})
+
+##==================================================================================================
+## Color 颜色
+##==================================================================================================
+FILE(GLOB COLOR_HEADER_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/*.h)
+FILE(GLOB COLOR_SOURCE_FILES Color/*.cpp)
+
+source_group("Color\\Header" FILES ${COLOR_HEADER_FILES})
+source_group("Color\\Source" FILES ${COLOR_SOURCE_FILES})
 ##==================================================================================================
 set(TYPECORE_HEADERS ${TYPECORE_HGL_MAIN_HEADERS}
 					 ${TYPECORE_PLATFORM_MAIN_HEADERS}
@@ -93,18 +102,20 @@ set(TYPECORE_HEADERS ${TYPECORE_HGL_MAIN_HEADERS}
 					 ${TYPECORE_TYPE_HEADERS}
 					 ${MATH_HEADER_FILES}
 					 ${STR_CHAR_FILES}
-					 ${TIME_FILES})
-
-set(TYPECORE_SOURCE_FILES CMCoreTypeDummy.cpp)
+					 ${TIME_FILES}
+)
 
 source_group("Platform" FILES ${TYPECORE_PLATFORM_MAIN_HEADERS})
 source_group("Platform\\OS" FILES ${TYPECORE_PLATFORM_OS_HEADERS})
 source_group("Platform\\Compiler" FILES ${TYPECORE_PLATFORM_COMPILER_HEADERS})
-source_group("Source" FILES ${TYPECORE_SOURCE_FILES})
 
 list(REMOVE_DUPLICATES TYPECORE_HEADERS)
 
-add_library(CMCoreType STATIC ${TYPECORE_HEADERS} ${TYPECORE_SOURCE_FILES})
+add_library(CMCoreType STATIC
+                    ${TYPECORE_HEADERS}
+                    ${TYPECORE_SOURCE_FILES}
+                    ${COLOR_HEADER_FILES}
+                    ${COLOR_SOURCE_FILES})
 
 if(WIN32 AND DEFINED HGL_MATH_LIB)
 	target_link_libraries(CMCoreType PRIVATE ${HGL_MATH_LIB})
