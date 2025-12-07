@@ -42,6 +42,100 @@ namespace hgl
         obj->~T();
     }
 
+    /**
+     * 移动或复制构造一段范围内的对象到未初始化内存
+     * 优化策略：
+     * - trivially copyable 类型：使用 mem_copy (字节级复制，最快)
+     * - 非平凡类型：使用 placement new + move constructor (正确的对象语义)
+     * @param dst 目标位置（未初始化内存）
+     * @param src 源位置
+     * @param count 对象数量
+     */
+    template<typename T>
+    inline void move_construct_range(T *dst, T *src, const size_t count)
+    {
+        if(!dst || !src || count == 0) return;
+        
+        if constexpr(std::is_trivially_copyable_v<T>)
+        {
+            mem_copy<T>(dst, src, count);
+        }
+        else
+        {
+            // 非平凡类型：使用移动构造到未初始化内存
+            for(size_t i = 0; i < count; i++)
+            {
+                new (dst + i) T(std::move(src[i]));
+            }
+        }
+    }
+
+    /**
+     * 移动或复制构造一段范围内的对象到未初始化内存（const 版本，只能复制）
+     * @param dst 目标位置（未初始化内存）
+     * @param src 源位置（const）
+     * @param count 对象数量
+     */
+    template<typename T>
+    inline void copy_construct_range(T *dst, const T *src, const size_t count)
+    {
+        if(!dst || !src || count == 0) return;
+        
+        if constexpr(std::is_trivially_copyable_v<T>)
+        {
+            mem_copy<T>(dst, src, count);
+        }
+        else
+        {
+            // 非平凡类型：使用移动构造（const_cast 允许移动）
+            for(size_t i = 0; i < count; i++)
+            {
+                new (dst + i) T(std::move(const_cast<T&>(src[i])));
+            }
+        }
+    }
+
+    /**
+     * 析构一段范围内的对象
+     * 仅对非平凡析构类型执行，平凡类型编译期优化为空操作
+     * @param data 对象数组的起始指针
+     * @param count 对象数量
+     */
+    template<typename T>
+    inline void destroy_range(T *data, const size_t count)
+    {
+        if constexpr(!std::is_trivially_destructible_v<T>)
+        {
+            if(!data || count == 0) return;
+            
+            for(size_t i = 0; i < count; i++)
+            {
+                data[i].~T();
+            }
+        }
+    }
+
+    /**
+     * 析构指定范围内的对象（使用索引）
+     * 仅对非平凡析构类型执行，平凡类型编译期优化为空操作
+     * @param data 对象数组的起始指针
+     * @param start_index 起始索引
+     * @param end_index 结束索引（不包含）
+     */
+    template<typename T>
+    inline void destroy_range(T *data, const size_t start_index, const size_t end_index)
+    {
+        if constexpr(!std::is_trivially_destructible_v<T>)
+        {
+            if(!data || start_index >= end_index) return;
+            
+            for(size_t i = start_index; i < end_index; i++)
+            {
+                data[i].~T();
+            }
+        }
+    }
+
     //==================================================================================================
     // 内存操作 - 复制 / Memory Operations - Copy
     //==================================================================================================
