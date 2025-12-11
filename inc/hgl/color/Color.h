@@ -267,7 +267,11 @@ namespace hgl
         Amber,                ///<琥珀色
         Burgundy,             ///<勃艮第红
 
-        ENUM_CLASS_RANGE(AliceBlue,Burgundy)
+        RedBrick,             ///<红砖色
+        BlueBrick,            ///<青砖色
+        CementGray,           ///<水泥灰
+
+        ENUM_CLASS_RANGE(AliceBlue,CementGray)
     };//enum COLOR_ENUM
 
     bool GetRGB(const enum class COLOR &ce,Color3ub &);

@@ -220,7 +220,7 @@ namespace hgl
         DEF_COLOR(PaleGreen,              152,251,152,"苍绿色")
         DEF_COLOR(PaleTurquoise,          175,238,238,"苍宝石绿")
         DEF_COLOR(PaleVioletRed,          219,112,147,"苍紫罗兰色")
-        DEF_COLOR(Papayawhip,             255,239,213,"番木色")
+        DEF_COLOR(Papagawhip,             255,239,213,"番木色")
         DEF_COLOR(Peachpuff,              255,218,185,"桃色")
         DEF_COLOR(Pear,                   209,226, 49,"梨色")
         DEF_COLOR(Peru,                   205,133, 63,"秘鲁色")
@@ -310,6 +310,10 @@ namespace hgl
         DEF_COLOR(BloodRed,              138,  3,  3,"血红色")           // #8A0303
         DEF_COLOR(Amber,                 255,191,  0,"琥珀色")           // #FFBF00
         DEF_COLOR(Burgundy,              128,  0, 32,"勃艮第红")         // #800020
+
+        DEF_COLOR(RedBrick,              203, 65, 84,"红砖色")           // #CB4154
+        DEF_COLOR(BlueBrick,              82,113,122,"青砖色")           // #52717A
+        DEF_COLOR(CementGray,            156,156,158,"水泥灰")           // #9C9C9E
     };
 
     #undef DEF_COLOR
