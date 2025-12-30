@@ -61,6 +61,10 @@ namespace hgl
         void lerp(const Color4f &c, float t){lerp(c.r,c.g,c.b,t);}                                  ///<插值到另一颜色
         void lerp(const Color3f &c, float t){lerp(c.r,c.g,c.b,t);}                                  ///<插值到另一颜色
 
+        void lerpSmooth(const Color4f &c, float t);                                                 ///<余弦插值到另一颜色
+        void lerpCubic(const Color4f &c, float t);                                                  ///<三次插值到另一颜色
+        void lerpBezier(const Color4f &control, const Color4f &end, float t);                       ///<Bezier曲线插值到另一颜色
+
         uint32 toRGBA8()const{ return HGL_FLOAT_TO_RGBA8(r, g, b, a); }                             ///<输出一个rgba8格式的颜色数据
         uint32 toBGRA8()const{ return HGL_FLOAT_TO_BGRA8(r, g, b, a); }                             ///<输出一个bgra8格式的颜色数据
         uint32 toARGB8()const{ return HGL_FLOAT_TO_ARGB8(r, g, b, a); }                             ///<输出一个argb8格式的颜色数据

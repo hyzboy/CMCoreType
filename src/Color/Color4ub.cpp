@@ -1,8 +1,12 @@
 ﻿#include<hgl/color/Color4ub.h>
 #include<hgl/color/Color4f.h>
 #include<hgl/color/Lum.h>
+#include<cmath>
+#include<numbers>
 namespace hgl
 {
+    constexpr float HGL_PI = std::numbers::pi_v<float>;
+
     void Color4ub::clamp()
     {
         // uint8 values are naturally clamped to 0-255, but we check for arithmetic overflow
@@ -49,6 +53,90 @@ namespace hgl
         r = uint8(r + (nr-r)*t);
         g = uint8(g + (ng-g)*t);
         b = uint8(b + (nb-b)*t);
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    /**
+    * 余弦插值到另一颜色
+    * @param c 目标颜色
+    * @param t 过渡比例,0时为当前的颜色,1时为目标颜色
+    */
+    void Color4ub::lerpSmooth(const Color4ub &c, float t)
+    {
+        if(t<=0)return;
+        if(t>=1)
+        {
+            r=c.r;
+            g=c.g;
+            b=c.b;
+            a=c.a;
+            return;
+        }
+
+        // Cosine interpolation: (1 - cos(t * π)) / 2
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
+        
+        r = uint8(r + (c.r-r)*smooth_t);
+        g = uint8(g + (c.g-g)*smooth_t);
+        b = uint8(b + (c.b-b)*smooth_t);
+        a = uint8(a + (c.a-a)*smooth_t);
+    }
+    //--------------------------------------------------------------------------------------------------
+    /**
+    * 三次插值到另一颜色
+    * @param c 目标颜色
+    * @param t 过渡比例,0时为当前的颜色,1时为目标颜色
+    */
+    void Color4ub::lerpCubic(const Color4ub &c, float t)
+    {
+        if(t<=0)return;
+        if(t>=1)
+        {
+            r=c.r;
+            g=c.g;
+            b=c.b;
+            a=c.a;
+            return;
+        }
+
+        // Cubic Hermite: 3t² - 2t³
+        float cubic_t = t * t * (3.0f - 2.0f * t);
+        
+        r = uint8(r + (c.r-r)*cubic_t);
+        g = uint8(g + (c.g-g)*cubic_t);
+        b = uint8(b + (c.b-b)*cubic_t);
+        a = uint8(a + (c.a-a)*cubic_t);
+    }
+    //--------------------------------------------------------------------------------------------------
+    /**
+    * Bezier曲线插值到另一颜色
+    * @param control 控制点颜色
+    * @param end 目标颜色
+    * @param t 过渡比例,0时为当前的颜色,1时为目标颜色
+    */
+    void Color4ub::lerpBezier(const Color4ub &control, const Color4ub &end, float t)
+    {
+        if(t<=0)return;
+        if(t>=1)
+        {
+            r=end.r;
+            g=end.g;
+            b=end.b;
+            a=end.a;
+            return;
+        }
+
+        // Quadratic Bezier: (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
+        float one_minus_t = 1.0f - t;
+        float weight_start = one_minus_t * one_minus_t;
+        float weight_control = 2.0f * one_minus_t * t;
+        float weight_end = t * t;
+        
+        // Use float intermediate calculations to avoid overflow
+        r = uint8(float(r) * weight_start + float(control.r) * weight_control + float(end.r) * weight_end);
+        g = uint8(float(g) * weight_start + float(control.g) * weight_control + float(end.g) * weight_end);
+        b = uint8(float(b) * weight_start + float(control.b) * weight_control + float(end.b) * weight_end);
+        a = uint8(float(a) * weight_start + float(control.a) * weight_control + float(end.a) * weight_end);
     }
 
     //--------------------------------------------------------------------------------------------------
