@@ -11,7 +11,7 @@ namespace hgl
 {
     // Mathematical constant for PI
     constexpr float HGL_PI = std::numbers::pi_v<float>;
-{
+
     /**
      * @brief Color interpolation utilities
      * 
