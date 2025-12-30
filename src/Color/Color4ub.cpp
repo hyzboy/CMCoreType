@@ -132,10 +132,11 @@ namespace hgl
         float weight_control = 2.0f * one_minus_t * t;
         float weight_end = t * t;
         
-        r = uint8(r * weight_start + control.r * weight_control + end.r * weight_end);
-        g = uint8(g * weight_start + control.g * weight_control + end.g * weight_end);
-        b = uint8(b * weight_start + control.b * weight_control + end.b * weight_end);
-        a = uint8(a * weight_start + control.a * weight_control + end.a * weight_end);
+        // Use float intermediate calculations to avoid overflow
+        r = uint8(float(r) * weight_start + float(control.r) * weight_control + float(end.r) * weight_end);
+        g = uint8(float(g) * weight_start + float(control.g) * weight_control + float(end.g) * weight_end);
+        b = uint8(float(b) * weight_start + float(control.b) * weight_control + float(end.b) * weight_end);
+        a = uint8(float(a) * weight_start + float(control.a) * weight_control + float(end.a) * weight_end);
     }
 
     //--------------------------------------------------------------------------------------------------

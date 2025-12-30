@@ -360,9 +360,9 @@ namespace hgl
         float weight_b = t * t;
         
         return Color3ub(
-            uint8(a.r * weight_a + control.r * weight_control + b.r * weight_b),
-            uint8(a.g * weight_a + control.g * weight_control + b.g * weight_b),
-            uint8(a.b * weight_a + control.b * weight_control + b.b * weight_b)
+            uint8(float(a.r) * weight_a + float(control.r) * weight_control + float(b.r) * weight_b),
+            uint8(float(a.g) * weight_a + float(control.g) * weight_control + float(b.g) * weight_b),
+            uint8(float(a.b) * weight_a + float(control.b) * weight_control + float(b.b) * weight_b)
         );
     }
 
@@ -385,10 +385,10 @@ namespace hgl
         float weight_b = t * t;
         
         return Color4ub(
-            uint8(a.r * weight_a + control.r * weight_control + b.r * weight_b),
-            uint8(a.g * weight_a + control.g * weight_control + b.g * weight_b),
-            uint8(a.b * weight_a + control.b * weight_control + b.b * weight_b),
-            uint8(a.a * weight_a + control.a * weight_control + b.a * weight_b)
+            uint8(float(a.r) * weight_a + float(control.r) * weight_control + float(b.r) * weight_b),
+            uint8(float(a.g) * weight_a + float(control.g) * weight_control + float(b.g) * weight_b),
+            uint8(float(a.b) * weight_a + float(control.b) * weight_control + float(b.b) * weight_b),
+            uint8(float(a.a) * weight_a + float(control.a) * weight_control + float(b.a) * weight_b)
         );
     }
 }//namespace hgl
