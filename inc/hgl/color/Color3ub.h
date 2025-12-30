@@ -45,6 +45,10 @@ namespace hgl
         void lerp(const uint8 *rgb, float t){lerp(*rgb,*(rgb+1),*(rgb+2),t);}                        ///<插值到另一颜色
         void lerp(const Color3ub &c, float t){lerp(c.r,c.g,c.b,t);}                                  ///<插值到另一颜色
 
+        void lerpSmooth(const Color3ub &c, float t);                                                ///<余弦插值到另一颜色
+        void lerpCubic(const Color3ub &c, float t);                                                 ///<三次插值到另一颜色
+        void lerpBezier(const Color3ub &control, const Color3ub &end, float t);                     ///<Bezier曲线插值到另一颜色
+
         void setBlack(){r=0,g=0,b=0;}                                                               ///<黑色
         void setWhite(){r=255,g=255,b=255;}                                                         ///<白色
 
