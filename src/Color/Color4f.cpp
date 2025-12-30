@@ -2,8 +2,12 @@
 #include<hgl/color/Color4ub.h>
 #include<hgl/color/Color.h>
 #include<hgl/math/FloatPrecision.h>
+#include<cmath>
+#include<numbers>
 namespace hgl
 {
+    constexpr float HGL_PI = std::numbers::pi_v<float>;
+
     //--------------------------------------------------------------------------------------------------
     Color4f::Color4f(const Color4ub &v)
     {
@@ -62,7 +66,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * 3.14159265358979323846f)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
         
         r+=(c.r-r)*smooth_t;
         g+=(c.g-g)*smooth_t;

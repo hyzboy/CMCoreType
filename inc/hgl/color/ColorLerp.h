@@ -5,8 +5,12 @@
 #include<hgl/color/Color3ub.h>
 #include<hgl/color/Color4ub.h>
 #include<cmath>
+#include<numbers>
 
 namespace hgl
+{
+    // Mathematical constant for PI
+    constexpr float HGL_PI = std::numbers::pi_v<float>;
 {
     /**
      * @brief Color interpolation utilities
@@ -115,7 +119,7 @@ namespace hgl
         if(t >= 1) return b;
         
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * 3.14159265358979323846f)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
         
         return Color3f(
             a.r + (b.r - a.r) * smooth_t,
@@ -136,7 +140,7 @@ namespace hgl
         if(t <= 0) return a;
         if(t >= 1) return b;
         
-        float smooth_t = (1.0f - cosf(t * 3.14159265358979323846f)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
         
         return Color4f(
             a.r + (b.r - a.r) * smooth_t,
@@ -158,7 +162,7 @@ namespace hgl
         if(t <= 0) return a;
         if(t >= 1) return b;
         
-        float smooth_t = (1.0f - cosf(t * 3.14159265358979323846f)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
         
         return Color3ub(
             uint8(a.r + (b.r - a.r) * smooth_t),
@@ -179,7 +183,7 @@ namespace hgl
         if(t <= 0) return a;
         if(t >= 1) return b;
         
-        float smooth_t = (1.0f - cosf(t * 3.14159265358979323846f)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
         
         return Color4ub(
             uint8(a.r + (b.r - a.r) * smooth_t),
