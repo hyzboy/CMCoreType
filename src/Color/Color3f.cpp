@@ -2,6 +2,7 @@
 #include<hgl/color/Color3ub.h>
 #include<hgl/color/Color.h>
 #include<hgl/math/FloatPrecision.h>
+#include<hgl/math/MathConstants.h>
 #include<cstdlib>
 #include<cmath>
 #include<numbers>
