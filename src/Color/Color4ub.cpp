@@ -5,8 +5,6 @@
 #include<numbers>
 namespace hgl
 {
-    constexpr float HGL_PI = std::numbers::pi_v<float>;
-
     void Color4ub::clamp()
     {
         // uint8 values are naturally clamped to 0-255, but we check for arithmetic overflow
@@ -74,7 +72,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * math::pi)) * 0.5f;
         
         r = uint8(r + (c.r-r)*smooth_t);
         g = uint8(g + (c.g-g)*smooth_t);

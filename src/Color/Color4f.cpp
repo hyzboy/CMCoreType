@@ -6,9 +6,6 @@
 #include<numbers>
 namespace hgl
 {
-    constexpr float HGL_PI = std::numbers::pi_v<float>;
-
-    //--------------------------------------------------------------------------------------------------
     Color4f::Color4f(const Color4ub &v)
     {
         r = float(v.r) / 255.0f;
@@ -66,7 +63,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * HGL_PI)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * math::pi)) * 0.5f;
         
         r+=(c.r-r)*smooth_t;
         g+=(c.g-g)*smooth_t;
