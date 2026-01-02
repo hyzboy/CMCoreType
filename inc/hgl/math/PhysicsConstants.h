@@ -14,10 +14,10 @@ namespace hgl
 
     // ==================== 物理常量 ====================
     
-    inline constexpr double HGL_SPEED_OF_SOUND                     = 331.3;         ///< 音速(米/秒)
+    inline constexpr double HGL_SPEED_OF_SOUND                     = 331.3;         ///< 音速(米/秒, 0°C, 1 atm, 干燥空气)
     inline constexpr double HGL_SPEED_OF_LIGHT                     = 299792458;     ///< 光速(米/秒)
     inline constexpr double HGL_ABSOLUTE_ZERO                      = -273.15;       ///< 绝对零度(°C)
-    inline constexpr double HGL_UNIVERSAL_GRAVITATION              = 6.67384e-11;   ///< 万有引力常数
+    inline constexpr double HGL_UNIVERSAL_GRAVITATION              = 6.67430e-11;   ///< 万有引力常数(m³/(kg·s²), CODATA 2018)
     
     // ==================== 地球相关常量 ====================
     
