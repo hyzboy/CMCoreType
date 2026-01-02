@@ -1,11 +1,10 @@
-﻿#include<hgl/color/Color3f.h>
-#include<hgl/color/Color3ub.h>
-#include<hgl/color/Color.h>
+﻿#include<hgl/CoreType.h>
 #include<hgl/math/FloatPrecision.h>
-#include<hgl/math/MathConstants.h>
-#include<cstdlib>
-#include<cmath>
+#include<hgl/color/Color3f.h>
+#include<hgl/color/Color3ub.h>
 #include<numbers>
+#include<cmath>
+
 namespace hgl
 {
     //--------------------------------------------------------------------------------------------------
@@ -23,13 +22,6 @@ namespace hgl
         if(r<0)r=0;if(r>1)r=1;
         if(g<0)g=0;if(g>1)g=1;
         if(b<0)b=0;if(b>1)b=1;
-    }
-    //--------------------------------------------------------------------------------------------------
-    void Color3f::rnd()
-    {
-        r = float(rand()) / RAND_MAX;
-        g = float(rand()) / RAND_MAX;
-        b = float(rand()) / RAND_MAX;
     }
     //--------------------------------------------------------------------------------------------------
     /**
@@ -70,7 +62,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * math::pi)) * 0.5f;
+        float smooth_t = (1.0f - std::cos(t * std::numbers::pi_v<float>)) * 0.5f;
         
         r+=(c.r-r)*smooth_t;
         g+=(c.g-g)*smooth_t;

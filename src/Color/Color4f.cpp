@@ -2,7 +2,7 @@
 #include<hgl/color/Color4ub.h>
 #include<hgl/color/Color.h>
 #include<hgl/math/FloatPrecision.h>
-#include<hgl/math/MathConstants.h>
+#include<numbers>
 #include<cmath>
 
 namespace hgl
@@ -64,7 +64,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * float(hgl::math::pi))) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
         
         r+=(c.r-r)*smooth_t;
         g+=(c.g-g)*smooth_t;

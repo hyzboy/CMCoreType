@@ -1,8 +1,7 @@
 ﻿#include<hgl/color/Color3ub.h>
 #include<hgl/color/Color3f.h>
 #include<hgl/color/Lum.h>
-#include<hgl/math/MathConstants.h>
-#include<cstdlib>
+#include<numbers>
 #include<cmath>
 namespace hgl
 {
@@ -28,14 +27,6 @@ namespace hgl
         g = uint8(vg * 255.0f);
         b = uint8(vb * 255.0f);
         clamp();
-    }
-
-    //--------------------------------------------------------------------------------------------------
-    void Color3ub::rnd()
-    {
-        r = uint8(rand() % 256);
-        g = uint8(rand() % 256);
-        b = uint8(rand() % 256);
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -78,7 +69,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * float(hgl::math::pi))) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
         
         r = uint8(r + (c.r-r)*smooth_t);
         g = uint8(g + (c.g-g)*smooth_t);

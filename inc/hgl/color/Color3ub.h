@@ -34,7 +34,6 @@ namespace hgl
 
         void setZero(){r=0,g=0,b=0;}                                                               ///<全清为0
         void setOne() {r=255,g=255,b=255;}                                                         ///<全清为255
-        void rnd();                                                                                ///<全随机
 
         void set(uint8 vr,uint8 vg,uint8 vb){r=vr,g=vg,b=vb;clamp();}                              ///<设置颜色
         void setf(float vr,float vg,float vb);                                                     ///<按0.0-1.0的范围值设置颜色
