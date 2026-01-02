@@ -1,8 +1,9 @@
 ﻿#include<hgl/color/Color4ub.h>
 #include<hgl/color/Color4f.h>
 #include<hgl/color/Lum.h>
+#include<hgl/math/MathConstants.h>
 #include<cmath>
-#include<numbers>
+
 namespace hgl
 {
     void Color4ub::clamp()
@@ -72,7 +73,7 @@ namespace hgl
         }
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
-        float smooth_t = (1.0f - cosf(t * math::pi)) * 0.5f;
+        float smooth_t = (1.0f - cosf(t * float(hgl::math::pi))) * 0.5f;
         
         r = uint8(r + (c.r-r)*smooth_t);
         g = uint8(g + (c.g-g)*smooth_t);
