@@ -30,7 +30,7 @@ namespace hgl::math
     inline constexpr double pi_4        = 0.785398163397448309616;                             ///< π/4
     inline constexpr double pi_3_4      = 2.356194490192344928938;                             ///< 3π/4
     inline constexpr double inv_pi      = 0.318309886183790671538;                             ///< 1/π
-    inline constexpr double two_pi      = 0.636619772367581343076;                             ///< 2/π
+    inline constexpr double two_over_pi = 0.636619772367581343076;                             ///< 2/π
     inline constexpr double two_sqrtpi  = 1.12837916709551257390;                              ///< 2/√π
 
     // ==================== 根号常量 ====================
