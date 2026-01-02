@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCMCoreType.a CMakeFiles/CMCoreType.dir/Color/BlendColor.cpp.o CMakeFiles/CMCoreType.dir/Color/CMYKf.cpp.o CMakeFiles/CMCoreType.dir/Color/CMYKub.cpp.o CMakeFiles/CMCoreType.dir/Color/Color.cpp.o CMakeFiles/CMCoreType.dir/Color/Color3f.cpp.o CMakeFiles/CMCoreType.dir/Color/Color3ub.cpp.o CMakeFiles/CMCoreType.dir/Color/Color4f.cpp.o CMakeFiles/CMCoreType.dir/Color/Color4ub.cpp.o CMakeFiles/CMCoreType.dir/Color/HSL.cpp.o CMakeFiles/CMCoreType.dir/Color/LinearColor3f.cpp.o CMakeFiles/CMCoreType.dir/Color/LinearColor4f.cpp.o
+/usr/bin/ranlib libCMCoreType.a
