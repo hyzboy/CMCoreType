@@ -29,7 +29,7 @@ namespace hgl
     constexpr uint8 HGL_B1110 = 14;
     constexpr uint8 HGL_B1111 = 15;
     
-    // ==================== 8位二进制常量 (部分示例) ====================
+    // ==================== 8位二进制常量 (0-255 完整定义) ====================
     
     constexpr uint8 HGL_B00000000 = 0;
     constexpr uint8 HGL_B00000001 = 1;

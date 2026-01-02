@@ -10,7 +10,6 @@ namespace hgl
 {
     // ==================== 数学比例 ====================
     
-    constexpr const double HGL_GOLDEN_RATIO     = 0.61803398874989484820458683436563811772030917980576; ///< 黄金比例
     constexpr const double HGL_SILVER_RATIO     = 2.4142135623730950488;                                ///< 白银比例
 
     // ==================== 物理常量 ====================
@@ -22,7 +21,7 @@ namespace hgl
     
     // ==================== 地球相关常量 ====================
     
-    constexpr const double HGL_EARTH_GRAVITATIONAL_ACCELERATION   = 9.80665;       ///< 地球上的重力加速度(牛顿)
+    constexpr const double HGL_EARTH_GRAVITATIONAL_ACCELERATION   = 9.80665;       ///< 地球上的重力加速度(米/秒²)
     constexpr const double HGL_EARTH_MASS                         = 5.9722e+24;    ///< 地球质量
     constexpr const double HGL_EARTH_RADIUS                       = 6371000;       ///< 地球半径(米)
 }//namespace hgl
