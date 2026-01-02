@@ -54,7 +54,10 @@ SET(MATH_INCLUDE_PATH   ${TYPECORE_HGL_PATH}/math)
 SET(MATH_HEADER_FILES   ${MATH_INCLUDE_PATH}/Clamp.h
                         ${MATH_INCLUDE_PATH}/FloatPrecision.h
                         ${MATH_INCLUDE_PATH}/FloatControl.h
-                        ${MATH_INCLUDE_PATH}/FloatValidation.h)
+                        ${MATH_INCLUDE_PATH}/FloatValidation.h
+                        ${MATH_INCLUDE_PATH}/MathConstants.h
+                        ${MATH_INCLUDE_PATH}/PhysicsConstants.h
+                        ${MATH_INCLUDE_PATH}/BinaryConstants.h)
 
 source_group("Math" FILES ${MATH_HEADER_FILES})
 ##==================================================================================================
