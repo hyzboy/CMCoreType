@@ -10,7 +10,7 @@
 
 #include<hgl/CoreType.h>
 
-namespace hgl::math
+namespace hgl
 {
     /**
      * @param min_value 最小值
@@ -18,7 +18,7 @@ namespace hgl::math
      * @return 限制后的值
      */
     template<typename T,typename T2>
-    constexpr T Clamp(const T &value,const T2 &min_value,const T2 &max_value)
+    constexpr const T Clamp(const T &value,const T2 &min_value,const T2 &max_value)
     {
         if(value<min_value)return min_value;
         if(value>max_value)return max_value;
@@ -32,7 +32,7 @@ namespace hgl::math
      * @return 限制后的值
      */
     template<typename T>
-    constexpr T Clamp(const T &value)
+    constexpr const T Clamp(const T &value)
     {
         return Clamp<T>(value,0,1);
     }
@@ -42,7 +42,7 @@ namespace hgl::math
      * @param value 要限制的整数值
      * @return 限制后的 uint8 值
      */
-    constexpr uint8 ClampU8(const int value)
+    constexpr const uint8 ClampU8(const int value)
     {
         if(value<0)return 0;
         if(value>0xFF)return 0xFF;
@@ -54,10 +54,10 @@ namespace hgl::math
      * @param value 要限制的整数值
      * @return 限制后的 uint16 值
      */
-    constexpr uint16 ClampU16(const int value)
+    constexpr const uint16 ClampU16(const int value)
     {
         if(value<0)return 0;
         if(value>0xFFFF)return 0xFFFF;
         return static_cast<uint16>(value);
     }
-}//namespace hgl::math
+}//namespace hgl

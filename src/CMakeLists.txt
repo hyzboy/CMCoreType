@@ -51,7 +51,7 @@ source_group("Util" FILES ${TYPECORE_TYPE_HEADERS})
 ##==================================================================================================
 SET(MATH_INCLUDE_PATH   ${TYPECORE_HGL_PATH}/math)
 
-SET(MATH_HEADER_FILES   ${MATH_INCLUDE_PATH}/Clamp.h
+SET(MATH_HEADER_FILES   ${MATH_INCLUDE_PATH}/ClampUtil.h
                         ${MATH_INCLUDE_PATH}/FloatPrecision.h
                         ${MATH_INCLUDE_PATH}/FloatControl.h
                         ${MATH_INCLUDE_PATH}/FloatValidation.h
