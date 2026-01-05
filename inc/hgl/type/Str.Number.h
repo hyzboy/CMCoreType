@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <hgl/type/CharType.h>
 #include <hgl/type/Str.Length.h>
+#include <type_traits>
 #include <cstdint>
 #include <cstring>
 #include <cmath>
@@ -532,10 +533,10 @@ namespace hgl
         template<typename CharT, typename UIntT> static CharT *conv(CharT *str,int size,UIntT value,bool upper);
     };
 
-    template<> struct htos_bits<1>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos(str,size,static_cast<uint8  >(value),16,upper);}};
-    template<> struct htos_bits<2>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos(str,size,static_cast<uint16 >(value),16,upper);}};
-    template<> struct htos_bits<4>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos(str,size,static_cast<uint32 >(value),16,upper);}};
-    template<> struct htos_bits<8>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos(str,size,static_cast<uint64 >(value),16,upper);}};
+    template<> struct htos_bits<1>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos<CharT,UIntT>(str,size,static_cast<uint8  >(value),16,upper);}};
+    template<> struct htos_bits<2>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos<CharT,UIntT>(str,size,static_cast<uint16 >(value),16,upper);}};
+    template<> struct htos_bits<4>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos<CharT,UIntT>(str,size,static_cast<uint32 >(value),16,upper);}};
+    template<> struct htos_bits<8>{template<typename CharT,typename UIntT> static inline CharT *conv(CharT *str,int size,UIntT value,bool upper){return hgl::utos<CharT,UIntT>(str,size,static_cast<uint64 >(value),16,upper);}};
 
     /**
      * @brief CN: 将无符号整数转换为十六进制字符串（根据类型字节数选择宽度）。
@@ -545,6 +546,14 @@ namespace hgl
     inline CharT *htos(CharT *str,int size,UIntT value,bool upper=true)
     {
         return htos_bits<sizeof(UIntT)>::template conv<CharT,UIntT>(str,size,value,upper);
+    }
+
+    // C++20: pointer overload for htos, using std::uintptr_t
+    template<typename CharT, typename PtrT>
+    requires std::is_pointer_v<PtrT>
+    inline CharT *htos(CharT *str, int size, PtrT ptr, bool upper = true)
+    {
+        return htos(str, size, reinterpret_cast<std::uintptr_t>(ptr), upper);
     }
 
     template<typename CharT,typename UIntT> inline CharT *htos_upper(CharT *str,int size,UIntT value){return hgl::htos<CharT,UIntT>(str,size,value,true);} 
