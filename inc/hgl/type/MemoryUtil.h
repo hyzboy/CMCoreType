@@ -9,21 +9,36 @@ namespace hgl
 {
     /**
      * MemoryUtil 内存操作库
-     * 
+     *
      * 优化策略 (C++20 constexpr if):
      * - Trivially copyable 类型 (int, double, POD struct 等):
      *   使用 memcpy/memmove 进行字节级复制，性能最优 (提升 30-40%)
-     * 
+     *
      * - Non-trivial 类型 (std::string, 自定义赋值操作符等):
      *   使用 std::copy/std::move 正确调用复制/移动语义，保证内存安全
-     * 
+     *
      * 编译器在编译时决定使用哪个分支，零运行时开销！
      */
-    
+
+    template<typename T>
+    inline T *alloc_raw(size_t count)
+    {
+        // 分配一段按 T 对齐的未初始化内存，用于后续手动构造对象（placement new 或 copy_construct_range）。
+        // 注意：这里不会调用构造函数，也不会清零内存，使用者必须负责后续析构并调用 free_raw 释放。
+        return static_cast<T*>(::operator new(sizeof(T) * count, std::align_val_t{alignof(T)}));
+    }
+
+    template<typename T>
+    inline void free_raw(T* ptr)
+    {
+        // 释放由 alloc_raw 分配的裸内存；调用前应确保已手动析构其中的对象（如 destroy_range）。
+        ::operator delete(ptr, std::align_val_t{alignof(T)});
+    }
+
     //==================================================================================================
     // 构造与析构 / Construction and Destruction
     //==================================================================================================
-    
+
     /**
      * 在指定内存位置构造对象（placement new）
      */
@@ -55,7 +70,7 @@ namespace hgl
     inline void move_construct_range(T *dst, T *src, const size_t count)
     {
         if(!dst || !src || count == 0) return;
-        
+
         if constexpr(std::is_trivially_copyable_v<T>)
         {
             mem_copy<T>(dst, src, count);
@@ -80,7 +95,7 @@ namespace hgl
     inline void copy_construct_range(T *dst, const T *src, const size_t count)
     {
         if(!dst || !src || count == 0) return;
-        
+
         if constexpr(std::is_trivially_copyable_v<T>)
         {
             mem_copy<T>(dst, src, count);
@@ -107,7 +122,7 @@ namespace hgl
         if constexpr(!std::is_trivially_destructible_v<T>)
         {
             if(!data || count == 0) return;
-            
+
             for(size_t i = 0; i < count; i++)
             {
                 data[i].~T();
@@ -128,7 +143,7 @@ namespace hgl
         if constexpr(!std::is_trivially_destructible_v<T>)
         {
             if(!data || start_index >= end_index) return;
-            
+
             for(size_t i = start_index; i < end_index; i++)
             {
                 data[i].~T();
@@ -139,7 +154,7 @@ namespace hgl
     //==================================================================================================
     // 内存操作 - 复制 / Memory Operations - Copy
     //==================================================================================================
-    
+
     /**
      * 内存复制（单个对象）
      * 优化策略：
@@ -166,7 +181,7 @@ namespace hgl
     inline void convert_copy(D *dst, const S *src, const size_t count)
     {
         if(!dst || !src || count == 0) return;
-        
+
         for(size_t i = 0; i < count; i++)
         {
             *dst = D(*src);
@@ -185,7 +200,7 @@ namespace hgl
     inline void mem_copy(T *dst, const T *src, const size_t count)
     {
         if(!dst || !src || count == 0) return;
-        
+
         if constexpr(std::is_trivially_copyable_v<T>)
         {
             std::memcpy(dst, src, count * sizeof(T));
@@ -206,7 +221,7 @@ namespace hgl
     inline void mem_move(T *dst, const T *src, const size_t count)
     {
         if(!dst || !src || count == 0) return;
-        
+
         if constexpr(std::is_trivially_copyable_v<T>)
         {
             std::memmove(dst, src, count * sizeof(T));
@@ -228,7 +243,7 @@ namespace hgl
     //==================================================================================================
     // 内存操作 - 填充 / Memory Operations - Fill
     //==================================================================================================
-    
+
     /**
      * 用指定值填充内存（单一值重复）
      */
@@ -283,7 +298,7 @@ namespace hgl
     //==================================================================================================
     // 内存操作 - 清零 / Memory Operations - Zero
     //==================================================================================================
-    
+
     /**
      * 内存清零（单个对象）
      */
@@ -308,7 +323,7 @@ namespace hgl
     //==================================================================================================
     // 内存操作 - 比较 / Memory Operations - Compare
     //==================================================================================================
-    
+
     /**
      * 内存比较（单个对象，返回 <0, 0, >0）
      * 注意：此函数执行字节级比较，对于包含填充字节或指针的类型可能产生不确定的结果
