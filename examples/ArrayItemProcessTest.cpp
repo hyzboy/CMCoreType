@@ -95,8 +95,8 @@ void TestRawTypeCallback()
         for(int i = 0; i < scale; ++i) {
             if(large_dst[i] != large_src[i]) {
                 if(mismatch_count == 0) {
-                    std::cerr << "  First mismatch at index " << i 
-                              << ": expected " << large_src[i] 
+                    std::cerr << "  First mismatch at index " << i
+                              << ": expected " << large_src[i]
                               << ", got " << large_dst[i] << std::endl;
                 }
                 mismatch_count++;
@@ -171,7 +171,7 @@ void TestMemoryCallback()
         for(int i = 0; i < scale; ++i) {
             if(large_dst[i].a != large_src[i].a || large_dst[i].b != large_src[i].b) {
                 if(error_count == 0) {
-                    std::cerr << "  First error at " << i 
+                    std::cerr << "  First error at " << i
                               << ": expected {" << large_src[i].a << "," << large_src[i].b
                               << "}, got {" << large_dst[i].a << "," << large_dst[i].b << "}" << std::endl;
                 }
@@ -189,7 +189,7 @@ void TestMemoryCallback()
             CHECK(large_dst[idx] == large_src[idx], "Random spot check failed");
         }
 
-        std::cout << "  [Scale " << scale << "] Pod bulk copy: " << elapsed 
+        std::cout << "  [Scale " << scale << "] Pod bulk copy: " << elapsed
                   << " ms (verified + 10 random checks)" << std::endl;
     }
 
@@ -222,7 +222,7 @@ void TestFindDataPositionInArray()
         int64 pos_last = FindDataPositionInArray(data.data(), static_cast<int64>(scale), data[scale - 1]);
         // 查找不存在的元素（最差情况，需要遍历整个数组）
         int64 pos_missing = FindDataPositionInArray(data.data(), static_cast<int64>(scale), -9999);
-        
+
         // 随机查找20个存在的元素
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -232,12 +232,12 @@ void TestFindDataPositionInArray()
             int64 found_pos = FindDataPositionInArray(data.data(), static_cast<int64>(scale), data[idx]);
             if(found_pos != idx) {
                 std::ostringstream oss;
-                oss << "Random find failed: looking for data[" << idx << "]=" << data[idx] 
+                oss << "Random find failed: looking for data[" << idx << "]=" << data[idx]
                     << ", found at " << found_pos;
                 throw std::runtime_error(oss.str());
             }
         }
-        
+
         double elapsed = timer.ElapsedMs();
 
         CHECK(pos_first == 0, "Large scale find first failed");
@@ -245,7 +245,7 @@ void TestFindDataPositionInArray()
         CHECK(pos_last == scale - 1, "Large scale find last failed");
         CHECK(pos_missing == -1, "Large scale find missing failed");
 
-        std::cout << "  [Scale " << scale << "] Unsorted search: " << elapsed 
+        std::cout << "  [Scale " << scale << "] Unsorted search: " << elapsed
                   << " ms (+ 20 random verifications)" << std::endl;
     }
 
@@ -285,7 +285,7 @@ void TestFindDataPositionInSortedArray()
         int64 pos_first = FindDataPositionInSortedArray(sorted_data.data(), static_cast<int64>(scale), 0);
         int64 pos_mid = FindDataPositionInSortedArray(sorted_data.data(), static_cast<int64>(scale), (scale / 2) * 2);
         int64 pos_last = FindDataPositionInSortedArray(sorted_data.data(), static_cast<int64>(scale), (scale - 1) * 2);
-        
+
         // 随机查找30个存在的偶数
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -296,25 +296,25 @@ void TestFindDataPositionInSortedArray()
             int64 found = FindDataPositionInSortedArray(sorted_data.data(), static_cast<int64>(scale), value);
             if(found != idx) {
                 std::ostringstream oss;
-                oss << "Binary search failed: value " << value 
+                oss << "Binary search failed: value " << value
                     << " should be at " << idx << ", found at " << found;
                 throw std::runtime_error(oss.str());
             }
         }
-        
+
         // 查找不存在的奇数（应该都返回-1）
         for(int odd : {1, 3, 5, 7, 11, 13}) {
             int64 pos = FindDataPositionInSortedArray(sorted_data.data(), static_cast<int64>(scale), odd);
             CHECK(pos == -1, "Odd number should not be found");
         }
-        
+
         double elapsed = timer.ElapsedMs();
 
         CHECK(pos_first == 0, "Large scale sorted find first failed");
         CHECK(pos_mid == scale / 2, "Large scale sorted find mid failed");
         CHECK(pos_last == scale - 1, "Large scale sorted find last failed");
 
-        std::cout << "  [Scale " << scale << "] Binary search: " << elapsed 
+        std::cout << "  [Scale " << scale << "] Binary search: " << elapsed
                   << " ms (+ 30 random + 6 missing checks)" << std::endl;
     }
 
@@ -378,14 +378,14 @@ void TestFindInsertPositionInSortedArray()
         for(int test = 0; test < 20; ++test) {
             int test_value = dis(gen);
             int64 pos = -1;
-            bool exists = FindInsertPositionInSortedArray(&pos, sorted_data.data(), 
+            bool exists = FindInsertPositionInSortedArray(&pos, sorted_data.data(),
                                                           static_cast<int64>(scale), test_value);
-            
+
             // 验证：如果exists=true，则sorted_data[pos]应该等于test_value
             if(exists) {
                 if(pos < 0 || pos >= scale || sorted_data[pos] != test_value) {
                     std::ostringstream oss;
-                    oss << "Insert position error: value=" << test_value 
+                    oss << "Insert position error: value=" << test_value
                         << " reported exists at pos=" << pos;
                     if(pos >= 0 && pos < scale)
                         oss << " but sorted_data[pos]=" << sorted_data[pos];
@@ -401,13 +401,13 @@ void TestFindInsertPositionInSortedArray()
                 // 验证插入位置的相对关系
                 if(pos > 0 && sorted_data[pos-1] >= test_value) {
                     std::ostringstream oss;
-                    oss << "Insert position error: sorted_data[" << (pos-1) << "]=" 
+                    oss << "Insert position error: sorted_data[" << (pos-1) << "]="
                         << sorted_data[pos-1] << " >= test_value=" << test_value;
                     throw std::runtime_error(oss.str());
                 }
                 if(pos < scale && sorted_data[pos] <= test_value) {
                     std::ostringstream oss;
-                    oss << "Insert position error: sorted_data[" << pos << "]=" 
+                    oss << "Insert position error: sorted_data[" << pos << "]="
                         << sorted_data[pos] << " <= test_value=" << test_value;
                     throw std::runtime_error(oss.str());
                 }
@@ -415,7 +415,7 @@ void TestFindInsertPositionInSortedArray()
         }
 
         double elapsed = timer.ElapsedMs();
-        std::cout << "  [Scale " << scale << "] Insert position search: " << elapsed 
+        std::cout << "  [Scale " << scale << "] Insert position search: " << elapsed
                   << " ms (+ 20 random position verifications)" << std::endl;
     }
 
