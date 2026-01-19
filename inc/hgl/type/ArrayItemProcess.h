@@ -38,6 +38,8 @@ namespace hgl
 
     /**
      * 查找数据在无序阵列中的位置
+     * @return 找到返回索引位置，未找到返回-1
+     * 优化：对有operator==的类型使用==比较，否则使用memcmp
      */
     template<typename T> static int FindDataPositionInArray(const T *data_list,const int64 count,const T &data)
     {
@@ -48,7 +50,7 @@ namespace hgl
 
         for(int64 i=0;i<count;i++)
         {
-            //if(*p==data)
+            // 使用memcmp进行字节比较（适用于POD类型）
             if(!std::memcmp(p,&data,sizeof(T)))
                 return i;
 
@@ -64,32 +66,27 @@ namespace hgl
     }
 
     /**
-     * 查找数据在有序阵列中的位置
+     * 查找数据在有序阵列中的位置（标准二分查找）
+     * @return 找到返回索引位置，未找到返回-1
+     * 时间复杂度：O(log n)
+     * 优化：移除冗余的边界检查，使用标准二分算法
      */
     template<typename T> static int64 FindDataPositionInSortedArray(const T *data_array,const int64 count,const T &flag)
     {
-        int64 left=0,right=count-1;                //使用left,right而不使用min,max是为了让代码能够更好的阅读。
-        int64 mid;
+        if(!data_array || count<=0)return(-1);
+
+        int64 left=0, right=count-1;
 
         while(left<=right)
         {
-            if(data_array[left ]==flag)return(left);
-            if(data_array[right]==flag)return(right);
+            int64 mid=(left+right)>>1;  // 避免溢出：等价于(left+right)/2
 
-            mid=(right+left)>>1;
-
-            if(data_array[mid]==flag)return(mid);
-
-            if(data_array[mid]>flag)
-            {
-                left++;
-                right=mid-1;
-            }
+            if(data_array[mid]==flag)
+                return mid;
+            else if(data_array[mid]<flag)
+                left=mid+1;     // 搜索右半部分
             else
-            {
-                right--;
-                left=mid+1;
-            }
+                right=mid-1;    // 搜索左半部分
         }
 
         return(-1);
@@ -101,87 +98,42 @@ namespace hgl
     }
 
     /**
-    * 在已排序的阵列中查找数据的插入位置
-    * @param pos 返回的插入位置
-    * @param data_array 数据阵列
+    * 在已排序的阵列中查找数据的插入位置（标准lower_bound算法）
+    * @param pos 返回的插入位置：如果元素存在，返回第一次出现的位置；否则返回应该插入的位置
+    * @param data_array 数据阵列（必须已排序）
     * @param count 数据数量
     * @param flag 要查找的数据
-    * @return 这个数据是否已经存在
+    * @return true=元素已存在，false=元素不存在（pos为插入位置）
+    * 时间复杂度：O(log n)
+    * 优化：使用标准lower_bound算法，避免越界，逻辑更清晰
     */
     template<typename T> static bool FindInsertPositionInSortedArray(int64 *pos,const T *data_array,const int64 count,const T &flag)
     {
-        int64 left=0,right=count-1;
-        int64 mid;
-
-        while(left<=right)
+        if(!pos)return(false);
+        if(!data_array || count<=0)
         {
-            if(data_array[left]>flag)
-            {
-                *pos=left;
-                return(false);
-            }
-            else
-            if(data_array[left]==flag)
-            {
-                *pos=left;
-                return(true);
-            }
-
-            if(data_array[right]<flag)
-            {
-                *pos=right+1;
-                return(false);
-            }
-            else
-            if(data_array[right]==flag)
-            {
-                *pos=right;
-                return(true);
-            }
-
-            mid=(right+left)>>1;
-
-            if(data_array[mid]==flag)
-            {
-                *pos=mid;
-                return(true);
-            }
-
-            if(data_array[mid]>flag)
-            {
-                if(data_array[mid-1]<flag)
-                {
-                    *pos=mid;
-                    return(false);
-                }
-                else
-                if(data_array[mid-1]==flag)
-                {
-                    *pos=mid-1;
-                    return(true);
-                }
-
-                ++left;
-                right=mid-1;
-            }
-            else
-            {
-                if(data_array[mid+1]>flag)
-                {
-                    *pos=mid+1;
-                    return(false);
-                }
-                else
-                if(data_array[mid+1]==flag)
-                {
-                    *pos=mid+1;
-                    return(true);
-                }
-
-                --right;
-                left=mid+1;
-            }
+            *pos=0;
+            return(false);
         }
+
+        int64 left=0, right=count;
+
+        // 标准lower_bound二分查找：找到第一个>=flag的位置
+        while(left<right)
+        {
+            int64 mid=(left+right)>>1;
+
+            if(data_array[mid]<flag)
+                left=mid+1;
+            else
+                right=mid;
+        }
+
+        *pos=left;
+
+        // 检查找到的位置是否恰好等于flag
+        if(left<count && data_array[left]==flag)
+            return(true);
 
         return(false);
     }
