@@ -10,5 +10,8 @@ macro(cm_example_project sub_folder project_name)
     )
 endmacro()
 
+cm_example_project("" ArrayItemProcessTest      ArrayItemProcessTest.cpp)
+cm_example_project("" ArrayRearrangeHelperTest  ArrayRearrangeHelperTest.cpp)
+
 # Add subdirectories
 add_subdirectory(typeinfo)
