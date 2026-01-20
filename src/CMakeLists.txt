@@ -40,6 +40,7 @@ set(TYPECORE_TYPE_HEADERS   ${TYPECORE_TYPE_PATH}/_Object.h
                             ${TYPECORE_TYPE_PATH}/EnumUtil.h
                             ${TYPECORE_TYPE_PATH}/MemoryAlloc.h
                             ${TYPECORE_TYPE_PATH}/MemoryUtil.h
+                            ${TYPECORE_TYPE_PATH}/ObjectUtil.h
                             ${TYPECORE_TYPE_PATH}/MipmapUtil.h
                             ${TYPECORE_TYPE_PATH}/TypeLimits.h
 )

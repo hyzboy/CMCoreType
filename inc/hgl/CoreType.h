@@ -12,7 +12,7 @@ namespace hgl
     using uint32 = std::uint32_t;
     using int64  = std::int64_t;
     using uint64 = std::uint64_t;
-    
+
     using half_float = uint16;
     using float32    = float;
     using float64    = double;
@@ -23,7 +23,7 @@ namespace hgl
 #else
     using u8char = char;
 #endif
-    
+
     using i8=int8;
     using i16=int16;
     using i32=int32;
