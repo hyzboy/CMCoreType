@@ -1,6 +1,6 @@
 #include<hgl/type/DataType.h>
 #include<hgl/math/Vector.h>
-#include<hgl/math/MatrixTypes.h>
+#include<hgl/math/Matrix.h>
 #include<hgl/math/Quaternion.h>
 #include<hgl/math/transform/Transform.h>
 #include<hgl/type/RectScope.h>
