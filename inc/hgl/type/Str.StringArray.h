@@ -1,7 +1,9 @@
 ﻿#pragma once
+
 #include <hgl/type/Str.Length.h>
 #include <hgl/type/Str.Comp.h>
 #include <cstddef>
+
 namespace hgl
 {
     /**
@@ -51,8 +53,11 @@ namespace hgl
         for(int i = 0; i < count; ++i)
         {
             int len = hgl::strlen(str_array[i]);
+
             if(len != str_len) continue;
-            if(hgl::stricmp(str_array[i], str, static_cast<std::size_t>(str_len)) == 0) return i;
+
+            if(hgl::stricmp(str_array[i], str, static_cast<std::size_t>(str_len)) == 0)
+                return i;
         }
 
         return -1;
