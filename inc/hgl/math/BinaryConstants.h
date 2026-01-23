@@ -1,6 +1,6 @@
 /**
  * BinaryConstants.h - 二进制常量定义
- * 
+ *
  * 提供常用的二进制常量，用于位操作和掩码
  */
 
@@ -11,7 +11,7 @@
 namespace hgl
 {
     // ==================== 4位二进制常量 ====================
-    
+
     constexpr uint8 HGL_B0000 = 0;
     constexpr uint8 HGL_B0001 = 1;
     constexpr uint8 HGL_B0010 = 2;
@@ -28,9 +28,9 @@ namespace hgl
     constexpr uint8 HGL_B1101 = 13;
     constexpr uint8 HGL_B1110 = 14;
     constexpr uint8 HGL_B1111 = 15;
-    
+
     // ==================== 8位二进制常量 (0-255 完整定义) ====================
-    
+
     constexpr uint8 HGL_B00000000 = 0;
     constexpr uint8 HGL_B00000001 = 1;
     constexpr uint8 HGL_B00000010 = 2;

@@ -1,12 +1,12 @@
 ﻿/**
  * FloatPrecision.h - 浮点数精度常量与比较
- * 
+ *
  * 包含：
  * - 浮点数/双精度浮点数的 MIN/MAX/EPSILON 常量
  * - 误差阈值常量 (float_error, double_error)
  * - 近似零检测 (IsNearlyZero)
  * - 近似相等检测 (IsNearlyEqual, IsNearlyEqualArray)
- * 
+ *
  * C++20 风格：常量使用小写命名 + 下划线，inline constexpr
  * 保留大写别名以保持向后兼容
  */
@@ -20,7 +20,7 @@
 namespace hgl::math
 {
     // ==================== 浮点数极限值 ====================
-    
+
     inline constexpr float   float_min       = std::numeric_limits<float>::min();       ///< 最小浮点数
     inline constexpr float   float_max       = std::numeric_limits<float>::max();       ///< 最大浮点数
     inline constexpr float   float_epsilon   = std::numeric_limits<float>::epsilon();   ///< 浮点数精度最小值
@@ -30,13 +30,13 @@ namespace hgl::math
     inline constexpr double  double_epsilon  = std::numeric_limits<double>::epsilon();  ///< 双精度浮点数精度最小值
 
     // ==================== 误差阈值 ====================
-    
+
     inline constexpr float   half_float_error = 0.001f;                                 ///< 半精度浮点数最小误差值
     inline constexpr float   float_error      = 0.0001f;                                ///< 浮点数最小误差值
     inline constexpr double  double_error     = 0.00000001;                             ///< 双精度浮点数最小误差值
 
     // ==================== 近似零检测 ====================
-    
+
     /**
      * 判断浮点数是否近似为零
      * @param value 要检测的值
@@ -60,7 +60,7 @@ namespace hgl::math
     }
 
     // ==================== 近似相等检测 ====================
-    
+
     /**
      * 判断两个浮点数是否近似相等
      * @param a 第一个值
