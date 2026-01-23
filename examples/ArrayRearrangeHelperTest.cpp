@@ -1,5 +1,6 @@
 #include <hgl/type/ArrayRearrangeHelper.h>
-#include <hgl/type/MemoryUtil.h>
+#include <hgl/type/MemoryAlloc.h>
+#include <hgl/type/ObjectUtil.h>
 #include <array>
 #include <vector>
 #include <iostream>
@@ -33,19 +34,38 @@ struct Tracker
     static int constructed;
     static int destroyed;
     static int moved;
+    static int copied;
 
     int value;
     bool moved_from; // 标记是否已被移动
 
     explicit Tracker(int v = 0) : value(v), moved_from(false) { ++constructed; }
+    
+    // 拷贝构造函数
+    Tracker(const Tracker& other) : value(other.value), moved_from(false)
+    {
+        ++constructed;
+        ++copied;
+    }
+    
+    // 移动构造函数
     Tracker(Tracker&& other) noexcept : value(other.value), moved_from(false)
     {
         other.moved_from = true; // 标记源对象已被移动，但不修改value
         ++constructed;
         ++moved;
     }
-    Tracker(const Tracker&) = delete;
-    Tracker& operator=(const Tracker&) = delete;
+    
+    // 拷贝赋值运算符
+    Tracker& operator=(const Tracker& other)
+    {
+        value = other.value;
+        moved_from = false;
+        ++copied;
+        return *this;
+    }
+    
+    // 移动赋值运算符
     Tracker& operator=(Tracker&& other) noexcept
     {
         value = other.value;
@@ -54,15 +74,17 @@ struct Tracker
         ++moved;
         return *this;
     }
+    
     ~Tracker() { ++destroyed; }
 
-    static void Reset() { constructed = destroyed = moved = 0; }
+    static void Reset() { constructed = destroyed = moved = copied = 0; }
     static int Alive() { return constructed - destroyed; }
 };
 
 int Tracker::constructed = 0;
 int Tracker::destroyed = 0;
 int Tracker::moved = 0;
+int Tracker::copied = 0;
 
 void TestTrivialRearrange()
 {
@@ -72,7 +94,7 @@ void TestTrivialRearrange()
     {
         constexpr int count = 5;
         const int src[count] = {1, 2, 3, 4, 5};
-        int* dest = hgl::alloc_raw<int>(count);
+        int* dest = hgl::array_alloc<int>(count);
 
         const bool ok = hgl::ArrayRearrange(dest, src, count, {2, 3}, {1, 0});
         CHECK(ok, "trivial rearrange failed");
@@ -81,7 +103,7 @@ void TestTrivialRearrange()
         for(int i = 0; i < count; ++i)
             CHECK(dest[i] == expected[i], "trivial rearrange result mismatch");
 
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     // 大规模重排测试
@@ -91,7 +113,7 @@ void TestTrivialRearrange()
         for(int i = 0; i < scale; ++i)
             src[i] = i;
 
-        int* dest = hgl::alloc_raw<int>(scale);
+        int* dest = hgl::array_alloc<int>(scale);
 
         // 测试多种重排模式
         // 模式1: 将数组分成两半并交换
@@ -142,7 +164,7 @@ void TestTrivialRearrange()
             std::cout << "  [Scale " << scale << "] Reverse order: " << elapsed << " ms" << std::endl;
         }
 
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     std::cout << "[TestTrivialRearrange] Passed" << std::endl;
@@ -158,7 +180,7 @@ void TestNonTrivialRearrange()
         constexpr int count = 5;
         Tracker src[count] = {Tracker{0}, Tracker{1}, Tracker{2}, Tracker{3}, Tracker{4}};
 
-        Tracker* dest = hgl::alloc_raw<Tracker>(count);
+        Tracker* dest = hgl::array_alloc<Tracker>(count);
 
         const bool ok = hgl::ArrayRearrange(dest, src, count, {1, 2, 2}, {0, 2, 1});
         CHECK(ok, "non-trivial rearrange failed");
@@ -171,7 +193,7 @@ void TestNonTrivialRearrange()
         CHECK(Tracker::Alive() == 10, "alive count after rearrange unexpected");
 
         hgl::destroy_range(dest, count);
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
         CHECK(Tracker::Alive() == 5, "alive count after destroying dest unexpected");
     }
 
@@ -189,7 +211,7 @@ void TestNonTrivialRearrange()
         int initial_constructed = Tracker::constructed;
         CHECK(Tracker::Alive() == scale, "Source array construction check failed");
 
-        Tracker* dest = hgl::alloc_raw<Tracker>(scale);
+        Tracker* dest = hgl::array_alloc<Tracker>(scale);
 
         // 测试：将数组分成4段并打乱顺序
         int quarter = scale / 4;
@@ -247,7 +269,7 @@ void TestNonTrivialRearrange()
 
         // 清理
         hgl::destroy_range(dest, scale);
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
 
         // 验证只剩下src对象
         CHECK(Tracker::Alive() == scale, "Memory leak detected after cleanup");
@@ -264,14 +286,14 @@ void TestInvalidIndexEarlyExit()
     constexpr int count = 3;
     Tracker src[count] = {Tracker{10}, Tracker{11}, Tracker{12}};
 
-    Tracker* dest = hgl::alloc_raw<Tracker>(count);
+    Tracker* dest = hgl::array_alloc<Tracker>(count);
     const bool ok = hgl::ArrayRearrange(dest, src, count, {1, 1}, {-1});
     CHECK(!ok, "invalid index should fail");
 
     // No objects were constructed into dest, so only src are alive
     CHECK(Tracker::Alive() == 3, "alive count should reflect only source objects");
 
-    hgl::free_raw(dest);
+    hgl::array_free(dest);
 
     std::cout << "[TestInvalidIndexEarlyExit] Passed" << std::endl;
 }
@@ -292,34 +314,34 @@ void TestBoundaryConditions()
     // 单元素数组
     {
         int src[1] = {42};
-        int* dest = hgl::alloc_raw<int>(1);
+        int* dest = hgl::array_alloc<int>(1);
         bool ok = hgl::ArrayRearrange(dest, src, 1, {1}, {0});
         CHECK(ok, "Single element rearrange failed");
         CHECK(dest[0] == 42, "Single element value check failed");
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     // 两元素交换
     {
         int src[2] = {1, 2};
-        int* dest = hgl::alloc_raw<int>(2);
+        int* dest = hgl::array_alloc<int>(2);
         bool ok = hgl::ArrayRearrange(dest, src, 2, {1, 1}, {1, 0});
         CHECK(ok, "Two element swap failed");
         CHECK(dest[0] == 2 && dest[1] == 1, "Swap verification failed");
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     // 测试字段数量不匹配
     {
         int src[5] = {1, 2, 3, 4, 5};
-        int* dest = hgl::alloc_raw<int>(5);
+        int* dest = hgl::array_alloc<int>(5);
         // 故意使用错误的字段数量
         hgl::ArrayRearrangeHelper helper(5, 2);
         helper.AddField(2);
         // 第二个字段会自动包含剩余的3个元素
         bool ok = helper.Finish();
         CHECK(ok, "Auto-finish remaining elements failed");
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     std::cout << "[TestBoundaryConditions] Passed" << std::endl;
@@ -339,7 +361,7 @@ void TestStressRearrange()
         for(int i = 0; i < scale; ++i)
             src[i] = i;
 
-        int* dest = hgl::alloc_raw<int>(scale);
+        int* dest = hgl::array_alloc<int>(scale);
 
         // 生成随机字段划分
         int num_fields = 5 + (gen() % 10); // 5-14个字段
@@ -381,7 +403,7 @@ void TestStressRearrange()
         std::cout << "  [Scale " << scale << "] Random " << num_fields
                   << "-way rearrange: " << elapsed << " ms" << std::endl;
 
-        hgl::free_raw(dest);
+        hgl::array_free(dest);
     }
 
     std::cout << "[TestStressRearrange] Passed" << std::endl;
