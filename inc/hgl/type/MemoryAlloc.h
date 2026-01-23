@@ -140,29 +140,4 @@ namespace hgl
     {
         hgl_free(items);
     }
-
-    // 向后兼容的别名
-    template<TriviallyCopyable T>
-    [[deprecated("Use zero_new instead")]]
-    inline T* hgl_zero_new() {
-        return zero_new<T>();
-    }
-
-    template<TriviallyCopyable T>
-    [[deprecated("Use zero_new instead")]]
-    inline T* hgl_zero_new(const size_t count) {
-        return zero_new<T>(count);
-    }
-
-    template<TriviallyCopyable T>
-    [[deprecated("Use new_copy instead")]]
-    inline T* hgl_new_copy(const T* src, const size_t count) {
-        return new_copy(src, count);
-    }
-
-    template<TriviallyCopyable T>
-    [[deprecated("Use new_copy instead")]]
-    inline T* hgl_new_copy(const T* src) {
-        return new_copy(src);
-    }
 }//namespace hgl
