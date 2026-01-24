@@ -255,7 +255,7 @@ void Example4_Reallocation()
     std::cout << "\n⚠️  关键点：\n";
     std::cout << "   - reallocate_and_move 会自动处理移动和清理\n";
     std::cout << "   - 旧指针 (old_array) 在调用后失效，不能再使用\n";
-    std::cout << "   - 这是 ObjectArray 扩容的核心机制\n";
+    std::cout << "   - 这是 PtrArray 扩容的核心机制\n";
 }
 
 //==================================================================================================
