@@ -9,107 +9,106 @@
 namespace hgl
 {
     /**
-     * @brief Color quantization algorithms
+     * @brief 颜色量化算法
      *
-     * This module provides various color quantization methods to reduce the number of colors
-     * in an image while maintaining visual quality.
+     * 此模块提供各种颜色量化方法，用于减少图像中的颜色数量，同时保持视觉质量。
      *
-     * Implementation: See src/Color/ColorQuantize.cpp
+     * 实现：见 src/Color/ColorQuantize.cpp
      */
 
     //==================================================================================================
-    // Bit-based Quantization
+    // 基于位的量化
     //==================================================================================================
 
     /**
-     * @brief Quantize a color to a specified number of bits per channel
-     * @param color Input color [0, 1]
-     * @param bits Number of bits per channel (1-8)
-     * @return Quantized color
+     * @brief 将颜色量化到指定的每通道位数
+     * @param color 输入颜色 [0, 1]
+     * @param bits 每通道的位数 (1-8)
+     * @return 量化后的颜色
      */
     Color3f QuantizeColor3f(const Color3f &color, int bits);
 
     /**
-     * @brief Quantize a color to a specified number of bits per channel
-     * @param color Input color [0, 255]
-     * @param bits Number of bits per channel (1-8)
-     * @return Quantized color
+     * @brief 将颜色量化到指定的每通道位数
+     * @param color 输入颜色 [0, 255]
+     * @param bits 每通道的位数 (1-8)
+     * @return 量化后的颜色
      */
     Color3ub QuantizeColor3ub(const Color3ub &color, int bits);
 
     /**
-     * @brief Quantize a color to a specified number of bits per channel
-     * @param color Input color [0, 1]
-     * @param bits Number of bits per channel (1-8)
-     * @return Quantized color
+     * @brief 将颜色量化到指定的每通道位数
+     * @param color 输入颜色 [0, 1]
+     * @param bits 每通道的位数 (1-8)
+     * @return 量化后的颜色
      */
     Color4f QuantizeColor4f(const Color4f &color, int bits);
 
     /**
-     * @brief Quantize a color to a specified number of bits per channel
-     * @param color Input color [0, 255]
-     * @param bits Number of bits per channel (1-8)
-     * @return Quantized color
+     * @brief 将颜色量化到指定的每通道位数
+     * @param color 输入颜色 [0, 255]
+     * @param bits 每通道的位数 (1-8)
+     * @return 量化后的颜色
      */
     Color4ub QuantizeColor4ub(const Color4ub &color, int bits);
 
     //==================================================================================================
-    // Uniform Quantization
+    // 均匀量化
     //==================================================================================================
 
     /**
-     * @brief Uniform color quantization - reduces palette to uniform grid
-     * @param color Input color [0, 1]
-     * @param levels Number of levels per channel (2-256)
-     * @return Quantized color
+     * @brief 均匀颜色量化 - 将调色板缩减为均匀网格
+     * @param color 输入颜色 [0, 1]
+     * @param levels 每通道的级数 (2-256)
+     * @return 量化后的颜色
      */
     Color3f UniformQuantize3f(const Color3f &color, int levels);
 
     //==================================================================================================
-    // Error Calculation
+    // 误差计算
     //==================================================================================================
 
     /**
-     * @brief Calculate quantization error (squared euclidean distance)
-     * @param original Original color
-     * @param quantized Quantized color
-     * @return Quantization error value
+     * @brief 计算量化误差（平方欧几里得距离）
+     * @param original 原始颜色
+     * @param quantized 量化后的颜色
+     * @return 量化误差值
      */
     float QuantizationError3f(const Color3f &original, const Color3f &quantized);
 
     /**
-     * @brief Calculate quantization error for uint8 colors
-     * @param original Original color
-     * @param quantized Quantized color
-     * @return Quantization error value
+     * @brief 计算 uint8 颜色的量化误差
+     * @param original 原始颜色
+     * @param quantized 量化后的颜色
+     * @return 量化误差值
      */
     float QuantizationError3ub(const Color3ub &original, const Color3ub &quantized);
 
     //==================================================================================================
-    // Palette-based Quantization
+    // 基于调色板的量化
     //==================================================================================================
 
     /**
-     * @brief Find nearest color in palette
-     * @param color Target color
-     * @param palette Vector of palette colors
-     * @return Index of nearest color in palette
+     * @brief 在调色板中查找最近的颜色
+     * @param color 目标颜色
+     * @param palette 调色板颜色向量
+     * @return 调色板中最近颜色的索引
      */
     int FindNearestPaletteColor(const Color3f &color, const std::vector<Color3f> &palette);
 
     /**
-     * @brief Find nearest color in palette (uint8)
-     * @param color Target color
-     * @param palette Vector of palette colors
-     * @return Index of nearest color in palette
+     * @brief 在调色板中查找最近的颜色 (uint8)
+     * @param color 目标颜色
+     * @param palette 调色板颜色向量
+     * @return 调色板中最近颜色的索引
      */
     int FindNearestPaletteColor(const Color3ub &color, const std::vector<Color3ub> &palette);
 
     /**
-     * @brief Get color distance in palette (useful for debugging)
-     * @param color Target color
-     * @param palette_color Palette color
-     * @return Distance value (euclidean in [0,1] range)
+     * @brief 获取调色板中的颜色距离（用于调试）
+     * @param color 目标颜色
+     * @param palette_color 调色板颜色
+     * @return 距离值（[0,1] 范围内的欧几里得距离）
      */
     float GetPaletteColorDistance(const Color3f &color, const Color3f &palette_color);
 

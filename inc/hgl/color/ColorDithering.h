@@ -11,82 +11,81 @@
 namespace hgl
 {
     /**
-     * @brief Color dithering algorithms
+     * @brief 颜色抖动算法
      *
-     * This module provides various dithering techniques to improve visual quality
-     * of quantized colors by distributing quantization errors across neighboring pixels.
+     * 此模块提供各种抖动技术，通过在相邻像素间分散量化误差来改善量化颜色的视觉质量。
      *
-     * Implementation: See src/Color/ColorDithering.cpp
+     * 实现：见 src/Color/ColorDithering.cpp
      */
 
     //==================================================================================================
-    // Error Diffusion Dithering
+    // 误差扩散抖动
     //==================================================================================================
 
     /**
-     * @brief Floyd-Steinberg dithering error coefficients
+     * @brief Floyd-Steinberg 抖动误差系数
      * 
-     * Classic error diffusion dithering algorithm:
+     * 经典的误差扩散抖动算法：
      *
-     *      [current]  7/16
+     *      [当前]  7/16
      *  3/16  5/16  1/16
      */
     class FloydSteinbergDitherer
     {
     public:
         /**
-         * @brief Apply Floyd-Steinberg dithering to a color based on position
-         * @param original Original color [0, 1]
-         * @param error_x X coordinate error (pixel position)
-         * @param error_y Y coordinate error (pixel position)
-         * @param bits Quantization bits per channel
-         * @return Dithered color
+         * @brief 根据位置对颜色应用 Floyd-Steinberg 抖动
+         * @param original 原始颜色 [0, 1]
+         * @param error_x X 坐标误差（像素位置）
+         * @param error_y Y 坐标误差（像素位置）
+         * @param bits 每通道的量化位数
+         * @return 抖动后的颜色
          */
         static Color3f Dither(const Color3f &original, int error_x, int error_y, int bits);
 
         /**
-         * @brief Apply Floyd-Steinberg dithering (uint8 version)
+         * @brief 应用 Floyd-Steinberg 抖动 (uint8 版本)
          */
         static Color3ub Dither(const Color3ub &original, int error_x, int error_y, int bits);
     };
 
     //==================================================================================================
-    // Ordered Dithering (Bayer Matrix)
+    // 有序抖动（Bayer 矩阵）
     //==================================================================================================
 
     /**
-     * @brief Bayer matrix dithering - uses pre-computed threshold matrix
+     * @brief Bayer 矩阵抖动 - 使用预计算的阈值矩阵
      */
     class BayerDitherer
     {
     public:
         /**
-         * @brief Apply Bayer dithering to a color
-         * @param original Original color [0, 1]
-         * @param x Pixel X coordinate
-         * @param y Pixel Y coordinate
-         * @param levels Number of output levels per channel
-         * @return Dithered color
+         * @brief 对颜色应用 Bayer 抖动
+         * @param original 原始颜色 [0, 1]
+         * @param x 像素 X 坐标
+         * @param y 像素 Y 坐标
+         * @param levels 每通道的输出级数
+         * @return 抖动后的颜色
          */
         static Color3f Dither(const Color3f &original, int x, int y, int levels);
 
         /**
-         * @brief Apply Bayer dithering (uint8 version)
+         * @brief 应用 Bayer 抖动 (uint8 版本)
          */
         static Color3ub Dither(const Color3ub &original, int x, int y, int levels);
 
         /**
-         * @brief Get Bayer matrix threshold value
+         * @brief 获取 Bayer 矩阵阈值
          */
         static float GetThreshold(int x, int y);
     };
 
     //==================================================================================================
-    // Random Dithering
+    // 随机抖动
     //==================================================================================================
 
     /**
-     * @brief Random dithering - adds random noise before quantization
+     * @brief 随机抖动 - 在量化前添加随机噪声
      */
     class RandomDitherer
     {
@@ -96,45 +95,45 @@ namespace hgl
 
     public:
         /**
-         * @brief Constructor with optional seed
+         * @brief 构造函数，可选种子
          */
         RandomDitherer(uint32_t seed = 0);
 
         /**
-         * @brief Destructor
+         * @brief 析构函数
          */
         ~RandomDitherer();
 
         /**
-         * @brief Apply random dithering
-         * @param original Original color [0, 1]
-         * @param noise_amount Amount of noise [0, 1]
-         * @param bits Quantization bits per channel
-         * @return Dithered color
+         * @brief 应用随机抖动
+         * @param original 原始颜色 [0, 1]
+         * @param noise_amount 噪声量 [0, 1]
+         * @param bits 每通道的量化位数
+         * @return 抖动后的颜色
          */
         Color3f Dither(const Color3f &original, float noise_amount = 0.05f, int bits = 5);
 
         /**
-         * @brief Apply random dithering (uint8 version)
+         * @brief 应用随机抖动 (uint8 版本)
          */
         Color3ub Dither(const Color3ub &original, float noise_amount = 0.05f, int bits = 5);
 
         /**
-         * @brief Reseed the generator
+         * @brief 重新设置生成器种子
          */
         void SetSeed(uint32_t seed);
     };
 
     //==================================================================================================
-    // Palette-based Dithering
+    // 基于调色板的抖动
     //==================================================================================================
 
     /**
-     * @brief Dither and quantize to a specific color palette
-     * @param original Original color
-     * @param palette Color palette
-     * @param dither_pattern Optional dither value [-0.5, 0.5]
-     * @return Index of selected palette color
+     * @brief 对颜色进行抖动并量化到特定的调色板
+     * @param original 原始颜色
+     * @param palette 颜色调色板
+     * @param dither_pattern 可选的抖动值 [-0.5, 0.5]
+     * @return 选中的调色板颜色的索引
      */
     int PaletteDither(const Color3f &original, const std::vector<Color3f> &palette, 
                      float dither_pattern = 0.0f);

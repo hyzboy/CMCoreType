@@ -10,22 +10,22 @@
 namespace hgl
 {
     /**
-     * @brief Color interpolation utilities
+     * @brief 颜色插值工具
      *
-     * This module provides various interpolation methods for color types.
-     * All functions are semantically consistent with CMMath's Lerp3D.h color functions.
+     * 本模块提供多种颜色类型的插值方法。
+     * 所有函数在语义上与 CMMath 的 Lerp3D.h 颜色函数保持一致。
      */
 
     //==================================================================================================
-    // Linear Interpolation (existing in base classes, but also available as free functions)
+    // 线性插值（已存在于基类中，但也提供独立函数）
     //==================================================================================================
 
     /**
-     * @brief Linear interpolation between two Color3f values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3f 值之间的线性插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3f ColorLerp(const Color3f &a, const Color3f &b, float t)
     {
@@ -40,11 +40,11 @@ namespace hgl
     }
 
     /**
-     * @brief Linear interpolation between two Color4f values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4f 值之间的线性插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4f ColorLerp(const Color4f &a, const Color4f &b, float t)
     {
@@ -60,11 +60,11 @@ namespace hgl
     }
 
     /**
-     * @brief Linear interpolation between two Color3ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3ub 值之间的线性插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3ub ColorLerp(const Color3ub &a, const Color3ub &b, float t)
     {
@@ -79,11 +79,11 @@ namespace hgl
     }
 
     /**
-     * @brief Linear interpolation between two Color4ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4ub 值之间的线性插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4ub ColorLerp(const Color4ub &a, const Color4ub &b, float t)
     {
@@ -99,23 +99,23 @@ namespace hgl
     }
 
     //==================================================================================================
-    // Smooth (Cosine) Interpolation
+    // 平滑（余弦）插值
     //==================================================================================================
 
     /**
-     * @brief Smooth (cosine) interpolation between two Color3f values
-     * Uses cosine interpolation for smoother transitions than linear
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3f 值之间的平滑（余弦）插值
+     * 使用余弦插值实现比线性插值更平滑的过渡
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3f ColorLerpSmooth(const Color3f &a, const Color3f &b, float t)
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
 
-        // Cosine interpolation: (1 - cos(t * π)) / 2
+        // 余弦插值: (1 - cos(t * π)) / 2
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
 
         return Color3f(
@@ -126,11 +126,11 @@ namespace hgl
     }
 
     /**
-     * @brief Smooth (cosine) interpolation between two Color4f values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4f 值之间的平滑（余弦）插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4f ColorLerpSmooth(const Color4f &a, const Color4f &b, float t)
     {
@@ -148,11 +148,11 @@ namespace hgl
     }
 
     /**
-     * @brief Smooth (cosine) interpolation between two Color3ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3ub 值之间的平滑（余弦）插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3ub ColorLerpSmooth(const Color3ub &a, const Color3ub &b, float t)
     {
@@ -169,11 +169,11 @@ namespace hgl
     }
 
     /**
-     * @brief Smooth (cosine) interpolation between two Color4ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4ub 值之间的平滑（余弦）插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4ub ColorLerpSmooth(const Color4ub &a, const Color4ub &b, float t)
     {
@@ -191,23 +191,23 @@ namespace hgl
     }
 
     //==================================================================================================
-    // Cubic Interpolation
+    // 立方插值
     //==================================================================================================
 
     /**
-     * @brief Cubic interpolation between two Color3f values
-     * Uses cubic Hermite interpolation (smoothstep)
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3f 值之间的立方插值
+     * 使用立方 Hermite 插值（smoothstep）
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3f ColorLerpCubic(const Color3f &a, const Color3f &b, float t)
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
 
-        // Cubic Hermite: 3t² - 2t³
+        // 立方 Hermite: 3t² - 2t³
         float cubic_t = t * t * (3.0f - 2.0f * t);
 
         return Color3f(
@@ -218,11 +218,11 @@ namespace hgl
     }
 
     /**
-     * @brief Cubic interpolation between two Color4f values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4f 值之间的立方插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4f ColorLerpCubic(const Color4f &a, const Color4f &b, float t)
     {
@@ -240,11 +240,11 @@ namespace hgl
     }
 
     /**
-     * @brief Cubic interpolation between two Color3ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color3ub 值之间的立方插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color3ub ColorLerpCubic(const Color3ub &a, const Color3ub &b, float t)
     {
@@ -261,11 +261,11 @@ namespace hgl
     }
 
     /**
-     * @brief Cubic interpolation between two Color4ub values
-     * @param a Start color (t=0)
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color
+     * @brief 两个 Color4ub 值之间的立方插值
+     * @param a 起始颜色 (t=0)
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 插值后的颜色
      */
     inline Color4ub ColorLerpCubic(const Color4ub &a, const Color4ub &b, float t)
     {
@@ -283,23 +283,23 @@ namespace hgl
     }
 
     //==================================================================================================
-    // Bezier Curve Interpolation (Quadratic)
+    // 贝塞尔曲线插值（二次）
     //==================================================================================================
 
     /**
-     * @brief Quadratic Bezier curve interpolation for Color3f
-     * @param a Start color (t=0)
-     * @param control Control point color
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color along Bezier curve
+     * @brief Color3f 的二次贝塞尔曲线插值
+     * @param a 起始颜色 (t=0)
+     * @param control 控制点颜色
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 沿贝塞尔曲线的插值颜色
      */
     inline Color3f ColorLerpBezier(const Color3f &a, const Color3f &control, const Color3f &b, float t)
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
 
-        // Quadratic Bezier: (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
+        // 二次贝塞尔: (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
         float one_minus_t = 1.0f - t;
         float weight_a = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
@@ -313,12 +313,12 @@ namespace hgl
     }
 
     /**
-     * @brief Quadratic Bezier curve interpolation for Color4f
-     * @param a Start color (t=0)
-     * @param control Control point color
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color along Bezier curve
+     * @brief Color4f 的二次贝塞尔曲线插值
+     * @param a 起始颜色 (t=0)
+     * @param control 控制点颜色
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 沿贝塞尔曲线的插值颜色
      */
     inline Color4f ColorLerpBezier(const Color4f &a, const Color4f &control, const Color4f &b, float t)
     {
@@ -339,12 +339,12 @@ namespace hgl
     }
 
     /**
-     * @brief Quadratic Bezier curve interpolation for Color3ub
-     * @param a Start color (t=0)
-     * @param control Control point color
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color along Bezier curve
+     * @brief Color3ub 的二次贝塞尔曲线插值
+     * @param a 起始颜色 (t=0)
+     * @param control 控制点颜色
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 沿贝塞尔曲线的插值颜色
      */
     inline Color3ub ColorLerpBezier(const Color3ub &a, const Color3ub &control, const Color3ub &b, float t)
     {
@@ -364,12 +364,12 @@ namespace hgl
     }
 
     /**
-     * @brief Quadratic Bezier curve interpolation for Color4ub
-     * @param a Start color (t=0)
-     * @param control Control point color
-     * @param b End color (t=1)
-     * @param t Interpolation parameter [0, 1]
-     * @return Interpolated color along Bezier curve
+     * @brief Color4ub 的二次贝塞尔曲线插值
+     * @param a 起始颜色 (t=0)
+     * @param control 控制点颜色
+     * @param b 结束颜色 (t=1)
+     * @param t 插值参数 [0, 1]
+     * @return 沿贝塞尔曲线的插值颜色
      */
     inline Color4ub ColorLerpBezier(const Color4ub &a, const Color4ub &control, const Color4ub &b, float t)
     {

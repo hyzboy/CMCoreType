@@ -81,12 +81,22 @@ namespace hgl
         if(levels > 256) levels = 256;
 
         float threshold = BAYER_4x4[y & 3][x & 3];
-        float step = 1.0f / (levels - 1);
 
         Color3f result;
-        result.r = (std::floor(original.r / step) + (original.r % step > threshold ? 1.0f : 0.0f)) * step;
-        result.g = (std::floor(original.g / step) + (original.g % step > threshold ? 1.0f : 0.0f)) * step;
-        result.b = (std::floor(original.b / step) + (original.b % step > threshold ? 1.0f : 0.0f)) * step;
+
+        // 正确算法：将 [0,1] 映射到 [0, levels-1]，然后根据阈值舍入
+        float r_scaled = original.r * (levels - 1);
+        float g_scaled = original.g * (levels - 1);
+        float b_scaled = original.b * (levels - 1);
+
+        float r_floor = std::floor(r_scaled);
+        float g_floor = std::floor(g_scaled);
+        float b_floor = std::floor(b_scaled);
+
+        // 小数部分与阈值比较，决定向上还是向下舍入
+        result.r = ((r_scaled - r_floor) > threshold ? r_floor + 1.0f : r_floor) / (levels - 1);
+        result.g = ((g_scaled - g_floor) > threshold ? g_floor + 1.0f : g_floor) / (levels - 1);
+        result.b = ((b_scaled - b_floor) > threshold ? b_floor + 1.0f : b_floor) / (levels - 1);
 
         // Clamp to valid range
         result.r = std::max(0.0f, std::min(1.0f, result.r));
@@ -161,7 +171,7 @@ namespace hgl
     // Palette-based Dithering Implementation
     //==================================================================================================
 
-    int PaletteDither(const Color3f &original, const std::vector<Color3f> &palette, 
+    int PaletteDither(const Color3f &original, const std::vector<Color3f> &palette,
                      float dither_pattern)
     {
         Color3f dithered = original;
