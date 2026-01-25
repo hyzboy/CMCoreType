@@ -8,9 +8,9 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     LinearColor4f::LinearColor4f(const Color4f &v)
     {
-        r = sRGBToLinear(v.r);
-        g = sRGBToLinear(v.g);
-        b = sRGBToLinear(v.b);
+        r = sRGB2Linear(v.r);
+        g = sRGB2Linear(v.g);
+        b = sRGB2Linear(v.b);
         a = v.a;  // Alpha不参与色彩空间转换
     }
 
@@ -44,9 +44,9 @@ namespace hgl
     Color4f LinearColor4f::toSRGB() const
     {
         Color4f result;
-        result.r = linearToSRGB(r);
-        result.g = linearToSRGB(g);
-        result.b = linearToSRGB(b);
+        result.r = Linear2sRGB(r);
+        result.g = Linear2sRGB(g);
+        result.b = Linear2sRGB(b);
         result.a = a;  // Alpha保持不变
         return result;
     }
@@ -54,9 +54,9 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     const LinearColor4f &LinearColor4f::operator = (const Color4f &v)
     {
-        r = sRGBToLinear(v.r);
-        g = sRGBToLinear(v.g);
-        b = sRGBToLinear(v.b);
+        r = sRGB2Linear(v.r);
+        g = sRGB2Linear(v.g);
+        b = sRGB2Linear(v.b);
         a = v.a;
         return *this;
     }

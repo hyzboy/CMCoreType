@@ -3,6 +3,7 @@
 #include<cmath>
 #include<concepts>
 #include<algorithm>
+#include<cstdint>
 
 namespace hgl
 {
@@ -10,10 +11,10 @@ namespace hgl
     * sRGB ↔ Linear 颜色空间转换函数 (IEC 61966-2-1 标准)
     * 扩展支持所有 Vulkan 颜色空间 (VK_COLOR_SPACE_*)
     * C++20 版本
-    * 
+    *
     * sRGB 是一种伽马修正的颜色空间，用于显示设备
     * Linear 是线性颜色空间，用于颜色计算和 HDR 处理
-    * 
+    *
     * 支持的颜色空间:
     * - sRGB (标准 Gamma 2.4)
     * - Display P3 (Gamma 2.4, 更宽的色域)
@@ -23,7 +24,7 @@ namespace hgl
     * - HLG (Hybrid Log-Gamma)
     * - AdobeRGB (Gamma 2.2)
     * - DCI-P3 (Display P3 DCinema variant)
-    * 
+    *
     * 标准sRGB转换公式:
     * sRGB → Linear: if(c ≤ 0.04045) c/12.92 else ((c+0.055)/1.055)^2.4
     * Linear → sRGB: if(c ≤ 0.0031308) c*12.92 else 1.055*c^(1/2.4)-0.055
@@ -92,7 +93,7 @@ namespace hgl
     constexpr const double HLG_INV_A            = 1.0 / HLG_A;
 
     // ===== C++20 概念定义 =====
-    
+
     /**
     * 浮点数概念 - 用于类型安全的模板函数
     */
@@ -112,7 +113,7 @@ namespace hgl
     * @param c sRGB 颜色分量 (0.0 - 1.0)
     * @return 线性颜色分量 (0.0 - 1.0)
     */
-    constexpr inline float sRGBToLinear(float c) noexcept
+    inline float sRGB2Linear(float c) noexcept
     {
         if(c <= 0.04045f)
             return c / 12.92f;
@@ -120,17 +121,33 @@ namespace hgl
             return std::pow((c + 0.055f) / 1.055f, 2.4f);
     }
 
+    // uint8 重载：输入输出均为 0-255 范围
+    inline uint8_t sRGB2Linear(uint8_t c) noexcept
+    {
+        float cf = static_cast<float>(c) * (1.0f / 255.0f);
+        float lf = sRGB2Linear(cf);
+        return static_cast<uint8_t>(std::round(lf * 255.0f));
+    }
+
     /**
     * 将单个线性颜色分量转换为 sRGB 颜色分量
     * @param c 线性颜色分量 (0.0 - 1.0)
     * @return sRGB 颜色分量 (0.0 - 1.0)
     */
-    constexpr inline float linearToSRGB(float c) noexcept
+    inline float Linear2sRGB(float c) noexcept
     {
         if(c <= 0.0031308f)
             return c * 12.92f;
         else
             return 1.055f * std::pow(c, 1.0f / 2.4f) - 0.055f;
+    }
+
+    // uint8 重载：输入输出均为 0-255 范围
+    inline uint8_t Linear2sRGB(uint8_t c) noexcept
+    {
+        float lf = static_cast<float>(c) * (1.0f / 255.0f);
+        float sf = Linear2sRGB(lf);
+        return static_cast<uint8_t>(std::round(sf * 255.0f));
     }
 
     /**
@@ -139,7 +156,7 @@ namespace hgl
     * @return 线性颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T sRGBToLinearGeneric(T c) noexcept
+    inline T sRGBToLinearGeneric(T c) noexcept
     {
         if(c <= static_cast<T>(SRGB_LINEAR_THRESHOLD))
             return c / static_cast<T>(SRGB_LINEAR_DIVISOR);
@@ -153,7 +170,7 @@ namespace hgl
     * @return sRGB 颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T linearToSRGBGeneric(T c) noexcept
+    inline T linearToSRGBGeneric(T c) noexcept
     {
         if(c <= static_cast<T>(LINEAR_SRGB_THRESHOLD))
             return c * static_cast<T>(SRGB_LINEAR_DIVISOR);
@@ -169,7 +186,7 @@ namespace hgl
     * @return 线性颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T adobeRGBToLinear(T c) noexcept
+    inline T adobeRGBToLinear(T c) noexcept
     {
         return std::pow(c, static_cast<T>(ADOBERGB_GAMMA));
     }
@@ -180,7 +197,7 @@ namespace hgl
     * @return Adobe RGB 颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T linearToAdobeRGB(T c) noexcept
+    inline T linearToAdobeRGB(T c) noexcept
     {
         return std::pow(c, static_cast<T>(ADOBERGB_INV_GAMMA));
     }
@@ -189,13 +206,13 @@ namespace hgl
     // BT.709 与 sRGB 使用相同的转移函数
 
     template<FloatingPoint T>
-    constexpr inline T bt709ToLinear(T c) noexcept
+    inline T bt709ToLinear(T c) noexcept
     {
         return sRGBToLinearGeneric(c);
     }
 
     template<FloatingPoint T>
-    constexpr inline T linearToBT709(T c) noexcept
+    inline T linearToBT709(T c) noexcept
     {
         return linearToSRGBGeneric(c);
     }
@@ -204,13 +221,13 @@ namespace hgl
     // BT.2020 在线性空间中与 BT.709 相同，主要区别在于色域
 
     template<FloatingPoint T>
-    constexpr inline T bt2020ToLinear(T c) noexcept
+    inline T bt2020ToLinear(T c) noexcept
     {
         return sRGBToLinearGeneric(c);
     }
 
     template<FloatingPoint T>
-    constexpr inline T linearToBT2020(T c) noexcept
+    inline T linearToBT2020(T c) noexcept
     {
         return linearToSRGBGeneric(c);
     }
@@ -224,18 +241,18 @@ namespace hgl
     * @return 线性亮度值 (0.0 - 1.0 或更高用于 HDR)
     */
     template<FloatingPoint T>
-    constexpr inline T pqToLinear(T x) noexcept
+    inline T pqToLinear(T x) noexcept
     {
         // Inverse PQ function
         T xpow = std::pow(x, 1.0 / static_cast<T>(PQ_M2));
         T numerator = std::max(xpow - static_cast<T>(PQ_C1), static_cast<T>(0.0));
         T denominator = static_cast<T>(PQ_C2) - static_cast<T>(PQ_C3) * xpow;
-        
+
         if (denominator <= static_cast<T>(0.0))
             return static_cast<T>(0.0);
-            
+
         T lms = std::pow(numerator / denominator, 1.0 / static_cast<T>(PQ_M1));
-        
+
         // LMS to linear RGB (approximate, assuming D65 white point)
         return lms;
     }
@@ -247,16 +264,16 @@ namespace hgl
     * @return PQ 编码值 (0.0 - 1.0)
     */
     template<FloatingPoint T>
-    constexpr inline T linearToPQ(T l) noexcept
+    inline T linearToPQ(T l) noexcept
     {
         // Linear to LMS (approximate)
         T lms = l;
-        
+
         T lmspow = std::pow(lms, static_cast<T>(PQ_M1));
         T numerator = static_cast<T>(PQ_C1) + static_cast<T>(PQ_C2) * lmspow;
         T denominator = static_cast<T>(1.0) + static_cast<T>(PQ_C3) * lmspow;
         T ratio = numerator / denominator;
-        
+
         return std::pow(ratio, static_cast<T>(PQ_M2));
     }
 
@@ -268,11 +285,11 @@ namespace hgl
     * @return 线性值 (0.0 - 1.0)
     */
     template<FloatingPoint T>
-    constexpr inline T hlgToLinear(T x) noexcept
+    inline T hlgToLinear(T x) noexcept
     {
         if (x == static_cast<T>(0.0))
             return static_cast<T>(0.0);
-        
+
         if (x < static_cast<T>(0.5))
         {
             return (x / static_cast<T>(HLG_B)) * (x / static_cast<T>(HLG_B));
@@ -289,11 +306,11 @@ namespace hgl
     * @return HLG 编码值 (0.0 - 1.0)
     */
     template<FloatingPoint T>
-    constexpr inline T linearToHLG(T l) noexcept
+    inline T linearToHLG(T l) noexcept
     {
         if (l == static_cast<T>(0.0))
             return static_cast<T>(0.0);
-        
+
         if (l < static_cast<T>(1.0 / 12.0))
         {
             return std::sqrt(3.0 * l);
@@ -313,14 +330,14 @@ namespace hgl
     * @return 线性颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T toLinear(T c, TransferFunction tf) noexcept
+    inline T toLinear(T c, TransferFunction tf) noexcept
     {
         switch (tf)
         {
             case TransferFunction::Linear:
             case TransferFunction::EXTENDED_SRGB_LINEAR:
                 return c;
-            
+
             case TransferFunction::SRGB:
             case TransferFunction::LinearSRGB:
             case TransferFunction::DisplayP3:
@@ -328,16 +345,16 @@ namespace hgl
             case TransferFunction::BT2020:
             case TransferFunction::DCI_P3:
                 return sRGBToLinearGeneric(c);
-            
+
             case TransferFunction::AdobeRGB:
                 return adobeRGBToLinear(c);
-            
+
             case TransferFunction::PQ:
                 return pqToLinear(c);
-            
+
             case TransferFunction::HLG:
                 return hlgToLinear(c);
-            
+
             case TransferFunction::DCIP3XYZ:
             case TransferFunction::DolbyVision:
             default:
@@ -352,14 +369,14 @@ namespace hgl
     * @return 转移函数编码的颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline T fromLinear(T c, TransferFunction tf) noexcept
+    inline T fromLinear(T c, TransferFunction tf) noexcept
     {
         switch (tf)
         {
             case TransferFunction::Linear:
             case TransferFunction::EXTENDED_SRGB_LINEAR:
                 return c;
-            
+
             case TransferFunction::SRGB:
             case TransferFunction::LinearSRGB:
             case TransferFunction::DisplayP3:
@@ -367,16 +384,16 @@ namespace hgl
             case TransferFunction::BT2020:
             case TransferFunction::DCI_P3:
                 return linearToSRGBGeneric(c);
-            
+
             case TransferFunction::AdobeRGB:
                 return linearToAdobeRGB(c);
-            
+
             case TransferFunction::PQ:
                 return linearToPQ(c);
-            
+
             case TransferFunction::HLG:
                 return linearToHLG(c);
-            
+
             case TransferFunction::DCIP3XYZ:
             case TransferFunction::DolbyVision:
             default:
@@ -391,7 +408,7 @@ namespace hgl
     * 注意: VkColorSpaceKHR 是一个整数类型的句柄，这里使用 int 进行参数化
     * @param colorspace Vulkan 颜色空间 (VkColorSpaceKHR 值)
     * @return 转移函数类型
-    * 
+    *
     * Vulkan 颜色空间值 (from vulkan_core.h):
     * VK_COLOR_SPACE_SRGB_NONLINEAR_KHR = 0
     * VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT = 1000104001
@@ -456,7 +473,7 @@ namespace hgl
     * @param lr, lg, lb 输出线性颜色分量
     */
     template<ColorComponent T>
-    constexpr inline void sRGBToLinear(T sr, T sg, T sb, T &lr, T &lg, T &lb) noexcept
+    inline void sRGB2Linear(T sr, T sg, T sb, T &lr, T &lg, T &lb) noexcept
     {
         if constexpr (std::floating_point<T>) {
             lr = sRGBToLinearGeneric(sr);
@@ -467,9 +484,9 @@ namespace hgl
             float fsr = static_cast<float>(sr) / 255.0f;
             float fsg = static_cast<float>(sg) / 255.0f;
             float fsb = static_cast<float>(sb) / 255.0f;
-            lr = static_cast<T>(sRGBToLinear(fsr) * 255.0f);
-            lg = static_cast<T>(sRGBToLinear(fsg) * 255.0f);
-            lb = static_cast<T>(sRGBToLinear(fsb) * 255.0f);
+            lr = static_cast<T>(sRGB2Linear(fsr) * 255.0f);
+            lg = static_cast<T>(sRGB2Linear(fsg) * 255.0f);
+            lb = static_cast<T>(sRGB2Linear(fsb) * 255.0f);
         }
     }
 
@@ -479,7 +496,7 @@ namespace hgl
     * @param sr, sg, sb 输出 sRGB 颜色分量 (0.0 - 1.0)
     */
     template<ColorComponent T>
-    constexpr inline void linearToSRGB(T lr, T lg, T lb, T &sr, T &sg, T &sb) noexcept
+    inline void Linear2sRGB(T lr, T lg, T lb, T &sr, T &sg, T &sb) noexcept
     {
         if constexpr (std::floating_point<T>) {
             sr = linearToSRGBGeneric(lr);
@@ -490,9 +507,9 @@ namespace hgl
             float flr = static_cast<float>(lr) / 255.0f;
             float flg = static_cast<float>(lg) / 255.0f;
             float flb = static_cast<float>(lb) / 255.0f;
-            sr = static_cast<T>(linearToSRGB(flr) * 255.0f);
-            sg = static_cast<T>(linearToSRGB(flg) * 255.0f);
-            sb = static_cast<T>(linearToSRGB(flb) * 255.0f);
+            sr = static_cast<T>(Linear2sRGB(flr) * 255.0f);
+            sg = static_cast<T>(Linear2sRGB(flg) * 255.0f);
+            sb = static_cast<T>(Linear2sRGB(flb) * 255.0f);
         }
     }
 
@@ -505,7 +522,7 @@ namespace hgl
     * @param lr, lg, lb 输出线性颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline void colorspaceToLinear(T r, T g, T b, int colorspace, T &lr, T &lg, T &lb) noexcept
+    inline void colorspaceToLinear(T r, T g, T b, int colorspace, T &lr, T &lg, T &lb) noexcept
     {
         TransferFunction tf = getTransferFunctionFromVulkanColorSpace(colorspace);
         lr = toLinear(r, tf);
@@ -520,7 +537,7 @@ namespace hgl
     * @param r, g, b 输出在指定颜色空间中的颜色分量
     */
     template<FloatingPoint T>
-    constexpr inline void linearToColorspace(T lr, T lg, T lb, int colorspace, T &r, T &g, T &b) noexcept
+    inline void linearToColorspace(T lr, T lg, T lb, int colorspace, T &r, T &g, T &b) noexcept
     {
         TransferFunction tf = getTransferFunctionFromVulkanColorSpace(colorspace);
         r = fromLinear(lr, tf);
@@ -535,7 +552,7 @@ namespace hgl
     * 速度更快但精度较低
     */
     template<FloatingPoint T>
-    constexpr inline T sRGBToLinearFast(T c) noexcept
+    inline T sRGBToLinearFast(T c) noexcept
     {
         return std::pow(c, static_cast<T>(GAMMA));
     }
@@ -545,7 +562,7 @@ namespace hgl
     * 速度更快但精度较低
     */
     template<FloatingPoint T>
-    constexpr inline T linearToSRGBFast(T c) noexcept
+    inline T linearToSRGBFast(T c) noexcept
     {
         return std::pow(c, static_cast<T>(INV_GAMMA));
     }
@@ -555,13 +572,13 @@ namespace hgl
     * 仅用于实时性要求极高的场景
     */
     template<FloatingPoint T>
-    constexpr inline T sRGBToLinearFastest(T c) noexcept
+    inline T sRGBToLinearFastest(T c) noexcept
     {
         return c * c;
     }
 
     template<FloatingPoint T>
-    constexpr inline T linearToSRGBFastest(T c) noexcept
+    inline T linearToSRGBFastest(T c) noexcept
     {
         return std::sqrt(c);
     }

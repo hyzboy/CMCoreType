@@ -8,9 +8,9 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     LinearColor3f::LinearColor3f(const Color3f &v)
     {
-        r = sRGBToLinear(v.r);
-        g = sRGBToLinear(v.g);
-        b = sRGBToLinear(v.b);
+        r = sRGB2Linear(v.r);
+        g = sRGB2Linear(v.g);
+        b = sRGB2Linear(v.b);
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -41,18 +41,18 @@ namespace hgl
     Color3f LinearColor3f::toSRGB() const
     {
         Color3f result;
-        result.r = linearToSRGB(r);
-        result.g = linearToSRGB(g);
-        result.b = linearToSRGB(b);
+        result.r = Linear2sRGB(r);
+        result.g = Linear2sRGB(g);
+        result.b = Linear2sRGB(b);
         return result;
     }
 
     //--------------------------------------------------------------------------------------------------
     const LinearColor3f &LinearColor3f::operator = (const Color3f &v)
     {
-        r = sRGBToLinear(v.r);
-        g = sRGBToLinear(v.g);
-        b = sRGBToLinear(v.b);
+        r = sRGB2Linear(v.r);
+        g = sRGB2Linear(v.g);
+        b = sRGB2Linear(v.b);
         return *this;
     }
 
