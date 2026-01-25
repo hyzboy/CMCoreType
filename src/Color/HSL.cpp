@@ -13,23 +13,23 @@ namespace hgl
         float r = rgb.r;
         float g = rgb.g;
         float b = rgb.b;
-        
+
         float max_val = (r > g) ? (r > b ? r : b) : (g > b ? g : b);
         float min_val = (r < g) ? (r < b ? r : b) : (g < b ? g : b);
         float delta = max_val - min_val;
-        
+
         // Luminosity (Lightness)
         float l = (max_val + min_val) / 2.0f;
-        
+
         // Hue and Saturation
         float h = 0.0f;
         float s = 0.0f;
-        
+
         if (delta != 0.0f)
         {
             // Saturation
             s = l < 0.5f ? delta / (max_val + min_val) : delta / (2.0f - max_val - min_val);
-            
+
             // Hue
             if (max_val == r)
             {
@@ -43,12 +43,12 @@ namespace hgl
             {
                 h = (r - g) / delta + 4.0f;
             }
-            
+
             h = h * 60.0f;
             if (h < 0.0f)
                 h += 360.0f;
         }
-        
+
         return Color3f(h, s, l);
     }
 
@@ -62,16 +62,16 @@ namespace hgl
         float h = fmod(hsl.r, 360.0f);
         float s = hsl.g;
         float l = hsl.b;
-        
+
         if (h < 0.0f)
             h += 360.0f;
-        
+
         float c = (1.0f - fabs(2.0f * l - 1.0f)) * s;
         float h_prime = h / 60.0f;
         float x = c * (1.0f - fabs(fmod(h_prime, 2.0f) - 1.0f));
-        
+
         float r = 0.0f, g = 0.0f, b = 0.0f;
-        
+
         if (h_prime >= 0.0f && h_prime < 1.0f)
         {
             r = c; g = x; b = 0.0f;
@@ -96,7 +96,7 @@ namespace hgl
         {
             r = c; g = 0.0f; b = x;
         }
-        
+
         float m = l - c / 2.0f;
         return Color3f(r + m, g + m, b + m);
     }
