@@ -22,7 +22,7 @@ namespace hgl
         SoftLight,
         Difference,
         Exclusion,
-        
+
         // P0 - High Priority (commonly used, significant visual differences)
         LinearBurn,         // dst + src - 1
         LinearDodge,        // dst + src (same as Add)
@@ -32,13 +32,13 @@ namespace hgl
         HardMix,            // Posterize to 0 or 1
         DarkerColor,        // Select color with lower luminance
         LighterColor,       // Select color with higher luminance
-        
+
         // P1 - Medium Priority (HSL-based, need RGB↔HSL conversion)
         Hue,                // Use source hue with destination saturation and luminosity
         Saturation,         // Use source saturation with destination hue and luminosity
         Color,              // Use source hue and saturation with destination luminosity
         Luminosity,         // Use source luminosity with destination hue and saturation
-        
+
         // P2 - Low Priority (special/uncommon)
         Divide,             // dst / src
     };
@@ -62,7 +62,7 @@ namespace hgl
      * @param dst The destination color (background)
      * @param alpha The alpha value of source color (0.0 to 1.0)
      * @return Blended color
-     * 
+     *
      * Color blending modes:
      * - None: Returns destination color unchanged
      * - Alpha: Standard alpha blending (src over dst)

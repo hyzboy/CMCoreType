@@ -44,7 +44,7 @@ namespace hgl
             source+=3;
         }
     }
-    
+
     constexpr uint32 RGB16FtoB10GR11UF(const half_float r, const half_float g, const half_float b)
     {
         return ((b&0x7FE0)<<17)
@@ -64,7 +64,7 @@ namespace hgl
             src+=3;
         }
     }
-    
+
     constexpr uint16 RGBA8toBGRA4(const uint8 r, const uint8 g, const uint8 b, const uint8 a)
     {
         return ((b<<8)&0xF000)
@@ -116,7 +116,7 @@ namespace hgl
               |((g<<2)&0x3E0)
               | (b>>3);
     }
-   
+
     inline void RGBA8toA1RGB5(uint16 *target,uint8 *src,uint size)
     {
         for(uint i=0;i<size;i++)
@@ -164,7 +164,7 @@ namespace hgl
 
                 *target=pattle[(*source)&0xF];
                 ++target;
-                
+
                 ++source;
             }
         }
@@ -177,7 +177,7 @@ namespace hgl
             for(uint x=0;x<width;x++)
             {
                 *target=pattle[*source];
-                   
+
                 ++target;
                 ++source;
             }

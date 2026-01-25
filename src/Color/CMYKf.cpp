@@ -8,19 +8,19 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     void CMYKf::clamp()
     {
-        if(c<0)c=0; if(c>1)c=1;
-        if(m<0)m=0; if(m>1)m=1;
+        if(x<0)x=0; if(x>1)x=1;
         if(y<0)y=0; if(y>1)y=1;
-        if(k<0)k=0; if(k>1)k=1;
+        if(z<0)z=0; if(z>1)z=1;
+        if(w<0)w=0; if(w>1)w=1;
     }
 
     //--------------------------------------------------------------------------------------------------
     CMYKf::CMYKf(const CMYKub &v)
     {
-        c = float(v.c) / 255.0f;
-        m = float(v.m) / 255.0f;
+        x = float(v.x) / 255.0f;
         y = float(v.y) / 255.0f;
-        k = float(v.k) / 255.0f;
+        z = float(v.z) / 255.0f;
+        w = float(v.w) / 255.0f;
         clamp();
     }
 
@@ -41,19 +41,19 @@ namespace hgl
     void CMYKf::fromRGB(const Color3f &rgb)
     {
         float max_rgb = std::max({rgb.r, rgb.g, rgb.b});
-        k = 1.0f - max_rgb;
+        w = 1.0f - max_rgb;
 
-        if(k >= 1.0f)
+        if(w >= 1.0f)
         {
-            c = m = y = 0.0f;
-            k = 1.0f;
+            x = y = z = 0.0f;
+            w = 1.0f;
         }
         else
         {
-            float inv_one_minus_k = 1.0f / (1.0f - k);
-            c = (1.0f - rgb.r - k) * inv_one_minus_k;
-            m = (1.0f - rgb.g - k) * inv_one_minus_k;
-            y = (1.0f - rgb.b - k) * inv_one_minus_k;
+            float inv_one_minus_k = 1.0f / (1.0f - w);
+            x = (1.0f - rgb.r - w) * inv_one_minus_k;
+            y = (1.0f - rgb.g - w) * inv_one_minus_k;
+            z = (1.0f - rgb.b - w) * inv_one_minus_k;
         }
 
         clamp();
@@ -68,12 +68,12 @@ namespace hgl
     */
     Color3f CMYKf::toRGB() const
     {
-        float inv_k = 1.0f - k;
+        float inv_k = 1.0f - w;
 
         Color3f result;
-        result.r = (1.0f - c) * inv_k;
-        result.g = (1.0f - m) * inv_k;
-        result.b = (1.0f - y) * inv_k;
+        result.r = (1.0f - x) * inv_k;
+        result.g = (1.0f - y) * inv_k;
+        result.b = (1.0f - z) * inv_k;
 
         return result;
     }
@@ -81,16 +81,16 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     CMYKub CMYKf::toCMYKub() const
     {
-        return CMYKub(uint8(c * 255.0f), uint8(m * 255.0f), uint8(y * 255.0f), uint8(k * 255.0f));
+        return CMYKub(uint8(x * 255.0f), uint8(y * 255.0f), uint8(z * 255.0f), uint8(w * 255.0f));
     }
 
     //--------------------------------------------------------------------------------------------------
     const CMYKf &CMYKf::operator=(const CMYKub &v)
     {
-        c = float(v.c) / 255.0f;
-        m = float(v.m) / 255.0f;
+        x = float(v.x) / 255.0f;
         y = float(v.y) / 255.0f;
-        k = float(v.k) / 255.0f;
+        z = float(v.z) / 255.0f;
+        w = float(v.w) / 255.0f;
         clamp();
         return *this;
     }
@@ -98,10 +98,10 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     bool CMYKf::operator==(const CMYKf &v) const
     {
-        if(!math::IsNearlyEqual(c, v.c))return(false);
-        if(!math::IsNearlyEqual(m, v.m))return(false);
+        if(!math::IsNearlyEqual(x, v.x))return(false);
         if(!math::IsNearlyEqual(y, v.y))return(false);
-        if(!math::IsNearlyEqual(k, v.k))return(false);
+        if(!math::IsNearlyEqual(z, v.z))return(false);
+        if(!math::IsNearlyEqual(w, v.w))return(false);
 
         return(true);
     }
@@ -109,10 +109,10 @@ namespace hgl
     //--------------------------------------------------------------------------------------------------
     bool CMYKf::operator!=(const CMYKf &v) const
     {
-        if(!math::IsNearlyEqual(c, v.c))return(true);
-        if(!math::IsNearlyEqual(m, v.m))return(true);
+        if(!math::IsNearlyEqual(x, v.x))return(true);
         if(!math::IsNearlyEqual(y, v.y))return(true);
-        if(!math::IsNearlyEqual(k, v.k))return(true);
+        if(!math::IsNearlyEqual(z, v.z))return(true);
+        if(!math::IsNearlyEqual(w, v.w))return(true);
 
         return(false);
     }

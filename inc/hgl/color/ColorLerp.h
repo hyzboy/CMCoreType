@@ -11,7 +11,7 @@ namespace hgl
 {
     /**
      * @brief Color interpolation utilities
-     * 
+     *
      * This module provides various interpolation methods for color types.
      * All functions are semantically consistent with CMMath's Lerp3D.h color functions.
      */
@@ -31,7 +31,7 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         return Color3f(
             a.r + (b.r - a.r) * t,
             a.g + (b.g - a.g) * t,
@@ -50,7 +50,7 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         return Color4f(
             a.r + (b.r - a.r) * t,
             a.g + (b.g - a.g) * t,
@@ -70,7 +70,7 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         return Color3ub(
             uint8(a.r + (b.r - a.r) * t),
             uint8(a.g + (b.g - a.g) * t),
@@ -89,7 +89,7 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         return Color4ub(
             uint8(a.r + (b.r - a.r) * t),
             uint8(a.g + (b.g - a.g) * t),
@@ -114,10 +114,10 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         // Cosine interpolation: (1 - cos(t * π)) / 2
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         return Color3f(
             a.r + (b.r - a.r) * smooth_t,
             a.g + (b.g - a.g) * smooth_t,
@@ -136,9 +136,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         return Color4f(
             a.r + (b.r - a.r) * smooth_t,
             a.g + (b.g - a.g) * smooth_t,
@@ -158,9 +158,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         return Color3ub(
             uint8(a.r + (b.r - a.r) * smooth_t),
             uint8(a.g + (b.g - a.g) * smooth_t),
@@ -179,9 +179,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         return Color4ub(
             uint8(a.r + (b.r - a.r) * smooth_t),
             uint8(a.g + (b.g - a.g) * smooth_t),
@@ -206,10 +206,10 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         // Cubic Hermite: 3t² - 2t³
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         return Color3f(
             a.r + (b.r - a.r) * cubic_t,
             a.g + (b.g - a.g) * cubic_t,
@@ -228,9 +228,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         return Color4f(
             a.r + (b.r - a.r) * cubic_t,
             a.g + (b.g - a.g) * cubic_t,
@@ -250,9 +250,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         return Color3ub(
             uint8(a.r + (b.r - a.r) * cubic_t),
             uint8(a.g + (b.g - a.g) * cubic_t),
@@ -271,9 +271,9 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         return Color4ub(
             uint8(a.r + (b.r - a.r) * cubic_t),
             uint8(a.g + (b.g - a.g) * cubic_t),
@@ -298,13 +298,13 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         // Quadratic Bezier: (1-t)²·P0 + 2(1-t)t·P1 + t²·P2
         float one_minus_t = 1.0f - t;
         float weight_a = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_b = t * t;
-        
+
         return Color3f(
             a.r * weight_a + control.r * weight_control + b.r * weight_b,
             a.g * weight_a + control.g * weight_control + b.g * weight_b,
@@ -324,12 +324,12 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float one_minus_t = 1.0f - t;
         float weight_a = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_b = t * t;
-        
+
         return Color4f(
             a.r * weight_a + control.r * weight_control + b.r * weight_b,
             a.g * weight_a + control.g * weight_control + b.g * weight_b,
@@ -350,12 +350,12 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float one_minus_t = 1.0f - t;
         float weight_a = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_b = t * t;
-        
+
         return Color3ub(
             uint8(float(a.r) * weight_a + float(control.r) * weight_control + float(b.r) * weight_b),
             uint8(float(a.g) * weight_a + float(control.g) * weight_control + float(b.g) * weight_b),
@@ -375,12 +375,12 @@ namespace hgl
     {
         if(t <= 0) return a;
         if(t >= 1) return b;
-        
+
         float one_minus_t = 1.0f - t;
         float weight_a = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_b = t * t;
-        
+
         return Color4ub(
             uint8(float(a.r) * weight_a + float(control.r) * weight_control + float(b.r) * weight_b),
             uint8(float(a.g) * weight_a + float(control.g) * weight_control + float(b.g) * weight_b),
