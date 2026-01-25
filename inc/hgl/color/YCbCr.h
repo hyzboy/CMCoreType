@@ -47,7 +47,7 @@ namespace hgl
         cb=uint8(Clamp(YCBCR_OFFSET-YCBCR_CB_R*r-YCBCR_CB_G*g+YCBCR_CB_B*b));
         cr=uint8(Clamp(YCBCR_OFFSET+YCBCR_CR_R*r-YCBCR_CR_G*g-YCBCR_CR_B*b));
     }
-    
+
     inline void YCbCr2RGB(uint8 &r,uint8 &g,uint8 &b,const uint8 &y,const uint8 &cb,const uint8 &cr)
     {
         r=uint8(Clamp(y+YCBCR2RGB_CR*(cr-YCBCR_OFFSET)));
@@ -60,13 +60,13 @@ namespace hgl
     {
         return YCBCR_OFFSET-YCBCR_CB_R*r-YCBCR_CB_G*g+YCBCR_CB_B*b;
     }
-    
+
     template<>
     constexpr uint8 RGB2Cb(const uint8 &r, const uint8 &g, const uint8 &b)
     {
         return uint8(Clamp(YCBCR_OFFSET-YCBCR_CB_R*r-YCBCR_CB_G*g+YCBCR_CB_B*b));
     }
-    
+
     template<typename T>
     constexpr T RGB2Cr(const T &r, const T &g, const T &b)
     {
