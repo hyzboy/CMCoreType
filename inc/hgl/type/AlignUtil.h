@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<bit>
@@ -13,7 +13,7 @@ namespace hgl
     //==================================================================================================
     // 对齐计算 / Alignment Calculation (C++20)
     //==================================================================================================
-    
+
     template<typename T>
     concept UnsignedIntegral = std::unsigned_integral<T>;
 
@@ -22,7 +22,7 @@ namespace hgl
      */
     template<UnsignedIntegral T>
     constexpr T align_to(const T value, const T alignment) noexcept
-    {    
+    {
         return ((value + alignment - 1) / alignment) * alignment;
     }
 

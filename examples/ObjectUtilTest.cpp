@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ObjectUtil 使用范例
  *
  * 本文件展示 ObjectUtil.h 中所有函数的正确用法。

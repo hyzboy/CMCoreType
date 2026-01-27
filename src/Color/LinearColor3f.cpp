@@ -1,4 +1,4 @@
-#include<hgl/color/LinearColor3f.h>
+﻿#include<hgl/color/LinearColor3f.h>
 #include<hgl/color/Color3f.h>
 #include<hgl/color/sRGBConvert.h>
 #include<hgl/math/FloatPrecision.h>

@@ -1,4 +1,4 @@
-#include <hgl/type/ArrayRearrangeHelper.h>
+﻿#include <hgl/type/ArrayRearrangeHelper.h>
 #include <hgl/type/MemoryAlloc.h>
 #include <hgl/type/ObjectUtil.h>
 #include <array>
@@ -40,14 +40,14 @@ struct Tracker
     bool moved_from; // 标记是否已被移动
 
     explicit Tracker(int v = 0) : value(v), moved_from(false) { ++constructed; }
-    
+
     // 拷贝构造函数
     Tracker(const Tracker& other) : value(other.value), moved_from(false)
     {
         ++constructed;
         ++copied;
     }
-    
+
     // 移动构造函数
     Tracker(Tracker&& other) noexcept : value(other.value), moved_from(false)
     {
@@ -55,7 +55,7 @@ struct Tracker
         ++constructed;
         ++moved;
     }
-    
+
     // 拷贝赋值运算符
     Tracker& operator=(const Tracker& other)
     {
@@ -64,7 +64,7 @@ struct Tracker
         ++copied;
         return *this;
     }
-    
+
     // 移动赋值运算符
     Tracker& operator=(Tracker&& other) noexcept
     {
@@ -74,7 +74,7 @@ struct Tracker
         ++moved;
         return *this;
     }
-    
+
     ~Tracker() { ++destroyed; }
 
     static void Reset() { constructed = destroyed = moved = copied = 0; }

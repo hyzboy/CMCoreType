@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 
@@ -7,7 +7,7 @@ namespace hgl
     //==================================================================================================
     // 枚举类工具 / Enum Class Utilities
     //==================================================================================================
-    
+
     #define ENUM_CLASS_RANGE(begin,end)     BEGIN_RANGE=begin,END_RANGE=end,RANGE_SIZE=(END_RANGE-BEGIN_RANGE)+1
 
     template<typename T> constexpr const int ToInt(const T &ec){return (int)ec;}

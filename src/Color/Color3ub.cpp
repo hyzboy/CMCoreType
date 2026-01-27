@@ -45,7 +45,7 @@ namespace hgl
             b=nb;
             return;
         }
-        
+
         r = uint8(r + (nr-r)*t);
         g = uint8(g + (ng-g)*t);
         b = uint8(b + (nb-b)*t);
@@ -70,7 +70,7 @@ namespace hgl
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         r = uint8(r + (c.r-r)*smooth_t);
         g = uint8(g + (c.g-g)*smooth_t);
         b = uint8(b + (c.b-b)*smooth_t);
@@ -94,7 +94,7 @@ namespace hgl
 
         // Cubic Hermite: 3t² - 2t³
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         r = uint8(r + (c.r-r)*cubic_t);
         g = uint8(g + (c.g-g)*cubic_t);
         b = uint8(b + (c.b-b)*cubic_t);
@@ -122,7 +122,7 @@ namespace hgl
         float weight_start = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_end = t * t;
-        
+
         // Use float intermediate calculations to avoid overflow
         r = uint8(float(r) * weight_start + float(control.r) * weight_control + float(end.r) * weight_end);
         g = uint8(float(g) * weight_start + float(control.g) * weight_control + float(end.g) * weight_end);

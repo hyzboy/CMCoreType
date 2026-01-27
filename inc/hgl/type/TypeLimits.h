@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/type/Constants.h>
 #include<limits>
@@ -9,7 +9,7 @@ namespace hgl
     //==================================================================================================
     // 类型极值模板函数 / Type Limit Template Functions (C++20)
     //==================================================================================================
-    
+
     template<typename T>
     concept Numeric = std::is_arithmetic_v<T>;
 

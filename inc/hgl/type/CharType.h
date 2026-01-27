@@ -143,12 +143,12 @@ namespace hgl
     {
         static_assert(std::is_integral<typename std::remove_cv<T>::type>::value, "is_float_char requires integral/character type");
         return hgl::is_digit(ch)
-        || ch == '-' 
-        || ch == '+' 
-        || ch == '.' 
-        || ch == 'E' 
-        || ch == 'e' 
-        || ch == 'f' 
+        || ch == '-'
+        || ch == '+'
+        || ch == '.'
+        || ch == 'E'
+        || ch == 'e'
+        || ch == 'f'
         || ch == 'F';
     }
 
@@ -168,7 +168,7 @@ namespace hgl
     {
         static_assert(std::is_integral<typename std::remove_cv<T>::type>::value, "is_integer_char requires integral/character type");
         return hgl::is_digit(ch)
-        || ch == '-' 
+        || ch == '-'
         || ch == '+';
     }
 

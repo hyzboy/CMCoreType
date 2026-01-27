@@ -556,8 +556,8 @@ namespace hgl
         return htos(str, size, reinterpret_cast<std::uintptr_t>(ptr), upper);
     }
 
-    template<typename CharT,typename UIntT> inline CharT *htos_upper(CharT *str,int size,UIntT value){return hgl::htos<CharT,UIntT>(str,size,value,true);} 
-    template<typename CharT,typename UIntT> inline CharT *htos_lower(CharT *str,int size,UIntT value){return hgl::htos<CharT,UIntT>(str,size,value,false);} 
+    template<typename CharT,typename UIntT> inline CharT *htos_upper(CharT *str,int size,UIntT value){return hgl::htos<CharT,UIntT>(str,size,value,true);}
+    template<typename CharT,typename UIntT> inline CharT *htos_lower(CharT *str,int size,UIntT value){return hgl::htos<CharT,UIntT>(str,size,value,false);}
 
     /**
      * @brief CN: 将浮点数转换为字符串，保留 fsize 小数位。

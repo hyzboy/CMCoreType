@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<cstring>
@@ -207,11 +207,11 @@ namespace hgl
     /**
      * 内存比较（单个对象，返回 std::strong_ordering）
      * 注意：此函数执行字节级比较，对于包含填充字节或指针的类型可能产生不确定的结果
-     * 
+     *
      * @param a 第一个对象的引用
      * @param b 第二个对象的引用
      * @return std::strong_ordering 比较结果
-     * 
+     *
      * 用法示例：
      * struct MyPOD { int x; float y; };
      * MyPOD a{1, 2.0f}, b{1, 3.0f};
@@ -222,7 +222,7 @@ namespace hgl
     {
         //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
         int result = std::memcmp(&a, &b, sizeof(T));
-        
+
         if(result < 0)
             return std::strong_ordering::less;
         else if(result > 0)
@@ -234,12 +234,12 @@ namespace hgl
     /**
      * 内存比较（数组，返回 std::strong_ordering）
      * 注意：此函数执行字节级比较，对于包含填充字节或指针的类型可能产生不确定的结果
-     * 
+     *
      * @param a 第一个数组的指针
      * @param b 第二个数组的指针
      * @param count 要比较的元素数量
      * @return std::strong_ordering 比较结果
-     * 
+     *
      * 用法示例：
      * int arr1[] = {1, 2, 3};
      * int arr2[] = {1, 2, 4};
@@ -251,18 +251,18 @@ namespace hgl
         //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
         if(!a && !b)
             return std::strong_ordering::equal;
-        
+
         if(!a)
             return std::strong_ordering::less;
-        
+
         if(!b)
             return std::strong_ordering::greater;
-        
+
         if(count == 0)
             return std::strong_ordering::equal;
-        
+
         int result = std::memcmp(a, b, count * sizeof(T));
-        
+
         if(result < 0)
             return std::strong_ordering::less;
         else if(result > 0)

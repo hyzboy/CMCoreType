@@ -1,4 +1,4 @@
-#include<hgl/color/CMYKf.h>
+﻿#include<hgl/color/CMYKf.h>
 #include<hgl/color/CMYKub.h>
 #include<hgl/color/Color3f.h>
 #include<hgl/math/FloatPrecision.h>

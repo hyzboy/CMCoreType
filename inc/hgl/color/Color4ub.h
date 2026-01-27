@@ -36,7 +36,7 @@ namespace hgl
     public:
 
         // 使用编译器生成的默认特殊成员函数（实现 trivially copyable）
-        Color4ub() = default;                                                                       ///<默认构造：RGB为0，A为255
+        Color4ub() : glm::u8vec4(0, 0, 0, 0) {}                                                    ///<默认构造：全部为0
         Color4ub(const Color4ub&) = default;                                                        ///<默认复制构造
         Color4ub& operator=(const Color4ub&) = default;                                             ///<默认复制赋值
         ~Color4ub() = default;                                                                      ///<默认析构

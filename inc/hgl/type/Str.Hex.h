@@ -91,8 +91,8 @@ namespace hgl
         *str = 0;
     }
 
-    template<typename CharT> inline void DataToLowerHexStr(CharT *str,const uint8 *src,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,src,byte_count,LowerHexChar,gap_char);} 
-    template<typename CharT> inline void DataToUpperHexStr(CharT *str,const uint8 *src,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,src,byte_count,UpperHexChar,gap_char);} 
+    template<typename CharT> inline void DataToLowerHexStr(CharT *str,const uint8 *src,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,src,byte_count,LowerHexChar,gap_char);}
+    template<typename CharT> inline void DataToUpperHexStr(CharT *str,const uint8 *src,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,src,byte_count,UpperHexChar,gap_char);}
 
     /**
      * @brief CN: 将固定类型的原始数据转换为十六进制字符串。
@@ -111,10 +111,10 @@ namespace hgl
         hgl::DataToHexStr(str,reinterpret_cast<const uint8 *>(&hc),sizeof(hc),hex_chars,gap_char);
     }
 
-    template<typename CharT,typename HC> inline void ToUpperHexStr(CharT *str,const HC &hc,const CharT gap_char=0){hgl::DataToHexStr<CharT,HC>(str,hc,UpperHexChar,gap_char);} 
-    template<typename CharT,typename HC> inline void ToLowerHexStr(CharT *str,const HC &hc,const CharT gap_char=0){hgl::DataToHexStr<CharT,HC>(str,hc,LowerHexChar,gap_char);} 
+    template<typename CharT,typename HC> inline void ToUpperHexStr(CharT *str,const HC &hc,const CharT gap_char=0){hgl::DataToHexStr<CharT,HC>(str,hc,UpperHexChar,gap_char);}
+    template<typename CharT,typename HC> inline void ToLowerHexStr(CharT *str,const HC &hc,const CharT gap_char=0){hgl::DataToHexStr<CharT,HC>(str,hc,LowerHexChar,gap_char);}
 
-    template<typename CharT> inline void ToUpperHexStr(CharT *str,const void *data,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,(const uint8 *)data,byte_count,UpperHexChar,gap_char);} 
-    template<typename CharT> inline void ToLowerHexStr(CharT *str,const void *data,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,(const uint8 *)data,byte_count,LowerHexChar,gap_char);} 
+    template<typename CharT> inline void ToUpperHexStr(CharT *str,const void *data,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,(const uint8 *)data,byte_count,UpperHexChar,gap_char);}
+    template<typename CharT> inline void ToLowerHexStr(CharT *str,const void *data,std::size_t byte_count,const CharT gap_char=0){hgl::DataToHexStr<CharT>(str,(const uint8 *)data,byte_count,LowerHexChar,gap_char);}
 
 }//namespace hgl

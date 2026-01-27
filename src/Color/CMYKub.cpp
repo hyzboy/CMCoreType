@@ -1,4 +1,4 @@
-#include<hgl/color/CMYKub.h>
+﻿#include<hgl/color/CMYKub.h>
 #include<hgl/color/CMYKf.h>
 namespace hgl
 {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/color/Lum.h>
 #include<glm/glm.hpp>
@@ -11,7 +11,7 @@ namespace hgl
     /**
     * 线性颜色空间RGB三原色(浮点,无限制范围用于HDR) - 继承自 glm::vec3
     * 用于线性颜色空间计算,支持超过1.0的HDR值
-    * 
+    *
     * @note 继承自glm::vec3后，自动具有trivially copyable性质
     */
     class LinearColor3f : public glm::vec3

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/color/LinearColor3f.h>
 #include<glm/glm.hpp>
@@ -12,7 +12,7 @@ namespace hgl
     * 线性颜色空间RGBA四原色(浮点,无限制范围用于HDR) - 继承自 glm::vec4
     * 用于线性颜色空间计算,支持超过1.0的HDR值
     * Alpha通道不参与线性化处理,保持0-1范围
-    * 
+    *
     * @note 继承自glm::vec4后，自动具有trivially copyable性质
     */
     class LinearColor4f : public glm::vec4

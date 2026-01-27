@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <hgl/math/ClampUtil.h>
 #include <algorithm>

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<algorithm>
@@ -11,7 +11,7 @@ namespace hgl
     //==================================================================================================
     // 交换与比较 / Swap and Comparison (C++20)
     //==================================================================================================
-    
+
     // Concepts 定义
     template<typename T>
     concept Arithmetic = std::is_arithmetic_v<T>;

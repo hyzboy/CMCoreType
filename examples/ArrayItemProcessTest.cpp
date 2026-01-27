@@ -1,4 +1,4 @@
-#include <hgl/type/ArrayItemProcess.h>
+﻿#include <hgl/type/ArrayItemProcess.h>
 #include <array>
 #include <vector>
 #include <iostream>

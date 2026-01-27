@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<hgl/type/MemoryUtil.h>
@@ -11,7 +11,7 @@ namespace hgl
     //==================================================================================================
     // 内存分配 / Memory Allocation (C++20)
     //==================================================================================================
-    
+
     template<typename T>
     concept TriviallyCopyable = std::is_trivially_copyable_v<T>;
 
@@ -68,7 +68,7 @@ namespace hgl
     //==================================================================================================
     // 智能指针版本 / Smart Pointer Versions
     //==================================================================================================
-    
+
     /**
      * 创建零初始化的 unique_ptr
      */
@@ -87,7 +87,7 @@ namespace hgl
     inline std::unique_ptr<T[]> make_zero_unique(const size_t count)
     {
         if (count == 0) return nullptr;
-        
+
         auto ptr = std::make_unique<T[]>(count);
         mem_zero(ptr.get(), count);
         return ptr;
@@ -100,7 +100,7 @@ namespace hgl
     inline std::unique_ptr<T> make_copy_unique(const T* src)
     {
         if (!src) return nullptr;
-        
+
         auto ptr = std::make_unique<T>();
         mem_copy(*ptr, *src);
         return ptr;
@@ -113,7 +113,7 @@ namespace hgl
     inline std::unique_ptr<T[]> make_copy_unique(const T* src, const size_t count)
     {
         if (!src || count == 0) return nullptr;
-        
+
         auto ptr = std::make_unique<T[]>(count);
         mem_copy(ptr.get(), src, count);
         return ptr;
@@ -122,7 +122,7 @@ namespace hgl
     //==================================================================================================
     // 数组内存管理 / Array Memory Management
     //==================================================================================================
-    
+
     template<typename T>
     inline T* array_alloc(const uint count)
     {

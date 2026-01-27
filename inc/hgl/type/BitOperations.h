@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<bit>
@@ -9,11 +9,11 @@ namespace hgl
     //==================================================================================================
     // 位操作 / Bit Operations (C++20)
     //==================================================================================================
-    
+
     // Concepts 定义
     template<typename T>
     concept Integral = std::is_integral_v<T>;
-    
+
     #define HGL_BIT(n)      (1<<(n))
     #define HGL_64BIT(n)    (1LL<<(n))
 
@@ -97,7 +97,7 @@ namespace hgl
         if (bit_count >= sizeof(T) * 8) {
             return popcount(value);
         }
-        
+
         const T mask = (T(1) << bit_count) - 1;
         return popcount(value & mask);
     }
@@ -110,7 +110,7 @@ namespace hgl
     constexpr int bit_offset(const T value) noexcept
     {
         if (value == 0) return -1;
-        
+
         if constexpr (std::unsigned_integral<T>) {
             return std::countr_zero(value);
         } else {
@@ -127,7 +127,7 @@ namespace hgl
     constexpr int bit_width(const T value) noexcept
     {
         if (value == 0) return 0;
-        
+
         if constexpr (std::unsigned_integral<T>) {
             return std::bit_width(value);
         } else {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<hgl/platform/Platform.h>
 #include<hgl/type/CompareUtil.h>
@@ -9,7 +9,7 @@ namespace hgl
     //==================================================================================================
     // Mipmap 级别计算 / Mipmap Level Calculation
     //==================================================================================================
-    
+
     inline const uint GetMipLevel(const uint size)
     {
         return static_cast<uint>(floor(log2(size)))+1;

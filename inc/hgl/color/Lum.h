@@ -33,7 +33,7 @@ namespace hgl
     {
         return T(LUM_BT709_COEFF_R*r+LUM_BT709_COEFF_G*g+LUM_BT709_COEFF_B*b);
     }
-    
+
     template<typename T> constexpr T RGB2LumBT2020(const T &r,const T &g,const T &b)
     {
         return T(LUM_BT2020_COEFF_R*r+LUM_BT2020_COEFF_G*g+LUM_BT2020_COEFF_B*b);

@@ -287,7 +287,7 @@ namespace hgl
 
     const Color3f GetYCbCrColor3f(const enum class COLOR &ce);
     const Color4f GetYCbCrColor4f(const enum class COLOR &ce,const float &alpha);
-    
+
     /**
      * 根据光谱值获取对应的RGB值
      * @param l 光谱值(从400到700)

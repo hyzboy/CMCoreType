@@ -1,4 +1,4 @@
-#include<hgl/color/HSL.h>
+﻿#include<hgl/color/HSL.h>
 #include<hgl/color/Color3f.h>
 #include<cmath>
 

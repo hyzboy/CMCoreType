@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 using u32char           =char32_t;
 using u16char           =char16_t;

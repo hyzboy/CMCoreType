@@ -16,7 +16,7 @@ namespace hgl
         uint8 red,green,blue;
         uint32 rgba;
         uint32 abgr;
-        
+
         float r,g,b;
         float y,cb,cr;
 
@@ -56,7 +56,7 @@ namespace hgl
         DEF_COLOR(Bisque,                 255,228,196,"桔黄色")
         DEF_COLOR(Black,                    0,  0,  0,"黑色")
         DEF_COLOR(BlanchedAlmond,         255,235,205,"白杏色")
-    
+
         DEF_COLOR(BlenderYellow,        0xE8,0x7D,0x0D,"Blender黄")
         DEF_COLOR(BlenderBlue,          0x26,0x57,0x87,"Blender蓝")
 
@@ -89,7 +89,7 @@ namespace hgl
         DEF_COLOR(DarkGrey,               169,169,169,"暗白色")
         DEF_COLOR(DarkGunmetal,            30, 37, 41,"黑炮铜")
         DEF_COLOR(DarkKhaki,              189,183,107,"暗黄褐色")
-        DEF_COLOR(DarkMagenta,            139,  0,139,"暗洋红")        
+        DEF_COLOR(DarkMagenta,            139,  0,139,"暗洋红")
         DEF_COLOR(DarkMidnightBlue,         0, 51,103,"暗夜蓝")
         DEF_COLOR(DarkOliveGreen,          85,107, 47,"暗橄榄绿")
         DEF_COLOR(DarkOrange,             255,140,  0,"暗桔黄")
@@ -171,7 +171,7 @@ namespace hgl
         DEF_COLOR(Lion,                   193,154,107,"獅子棕")
 
         DEF_COLOR(Magenta,                255,  0,255,"红紫色")
-        DEF_COLOR(Maroon,                 128,  0,  0,"粟色")            
+        DEF_COLOR(Maroon,                 128,  0,  0,"粟色")
         DEF_COLOR(MaastrichtBlue,           0, 26, 56,"马斯特里赫特蓝色")
 
         DEF_COLOR(MediumAquamarine,       102,205,170,"间绿色")
@@ -242,7 +242,7 @@ namespace hgl
         DEF_COLOR(RosyBrown,              188,143,143,"褐玫瑰红")
         DEF_COLOR(RoyalBlue,               65,105,225,"皇家蓝")
         DEF_COLOR(Ruby,                   224, 17, 95,"宝石红")
-            
+
         DEF_COLOR(SaddleBrown,            139, 69, 19,"重褐色")
         DEF_COLOR(Salmon,                 250,128,114,"鲜肉色")
         DEF_COLOR(SandyBrown,             244,164, 96,"沙褐色")
@@ -283,7 +283,7 @@ namespace hgl
 
         /**
          * @see https://design.ubuntu.com/brand/colour-palette/.
-         */            
+         */
         DEF_COLOR(UbuntuOrange,           233, 84, 32,"Ubuntu橙")
 
         DEF_COLOR(UbuntuLightAubergine,   119, 33,111,"Ubuntu亮茄皮紫")
@@ -321,7 +321,7 @@ namespace hgl
     bool GetRGB(const enum class COLOR &ce,Color3ub &color)
     {
         RANGE_CHECK_RETURN_FALSE(ce);
-    
+
         const COLOR_DEF &c=prv_color[size_t(ce)];
 
         color.r=c.red;
@@ -334,7 +334,7 @@ namespace hgl
     bool GetBGR(const enum class COLOR &ce,Color3ub &color)
     {
         RANGE_CHECK_RETURN_FALSE(ce);
-    
+
         const COLOR_DEF &c=prv_color[size_t(ce)];
 
         color.b=c.red;
@@ -409,7 +409,7 @@ namespace hgl
      */
     const Color3f GetSpectralColor(const double l)
     {
-        double t;  
+        double t;
 
         double r=0.0;
         double g=0.0;

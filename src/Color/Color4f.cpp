@@ -65,7 +65,7 @@ namespace hgl
 
         // Cosine interpolation: (1 - cos(t * π)) / 2
         float smooth_t = (1.0f - cosf(t * std::numbers::pi_v<float>)) * 0.5f;
-        
+
         r+=(c.r-r)*smooth_t;
         g+=(c.g-g)*smooth_t;
         b+=(c.b-b)*smooth_t;
@@ -91,7 +91,7 @@ namespace hgl
 
         // Cubic Hermite: 3t² - 2t³
         float cubic_t = t * t * (3.0f - 2.0f * t);
-        
+
         r+=(c.r-r)*cubic_t;
         g+=(c.g-g)*cubic_t;
         b+=(c.b-b)*cubic_t;
@@ -121,7 +121,7 @@ namespace hgl
         float weight_start = one_minus_t * one_minus_t;
         float weight_control = 2.0f * one_minus_t * t;
         float weight_end = t * t;
-        
+
         r = r * weight_start + control.r * weight_control + end.r * weight_end;
         g = g * weight_start + control.g * weight_control + end.g * weight_end;
         b = b * weight_start + control.b * weight_control + end.b * weight_end;
