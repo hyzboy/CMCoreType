@@ -93,12 +93,58 @@ source_group("Time" FILES ${TIME_FILES})
 ##==================================================================================================
 ## Color 颜色
 ##==================================================================================================
-FILE(GLOB COLOR_HEADER_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/*.h)
-FILE(GLOB COLOR_SOURCE_FILES Color/*.cpp)
+## Color\\Basic 基础颜色类
+SET(COLOR_BASIC_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Color.h
+                      ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Color3f.h
+                      ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Color3ub.h
+                      ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Color4f.h
+                      ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Color4ub.h
+                      Color/Color.cpp
+                      Color/Color3f.cpp
+                      Color/Color3ub.cpp
+                      Color/Color4f.cpp
+                      Color/Color4ub.cpp)
+SOURCE_GROUP("Color\\Basic" FILES ${COLOR_BASIC_FILES})
 
-source_group("Color\\Header" FILES ${COLOR_HEADER_FILES})
-source_group("Color\\Source" FILES ${COLOR_SOURCE_FILES})
-##==================================================================================================
+## Color\\Models 色彩模型
+SET(COLOR_MODELS_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/CMYKf.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/CMYKub.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/HSL.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/HSV.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/OKLab.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/XYZ.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/YCbCr.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/YCoCg.h
+                       Color/CMYKf.cpp
+                       Color/CMYKub.cpp
+                       Color/HSL.cpp)
+SOURCE_GROUP("Color\\Models" FILES ${COLOR_MODELS_FILES})
+
+## Color\\Linear 线性颜色
+SET(COLOR_LINEAR_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/LinearColor3f.h
+                       ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/LinearColor4f.h
+                       Color/LinearColor3f.cpp
+                       Color/LinearColor4f.cpp)
+SOURCE_GROUP("Color\\Linear" FILES ${COLOR_LINEAR_FILES})
+
+## Color\\Conversion 颜色转换
+SET(COLOR_CONVERSION_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/sRGBConvert.h)
+SOURCE_GROUP("Color\\Conversion" FILES ${COLOR_CONVERSION_FILES})
+
+## Color\\Operations 颜色操作
+SET(COLOR_OPERATIONS_FILES ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/ColorFormat.h
+                           ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/ColorLerp.h
+                           ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/ColorPacking.h
+                           ${CMCORETYPE_ROOT_INCLUDE_PATH}/hgl/color/Lum.h)
+SOURCE_GROUP("Color\\Operations" FILES ${COLOR_OPERATIONS_FILES})
+
+## Color 汇总
+SET(COLOR_ALL_FILES ${COLOR_BASIC_FILES}
+                    ${COLOR_MODELS_FILES}
+                    ${COLOR_LINEAR_FILES}
+                    ${COLOR_CONVERSION_FILES}
+                    ${COLOR_OPERATIONS_FILES})
+
 set(TYPECORE_HEADERS ${TYPECORE_HGL_MAIN_HEADERS}
 					 ${TYPECORE_PLATFORM_MAIN_HEADERS}
 					 ${TYPECORE_PLATFORM_OS_HEADERS}
@@ -118,8 +164,7 @@ list(REMOVE_DUPLICATES TYPECORE_HEADERS)
 add_library(CMCoreType STATIC
                     ${TYPECORE_HEADERS}
                     ${TYPECORE_SOURCE_FILES}
-                    ${COLOR_HEADER_FILES}
-                    ${COLOR_SOURCE_FILES})
+                    ${COLOR_ALL_FILES})
 
 # Set C++ standard to C++20
 set_target_properties(CMCoreType PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
