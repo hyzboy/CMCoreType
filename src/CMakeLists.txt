@@ -161,7 +161,7 @@ source_group("Platform\\Compiler" FILES ${TYPECORE_PLATFORM_COMPILER_HEADERS})
 
 list(REMOVE_DUPLICATES TYPECORE_HEADERS)
 
-add_library(CMCoreType STATIC
+add_cm_library(CMCoreType "CM" ${CMCORETYPE_ROOT_INCLUDE_PATH}
                     ${TYPECORE_HEADERS}
                     ${TYPECORE_SOURCE_FILES}
                     ${COLOR_ALL_FILES})
@@ -175,6 +175,3 @@ endif()
 
 # Export include directory
 set_target_properties(CMCoreType PROPERTIES PUBLIC_HEADER "${TYPECORE_HEADERS}")
-target_include_directories(CMCoreType PUBLIC ${CMCORETYPE_ROOT_INCLUDE_PATH})
-
-set_property(TARGET CMCoreType PROPERTY FOLDER "CM")

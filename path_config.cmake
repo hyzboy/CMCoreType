@@ -1,6 +1,8 @@
 macro(CMCoreTypeSetup CMCORETYPE_ROOT_PATH)
     message("CMCoreType root path: " ${CMCORETYPE_ROOT_PATH})
+
     set(CMCORETYPE_ROOT_INCLUDE_PATH ${CMCORETYPE_ROOT_PATH}/inc)
     set(CMCORETYPE_ROOT_SOURCE_PATH ${CMCORETYPE_ROOT_PATH}/src)
+
     include_directories(${CMCORETYPE_ROOT_INCLUDE_PATH})
 endmacro()
