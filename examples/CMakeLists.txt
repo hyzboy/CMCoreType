@@ -16,3 +16,4 @@ cm_example_project("" ObjectUtilTest            ObjectUtilTest.cpp)
 
 cm_example_project("" TypeCastTest              TypeCastTest.cpp)
 
+cm_example_project("" WyHashTest                WyHashTest.cpp)
