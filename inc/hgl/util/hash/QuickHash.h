@@ -29,4 +29,11 @@ namespace hgl
             return wyhash(&value, sizeof(T), 0, _wyp);
         }
     }
+
+    inline uint64 ComputeOptimalHash(const void* data, size_t size)
+    {
+        // CN:原始数据块：使用 王一Hash 哈希保证质量
+        // EN:Raw data block: use WYHASH for quality
+        return wyhash(data, size, 0, _wyp);
+    }
 }//namespace hgl
