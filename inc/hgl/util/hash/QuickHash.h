@@ -1,5 +1,6 @@
 #pragma once
 
+#include<hgl/CoreType.h>
 #include<type_traits>
 #include<wyhash/wyhash.h>
 

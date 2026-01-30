@@ -1,6 +1,0 @@
-[submodule "thirdparty/unordered_dense"]
-	path = thirdparty/unordered_dense
-	url = https://github.com/martinus/unordered_dense.git
-[submodule "thirdparty/wyhash"]
-	path = thirdparty/wyhash
-	url = https://github.com/wangyi-fudan/wyhash.git
