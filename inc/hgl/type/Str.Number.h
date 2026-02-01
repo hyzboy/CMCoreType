@@ -212,7 +212,114 @@ namespace hgl
     }
 
     /**
-     * @brief CN: 将十进制浮点数字符串转换为浮点数。
+     * @brief CN: 将定长（或指定长度）十六进制字符串转换为无符号数值（不带前缀）。
+     * @brief EN: Convert a hexadecimal string with specified max length (without 0x prefix) to an unsigned numeric value.
+     *
+     * @tparam ResultT 结果类型（无符号）。EN: Result unsigned numeric type.
+     * @tparam CharT 字符类型。EN: Character type.
+     * @param[in] str CN: 指向字符串起始位置。EN: pointer to the string start.
+     * @param[in] length CN: 可读取的最大字符数。EN: maximum number of characters to read.
+     * @param[out] out_result CN: 解析结果输出。EN: parsed result output.
+     * @return bool CN: 解析是否成功。EN: true if parsing succeeded.
+     */
+    template<typename ResultT, typename CharT>
+    inline bool xtou(const CharT *str, std::size_t length, ResultT &out_result)
+    {
+        if(!str || length == 0)
+        {
+            out_result = ResultT(0);
+            return false;
+        }
+
+        out_result = ResultT(0);
+        bool has_digit = false;
+
+        while(length > 0 && *str && hgl::is_hex_digit(*str))
+        {
+            out_result *= 16;
+
+            if(*str >= '0' && *str <= '9')
+                out_result += ResultT(*str - '0');
+            else if(*str >= 'a' && *str <= 'f')
+                out_result += ResultT(*str - 'a') + 10;
+            else if(*str >= 'A' && *str <= 'F')
+                out_result += ResultT(*str - 'A') + 10;
+
+            ++str; --length;
+            has_digit = true;
+        }
+
+        return has_digit;
+    }
+
+    /**
+     * @brief CN: 将八进制字符串转换为无符号数值（不带前缀）。
+     * @brief EN: Convert an octal string (without 0 prefix) to an unsigned numeric value.
+     *
+     * @tparam ResultT 结果类型（无符号）。EN: Result unsigned numeric type.
+     * @tparam CharT 字符类型。EN: Character type.
+     * @param[in] str CN: 指向以 null 结尾的八进制字符串. EN: pointer to a null-terminated octal string.
+     * @param[out] out_result CN: 解析结果输出。EN: parsed result output.
+     * @return bool CN: 解析是否成功。EN: true if parsing succeeded.
+     */
+    template<typename ResultT, typename CharT>
+    inline bool stoo(const CharT *str, ResultT &out_result)
+    {
+        if(!str || !*str)
+        {
+            out_result = ResultT(0);
+            return false;
+        }
+
+        out_result = ResultT(0);
+        bool has_digit = false;
+
+        while(*str && *str >= '0' && *str <= '7')
+        {
+            out_result *= 8;
+            out_result += ResultT(*str - '0');
+            ++str;
+            has_digit = true;
+        }
+
+        return has_digit;
+    }
+
+    /**
+     * @brief CN: 将定长（或指定长度）八进制字符串转换为无符号数值（不带前缀）。
+     * @brief EN: Convert an octal string with specified max length (without 0 prefix) to an unsigned numeric value.
+     *
+     * @tparam ResultT 结果类型（无符号）。EN: Result unsigned numeric type.
+     * @tparam CharT 字符类型。EN: Character type.
+     * @param[in] str CN: 指向字符串起始位置。EN: pointer to the string start.
+     * @param[in] length CN: 可读取的最大字符数。EN: maximum number of characters to read.
+     * @param[out] out_result CN: 解析结果输出。EN: parsed result output.
+     * @return bool CN: 解析是否成功。EN: true if parsing succeeded.
+     */
+    template<typename ResultT, typename CharT>
+    inline bool stoo(const CharT *str, std::size_t length, ResultT &out_result)
+    {
+        if(!str || length == 0)
+        {
+            out_result = ResultT(0);
+            return false;
+        }
+
+        out_result = ResultT(0);
+        bool has_digit = false;
+
+        while(length > 0 && *str && *str >= '0' && *str <= '7')
+        {
+            out_result *= 8;
+            out_result += ResultT(*str - '0');
+            ++str; --length;
+            has_digit = true;
+        }
+
+        return has_digit;
+    }
+
+    /**
      * @brief EN: Convert a decimal floating-point string to a floating value.
      *
      * @tparam ResultT 结果类型（浮点）。EN: Result floating numeric type.
@@ -381,7 +488,56 @@ namespace hgl
     }
 
     /**
-     * @brief CN: 将字符串解析为布尔值（仅检查第一个字符。支持 T/t/Y/y/M/m/1 表示 true，F/f/N/n/0 表示 false）。
+     * @brief CN: 将定长（或指定长度）带指数部分的浮点字符串转换为浮点数（例如 "1.23e-4"）。
+     * @brief EN: Convert floating string with max length and exponent to floating value (e.g. "1.23e-4").
+     *
+     * @tparam ResultT 结果类型（浮点）。EN: Result floating numeric type.
+     * @tparam CharT 字符类型。EN: Character type.
+     * @param[in] str CN: 指向字符串起始位置。EN: pointer to the string start.
+     * @param[in] length CN: 可读取的最大字符数。EN: maximum number of characters to read.
+     * @param[out] out_result CN: 解析结果输出。EN: parsed result output.
+     * @return bool CN: 解析是否成功。EN: true if parsing succeeded.
+     */
+    template<typename ResultT, typename CharT>
+    inline bool etof(const CharT *str, std::size_t length, ResultT &out_result)
+    {
+        if(!str || length == 0) { out_result = ResultT(0); return false; }
+
+        double base = 0.0;
+        if(!hgl::stof(str, length, base))
+        {
+            out_result = ResultT(0);
+            return false;
+        }
+
+        // find 'e' or 'E' within length
+        const CharT *p = str;
+        std::size_t remaining = length;
+        while(remaining > 0 && *p && *p != 'e' && *p != 'E') 
+        {
+            ++p;
+            --remaining;
+        }
+
+        if(remaining == 0 || !*p)
+        {
+            out_result = ResultT(base);
+            return true;
+        }
+
+        // parse exponent after e/E with remaining length
+        double exp_val = 0.0;
+        if(remaining > 1 && hgl::stof(p + 1, remaining - 1, exp_val))
+        {
+            out_result = ResultT(base * std::pow(10.0, exp_val));
+            return true;
+        }
+
+        out_result = ResultT(base);
+        return false;
+    }
+
+    /**
      * @brief EN: Parse a string to boolean (only checks the first character. Supports T/t/Y/y/M/m/1 for true, F/f/N/n/0 for false).
      *
      * @tparam CharT 字符类型。EN: Character type.
