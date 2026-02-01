@@ -22,7 +22,7 @@ namespace hgl
     template<typename ResultT, typename CharT>
     inline bool stoi(const CharT *str, ResultT &out_result)
     {
-        if(!str)
+        if(!str || !*str)
         {
             out_result = ResultT(0);
             return false;
@@ -40,17 +40,19 @@ namespace hgl
             ++str;
         }
 
+        bool has_digit = false;
         while(*str && *str >= '0' && *str <= '9')
         {
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str;
+            has_digit = true;
         }
 
         if(!positive)
             out_result = -out_result;
 
-        return true;
+        return has_digit;
     }
 
     /**
@@ -87,17 +89,19 @@ namespace hgl
             ++str; --length;
         }
 
+        bool has_digit = false;
         while(length > 0 && *str && *str >= '0' && *str <= '9')
         {
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str; --length;
+            has_digit = true;
         }
 
         if(!positive)
             out_result = -out_result;
 
-        return true;
+        return has_digit;
     }
 
     /**
@@ -113,22 +117,24 @@ namespace hgl
     template<typename ResultT, typename CharT>
     inline bool stou(const CharT *str, ResultT &out_result)
     {
-        if(!str)
+        if(!str || !*str)
         {
             out_result = ResultT(0);
             return false;
         }
 
         out_result = ResultT(0);
+        bool has_digit = false;
 
         while(*str && *str >= '0' && *str <= '9')
         {
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str;
+            has_digit = true;
         }
 
-        return true;
+        return has_digit;
     }
 
     /**
@@ -152,15 +158,17 @@ namespace hgl
         }
 
         out_result = ResultT(0);
+        bool has_digit = false;
 
         while(length > 0 && *str && *str >= '0' && *str <= '9')
         {
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str; --length;
+            has_digit = true;
         }
 
-        return true;
+        return has_digit;
     }
 
     /**
@@ -176,13 +184,14 @@ namespace hgl
     template<typename ResultT, typename CharT>
     inline bool xtou(const CharT *str, ResultT &out_result)
     {
-        if(!str)
+        if(!str || !*str)
         {
             out_result = ResultT(0);
             return false;
         }
 
         out_result = ResultT(0);
+        bool has_digit = false;
 
         while(*str && hgl::is_hex_digit(*str))
         {
@@ -196,9 +205,10 @@ namespace hgl
                 out_result += ResultT(*str - 'A') + 10;
 
             ++str;
+            has_digit = true;
         }
 
-        return true;
+        return has_digit;
     }
 
     /**
@@ -214,7 +224,7 @@ namespace hgl
     template<typename ResultT, typename CharT>
     inline bool stof(const CharT *str, ResultT &out_result)
     {
-        if(!str)
+        if(!str || !*str)
         {
             out_result = ResultT(0);
             return false;
@@ -222,6 +232,7 @@ namespace hgl
 
         bool positive = true;
         out_result = ResultT(0);
+        bool has_digit = false;
 
         if(*str == '+')
             ++str;
@@ -237,12 +248,13 @@ namespace hgl
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str;
+            has_digit = true;
         }
 
         if(*str != '.')
         {
             if(!positive) out_result = -out_result;
-            return true;
+            return has_digit;
         }
 
         ++str; // skip dot
@@ -253,10 +265,11 @@ namespace hgl
             out_result += ResultT(*str - '0') * place;
             place *= ResultT(0.1);
             ++str;
+            has_digit = true;
         }
 
         if(!positive) out_result = -out_result;
-        return true;
+        return has_digit;
     }
 
     /**
@@ -281,6 +294,7 @@ namespace hgl
 
         bool positive = true;
         out_result = ResultT(0);
+        bool has_digit = false;
 
         if(*str == '+')
         {
@@ -298,12 +312,13 @@ namespace hgl
             out_result *= 10;
             out_result += ResultT(*str - '0');
             ++str; --length;
+            has_digit = true;
         }
 
         if(length == 0 || *str != '.')
         {
             if(!positive) out_result = -out_result;
-            return true;
+            return has_digit;
         }
 
         ++str; --length; // skip dot
@@ -314,10 +329,11 @@ namespace hgl
             out_result += ResultT(*str - '0') * place;
             place *= ResultT(0.1);
             ++str; --length;
+            has_digit = true;
         }
 
         if(!positive) out_result = -out_result;
-        return true;
+        return has_digit;
     }
 
     /**
@@ -365,27 +381,34 @@ namespace hgl
     }
 
     /**
-     * @brief CN: 将字符串解析为布尔值（支持 T/t/Y/y/M/m/1 表示 true）。
-     * @brief EN: Parse a string to boolean (supports T/t/Y/y/M/m/1 for true).
+     * @brief CN: 将字符串解析为布尔值（仅检查第一个字符。支持 T/t/Y/y/M/m/1 表示 true，F/f/N/n/0 表示 false）。
+     * @brief EN: Parse a string to boolean (only checks the first character. Supports T/t/Y/y/M/m/1 for true, F/f/N/n/0 for false).
      *
      * @tparam CharT 字符类型。EN: Character type.
      * @param[in] str CN: 指向以 null 结尾的字符串. EN: pointer to a null-terminated string.
      * @param[out] out_value CN: 解析后的布尔值。EN: parsed boolean value.
-     * @return bool CN: 解析是否认定为 true（否则返回 false）。EN: true if input indicates true.
+     * @return bool CN: 解析是否成功（第一个字符是有效的布尔表示）。EN: true if the first character is a valid boolean representation.
      */
     template<typename CharT>
     inline bool stob(const CharT *str, bool &out_value)
     {
-        if(!str)
+        if(!str || !*str)
         {
             out_value = false;
             return false;
         }
 
         CharT c = *str;
+        
         if(c == 'T' || c == 't' || c == 'Y' || c == 'y' || c == 'M' || c == 'm' || c == '1')
         {
             out_value = true;
+            return true;
+        }
+
+        if(c == 'F' || c == 'f' || c == 'N' || c == 'n' || c == '0')
+        {
+            out_value = false;
             return true;
         }
 
@@ -436,10 +459,19 @@ namespace hgl
         } while(uvalue != 0);
 
         // write digits in reverse
+        int written = 0;
         while(bp != buf && buffer_size-- > 0)
         {
             --bp;
             *p++ = *bp;
+            written++;
+        }
+
+        // 检查是否所有数字都被写入
+        if(bp != buf)
+        {
+            // 还有未写入的数字，缓冲区不足
+            return -1;
         }
 
         if(buffer_size > 0)
