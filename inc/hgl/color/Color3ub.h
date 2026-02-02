@@ -84,13 +84,13 @@ namespace hgl
         void operator *= (float v){x=uint8(x*v);y=uint8(y*v);z=uint8(z*v);clamp();}
         void operator /= (float v){x=uint8(x/v);y=uint8(y/v);z=uint8(z/v);clamp();}
 
-        Color3ub operator + (const Color3ub &v){return Color3ub(x+v.x,y+v.y,z+v.z);}
-        Color3ub operator - (const Color3ub &v){return Color3ub(x-v.x,y-v.y,z-v.z);}
-        Color3ub operator * (const Color3ub &v){return Color3ub(x*v.x,y*v.y,z*v.z);}
-        Color3ub operator / (const Color3ub &v){return Color3ub(x/v.x,y/v.y,z/v.z);}
+        Color3ub operator + (const Color3ub &v) const {return Color3ub(x+v.x,y+v.y,z+v.z);} 
+        Color3ub operator - (const Color3ub &v) const {return Color3ub(x-v.x,y-v.y,z-v.z);} 
+        Color3ub operator * (const Color3ub &v) const {return Color3ub(x*v.x,y*v.y,z*v.z);} 
+        Color3ub operator / (const Color3ub &v) const {return Color3ub(x/v.x,y/v.y,z/v.z);} 
 
-        Color3ub operator * (float v){return Color3ub(uint8(x*v),uint8(y*v),uint8(z*v));}
-        Color3ub operator / (float v){return Color3ub(uint8(x/v),uint8(y/v),uint8(z/v));}
+        Color3ub operator * (float v) const {return Color3ub(uint8(x*v),uint8(y*v),uint8(z*v));}
+        Color3ub operator / (float v) const {return Color3ub(uint8(x/v),uint8(y/v),uint8(z/v));}
 
         operator uint8 *() const {return(const_cast<uint8*>(&x));}                                 //使得本类可以直接当做uint8 *使用
         operator const uint8 *() const {return(&x);}                                                //使得本类可以直接当做const uint8 *使用
