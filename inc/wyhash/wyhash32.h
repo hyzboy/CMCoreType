@@ -1,4 +1,4 @@
-// Author: Wang Yi <godspeed_china@yeah.net>
+﻿// Author: Wang Yi <godspeed_china@yeah.net>
 #include <stdint.h>
 #include <string.h>
 #ifndef WYHASH32_BIG_ENDIAN
@@ -25,8 +25,8 @@ static inline unsigned wyhash32(const void *key, uint64_t len, unsigned seed) {
 }
 // duplicate definition in wyhash.h also
 #ifndef wyhash_final_version_3
-static inline uint64_t wyrand(uint64_t *seed){  
-  *seed+=0xa0761d6478bd642full; 
+static inline uint64_t wyrand(uint64_t *seed){
+  *seed+=0xa0761d6478bd642full;
   uint64_t  see1=*seed^0xe7037ed1a0b428dbull;
   see1*=(see1>>32)|(see1<<32);
   return  (*seed*((*seed>>32)|(*seed<<32)))^((see1>>32)|(see1<<32));

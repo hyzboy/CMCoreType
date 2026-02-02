@@ -513,7 +513,7 @@ namespace hgl
         // find 'e' or 'E' within length
         const CharT *p = str;
         std::size_t remaining = length;
-        while(remaining > 0 && *p && *p != 'e' && *p != 'E') 
+        while(remaining > 0 && *p && *p != 'e' && *p != 'E')
         {
             ++p;
             --remaining;
@@ -555,7 +555,7 @@ namespace hgl
         }
 
         CharT c = *str;
-        
+
         if(c == 'T' || c == 't' || c == 'Y' || c == 'y' || c == 'M' || c == 'm' || c == '1')
         {
             out_value = true;

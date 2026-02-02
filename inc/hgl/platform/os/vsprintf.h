@@ -8,7 +8,7 @@ namespace hgl
 {
     // 计算格式化字符串所需的长度（不包括 null 终止符）
     template<typename T> int vsprintf_length(const T *format, va_list va);
-    
+
     // 格式化字符串到缓冲区
     template<typename T> int vsprintf(T *buffer, const size_t buf_max, const T *format, va_list va);
 
@@ -61,7 +61,7 @@ namespace hgl
     template<> inline int vsprintf<char8_t>(char8_t *buffer, const size_t buf_max, const char8_t *format, va_list va)
     {
         // char8_t 底层与 char 兼容，直接 reinterpret_cast
-        return vsprintf<char>(reinterpret_cast<char*>(buffer), buf_max, 
+        return vsprintf<char>(reinterpret_cast<char*>(buffer), buf_max,
                              reinterpret_cast<const char*>(format), va);
     }
 #endif
@@ -93,7 +93,7 @@ namespace hgl
 
     template<> inline int vsprintf<char16_t>(char16_t *buffer, const size_t buf_max, const char16_t *format, va_list va)
     {
-        return vswprintf(reinterpret_cast<wchar_t*>(buffer), buf_max, 
+        return vswprintf(reinterpret_cast<wchar_t*>(buffer), buf_max,
                         reinterpret_cast<const wchar_t*>(format), va);
     }
     #endif

@@ -1,4 +1,4 @@
-// This is free and unencumbered software released into the public domain under The Unlicense (http://unlicense.org/)
+﻿// This is free and unencumbered software released into the public domain under The Unlicense (http://unlicense.org/)
 // main repo: https://github.com/wangyi-fudan/wyhash
 // author: 王一 Wang Yi <godspeed_china@yeah.net>
 // contributors: Reini Urban, Dietrich Epp, Joshua Haberman, Tommy Ettinger, Daniel Lemire, Otmar Ertl, cocowalla, leo-yuriev, Diego Barrios Romero, paulie-g, dumblob, Yann Collet, ivte-ms, hyb, James Z.M. Gao, easyaspi314 (Devin), TheOneric
@@ -21,7 +21,7 @@
 #ifndef WYHASH_32BIT_MUM
 //0: normal version, slow on 32 bit systems
 //1: faster on 32 bit systems but produces different results, incompatible with wy2u0k function
-#define WYHASH_32BIT_MUM 0  
+#define WYHASH_32BIT_MUM 0
 #endif
 
 //includes
@@ -52,7 +52,7 @@ static inline void _wymum(uint64_t *A, uint64_t *B){
   *A=_wyrot(hl)^hh; *B=_wyrot(lh)^ll;
   #endif
 #elif defined(__SIZEOF_INT128__)
-  __uint128_t r=*A; r*=*B; 
+  __uint128_t r=*A; r*=*B;
   #if(WYHASH_CONDOM>1)
   *A^=(uint64_t)r; *B^=(uint64_t)(r>>64);
   #else
@@ -116,14 +116,14 @@ static inline uint64_t _wyr4(const uint8_t *p) {
 static inline uint64_t _wyr3(const uint8_t *p, size_t k) { return (((uint64_t)p[0])<<16)|(((uint64_t)p[k>>1])<<8)|p[k-1];}
 //wyhash main function
 static inline uint64_t wyhash(const void *key, size_t len, uint64_t seed, const uint64_t *secret){
-  const uint8_t *p=(const uint8_t *)key; seed^=_wymix(seed^secret[0],secret[1]);	uint64_t	a,	b;
+  const uint8_t *p=(const uint8_t *)key; seed^=_wymix(seed^secret[0],secret[1]);    uint64_t    a,  b;
   if(_likely_(len<=16)){
     if(_likely_(len>=4)){ a=(_wyr4(p)<<32)|_wyr4(p+((len>>3)<<2)); b=(_wyr4(p+len-4)<<32)|_wyr4(p+len-4-((len>>3)<<2)); }
     else if(_likely_(len>0)){ a=_wyr3(p,len); b=0;}
     else a=b=0;
   }
   else{
-    size_t i=len; 
+    size_t i=len;
     if(_unlikely_(i>=48)){
       uint64_t see1=seed, see2=seed;
       do{
@@ -156,15 +156,15 @@ static inline double wy2u01(uint64_t r){ const double _wynorm=1.0/(1ull<<52); re
 //convert any 64 bit pseudo random numbers to APPROXIMATE Gaussian distribution. It can be combined with wyrand, wyhash64 or wyhash.
 static inline double wy2gau(uint64_t r){ const double _wynorm=1.0/(1ull<<20); return ((r&0x1fffff)+((r>>21)&0x1fffff)+((r>>42)&0x1fffff))*_wynorm-3.0;}
 
-#ifdef	WYTRNG
+#ifdef  WYTRNG
 #include <sys/time.h>
 //The wytrand true random number generator, passed BigCrush.
 static inline uint64_t wytrand(uint64_t *seed){
-	struct	timeval	t;	gettimeofday(&t,0);
-	uint64_t	teed=(((uint64_t)t.tv_sec)<<32)|t.tv_usec;
-	teed=_wymix(teed^_wyp[0],*seed^_wyp[1]);
-	*seed=_wymix(teed^_wyp[0],_wyp[2]);
-	return _wymix(*seed,*seed^_wyp[3]);
+    struct  timeval t;  gettimeofday(&t,0);
+    uint64_t    teed=(((uint64_t)t.tv_sec)<<32)|t.tv_usec;
+    teed=_wymix(teed^_wyp[0],*seed^_wyp[1]);
+    *seed=_wymix(teed^_wyp[0],_wyp[2]);
+    return _wymix(*seed,*seed^_wyp[3]);
 }
 #endif
 
@@ -173,8 +173,8 @@ static inline uint64_t wytrand(uint64_t *seed){
 static inline uint64_t wy2u0k(uint64_t r, uint64_t k){ _wymum(&r,&k); return k; }
 #endif
 
-// modified from https://github.com/going-digital/Prime64 
-static	inline	unsigned long long	mul_mod(unsigned long long a, unsigned long long b, unsigned long long m) {
+// modified from https://github.com/going-digital/Prime64
+static  inline  unsigned long long  mul_mod(unsigned long long a, unsigned long long b, unsigned long long m) {
     unsigned long long r=0;
     while (b) {
         if (b & 1) {
@@ -243,7 +243,7 @@ static inline void make_secret(uint64_t seed, uint64_t *secret){
     do{
       ok=1; secret[i]=0;
       for(size_t j=0;j<64;j+=8) secret[i]|=((uint64_t)c[wyrand(&seed)%sizeof(c)])<<j;
-      if(secret[i]%2==0){ ok=0; continue; }      
+      if(secret[i]%2==0){ ok=0; continue; }
       for(size_t j=0;j<i;j++) {
 #if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__clang__)
         if(__builtin_popcountll(secret[j]^secret[i])!=32){ ok=0; break; }
@@ -259,7 +259,7 @@ static inline void make_secret(uint64_t seed, uint64_t *secret){
         if(x!=32){ ok=0; break; }
 #endif
       }
-      if(ok&&!is_prime(secret[i]))	ok=0;
+      if(ok&&!is_prime(secret[i]))  ok=0;
     }while(!ok);
   }
 }
