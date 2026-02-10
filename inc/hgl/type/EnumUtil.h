@@ -13,7 +13,7 @@ namespace hgl
     template<typename T> constexpr const int ToInt(const T &ec){return (int)ec;}
     template<typename T> constexpr const T FromInt(int ec){return (enum class T)ec;}
 
-    template<typename T> constexpr const size_t RangeSize(){return T::RANGE_SIZE;}
+    template<typename T> constexpr const size_t RangeSize(){return (size_t)T::RANGE_SIZE;}
 
     template<typename T>
     inline bool RangeCheck(const T &value)
