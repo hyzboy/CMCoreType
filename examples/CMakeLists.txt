@@ -16,9 +16,6 @@ cm_example_project("" ObjectUtilTest            ObjectUtilTest.cpp)
 
 cm_example_project("" TypeCastTest              TypeCastTest.cpp)
 
-cm_example_project("Cereal" CerealBasicTest           CerealBasicTest.cpp)
-cm_example_project("Cereal" CerealVersionedTest       CerealVersionedTest.cpp)
-
 cm_example_project("Hash" WyHashTest                WyHashTest.cpp)
 
 add_subdirectory(StrNumber)
