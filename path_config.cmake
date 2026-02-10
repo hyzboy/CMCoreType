@@ -5,4 +5,6 @@ macro(CMCoreTypeSetup CMCORETYPE_ROOT_PATH)
     set(CMCORETYPE_ROOT_SOURCE_PATH ${CMCORETYPE_ROOT_PATH}/src)
 
     include_directories(${CMCORETYPE_ROOT_INCLUDE_PATH})
+
+    include_directories(${CMCORETYPE_ROOT_PATH}/cereal/include)
 endmacro()
