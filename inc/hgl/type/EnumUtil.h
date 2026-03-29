@@ -16,7 +16,7 @@ namespace hgl
     template<typename T> constexpr const size_t RangeSize(){return (size_t)T::RANGE_SIZE;}
 
     template<typename T>
-    inline bool RangeCheck(const T &value)
+    inline constexpr bool RangeCheck(const T &value)
     {
         return (value>=T::BEGIN_RANGE&&value<=T::END_RANGE);
     }
