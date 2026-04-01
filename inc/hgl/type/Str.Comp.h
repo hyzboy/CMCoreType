@@ -487,6 +487,170 @@ namespace hgl
 
     /**
      * @brief
+     * CN: 比较固定长度的两个字符串数据（类似 memcmp，但支持不同类型）。
+     * EN: Compare fixed-length data from two strings (like memcmp, but supports different character types).
+     *
+     * @tparam S  源字符串类型 / source string character type
+     * @tparam D  目标字符串类型 / destination string character type
+     * @param  src       CN: 要比较的字符串 / source string pointer
+     *                    EN: pointer to the first string (may be nullptr)
+     * @param  src_size  CN: 要比较的字符串1的长度 / length of source data to compare
+     *                    EN: number of characters to compare from src
+     * @param  dst       CN: 要比较的字符串 / destination string pointer
+     *                    EN: pointer to the second string (may be nullptr)
+     * @param  dst_size  CN: 要比较的字符串2的长度 / length of destination data to compare
+     *                    EN: number of characters to compare from dst
+     * @return           CN: 返回负数/零/正数，分别表示 src < dst、src == dst、src > dst（仅比较指定范围内的内容，忽略后续差异）
+     *                    EN: Returns negative/zero/positive to indicate src < dst, src == dst, src > dst (compares only specified length, ignores post-content differences)
+     */
+    template<typename S,typename D>
+    inline std::strong_ordering strcmp_content(const S *src, std::size_t src_size, const D *dst, std::size_t dst_size)
+    {
+        if(!src)
+            return (!dst) ? std::strong_ordering::equal : std::strong_ordering::less;
+
+        if(!dst)
+            return std::strong_ordering::greater;
+
+        std::size_t min_size = (src_size < dst_size) ? src_size : dst_size;
+
+        for(std::size_t i = 0; i < min_size; ++i)
+        {
+            if(!hgl::char_eq(src[i], dst[i]))
+            {
+                using CT = std::common_type_t<S,D>;
+                const CT a = static_cast<CT>(src[i]);
+                const CT b = static_cast<CT>(dst[i]);
+                return (a < b) ? std::strong_ordering::less : std::strong_ordering::greater;
+            }
+        }
+
+        return std::strong_ordering::equal;
+    }
+
+    /**
+     * @brief
+     * CN: 比较固定长度的两个字符串数据，返回 std::strong_ordering（类似 memcmp，但支持不同类型）。
+     * EN: Compare fixed-length data from two strings, returning std::strong_ordering (like memcmp, but supports different character types).
+     *
+     * @tparam S  源字符串类型 / source string character type
+     * @tparam D  目标字符串类型 / destination string character type
+     * @param  src       CN: 要比较的字符串 / source string pointer
+     *                    EN: pointer to the first string (may be nullptr)
+     * @param  src_size  CN: 要比较的字符串1的长度 / length of source data to compare
+     *                    EN: number of characters to compare from src
+     * @param  dst       CN: 要比较的字符串 / destination string pointer
+     *                    EN: pointer to the second string (may be nullptr)
+     * @param  dst_size  CN: 要比较的字符串2的长度 / length of destination data to compare
+     *                    EN: number of characters to compare from dst
+     * @return           CN: 返回 std::strong_ordering，表示 src 与 dst 的比较结果（仅比较指定范围内的内容，忽略后续差异）
+     *                    EN: Returns std::strong_ordering indicating comparison result (compares only specified length, ignores post-content differences)
+     */
+    template<typename S,typename D>
+    inline std::strong_ordering strcmp_content_ordering(const S *src, std::size_t src_size, const D *dst, std::size_t dst_size)
+    {
+        if(!src)
+            return (!dst) ? std::strong_ordering::equal : std::strong_ordering::less;
+
+        if(!dst)
+            return std::strong_ordering::greater;
+
+        std::size_t min_size = (src_size < dst_size) ? src_size : dst_size;
+
+        for(std::size_t i = 0; i < min_size; ++i)
+        {
+            if(!hgl::char_eq(src[i], dst[i]))
+            {
+                using CT = std::common_type_t<S,D>;
+                const CT a = static_cast<CT>(src[i]);
+                const CT b = static_cast<CT>(dst[i]);
+                return (a < b) ? std::strong_ordering::less : std::strong_ordering::greater;
+            }
+        }
+
+        return std::strong_ordering::equal;
+    }
+
+    /**
+     * @brief
+     * CN: 不区分大小写地比较固定长度的两个字符串数据。
+     * EN: Compare fixed-length data from two strings case-insensitively for ASCII letters.
+     *
+     * @tparam S  源字符串类型 / source string character type
+     * @tparam D  目标字符串类型 / destination string character type
+     * @param  src       CN: 要比较的字符串 / source string pointer
+     *                    EN: pointer to the first string (may be nullptr)
+     * @param  src_size  CN: 要比较的字符串1的长度 / length of source data to compare
+     *                    EN: number of characters to compare from src
+     * @param  dst       CN: 要比较的字符串 / destination string pointer
+     *                    EN: pointer to the second string (may be nullptr)
+     * @param  dst_size  CN: 要比较的字符串2的长度 / length of destination data to compare
+     *                    EN: number of characters to compare from dst
+     * @return           CN: 返回负数/零/正数，分别表示 src < dst、src == dst、src > dst（不区分大小写，仅比较指定范围内的内容，忽略后续差异）
+     *                    EN: Returns negative/zero/positive to indicate src < dst, src == dst, src > dst (case-insensitive, compares only specified length, ignores post-content differences)
+     */
+    template<typename S,typename D>
+    inline std::strong_ordering stricmp_content(const S *src, std::size_t src_size, const D *dst, std::size_t dst_size)
+    {
+        if(!src)
+            return (!dst) ? std::strong_ordering::equal : std::strong_ordering::less;
+
+        if(!dst)
+            return std::strong_ordering::greater;
+
+        std::size_t min_size = (src_size < dst_size) ? src_size : dst_size;
+
+        for(std::size_t i = 0; i < min_size; ++i)
+        {
+            const int gap = hgl::compare_char_icase(src[i], dst[i]);
+            if(gap < 0) return std::strong_ordering::less;
+            if(gap > 0) return std::strong_ordering::greater;
+        }
+
+        return std::strong_ordering::equal;
+    }
+
+    /**
+     * @brief
+     * CN: 不区分大小写地比较固定长度的两个字符串数据，返回 std::strong_ordering。
+     * EN: Compare fixed-length data from two strings case-insensitively for ASCII letters, returning std::strong_ordering.
+     *
+     * @tparam S  源字符串类型 / source string character type
+     * @tparam D  目标字符串类型 / destination string character type
+     * @param  src       CN: 要比较的字符串 / source string pointer
+     *                    EN: pointer to the first string (may be nullptr)
+     * @param  src_size  CN: 要比较的字符串1的长度 / length of source data to compare
+     *                    EN: number of characters to compare from src
+     * @param  dst       CN: 要比较的字符串 / destination string pointer
+     *                    EN: pointer to the second string (may be nullptr)
+     * @param  dst_size  CN: 要比较的字符串2的长度 / length of destination data to compare
+     *                    EN: number of characters to compare from dst
+     * @return           CN: 返回 std::strong_ordering，表示 src 与 dst 的比较结果（不区分大小写，仅比较指定范围内的内容，忽略后续差异）
+     *                    EN: Returns std::strong_ordering indicating comparison result (case-insensitive, compares only specified length, ignores post-content differences)
+     */
+    template<typename S,typename D>
+    inline std::strong_ordering stricmp_content_ordering(const S *src, std::size_t src_size, const D *dst, std::size_t dst_size)
+    {
+        if(!src)
+            return (!dst) ? std::strong_ordering::equal : std::strong_ordering::less;
+
+        if(!dst)
+            return std::strong_ordering::greater;
+
+        std::size_t min_size = (src_size < dst_size) ? src_size : dst_size;
+
+        for(std::size_t i = 0; i < min_size; ++i)
+        {
+            const int gap = hgl::compare_char_icase(src[i], dst[i]);
+            if(gap < 0) return std::strong_ordering::less;
+            if(gap > 0) return std::strong_ordering::greater;
+        }
+
+        return std::strong_ordering::equal;
+    }
+
+    /**
+     * @brief
      * CN: 字符集专用比较函数：仅比较字母与数字，忽略其它符号与 ASCII 大小写差异。
      * EN: Charset-aware comparison: compares only letters and digits, ignoring symbols and ASCII case differences.
      *
