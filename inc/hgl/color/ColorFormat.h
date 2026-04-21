@@ -153,16 +153,16 @@ namespace hgl
         }
     }
 
-    inline void Pattle16ToRGBA8(uint32 *target,const uint8 *source,const uint32 *pattle,const uint32 width,const uint32 height)
+    inline void Palette16ToRGBA8(uint32 *target,const uint8 *source,const uint32 *palette,const uint32 width,const uint32 height)
     {
         for(uint y=0;y<height;y++)
         {
             for(uint x=0;x<width;x+=2)
             {
-                *target=pattle[(*source)>>4];
+                *target=palette[(*source)>>4];
                 ++target;
 
-                *target=pattle[(*source)&0xF];
+                *target=palette[(*source)&0xF];
                 ++target;
 
                 ++source;
@@ -170,13 +170,13 @@ namespace hgl
         }
     }
 
-    inline void Pattle256ToRGBA8(uint32 *target,const uint8 *source,const uint32 *pattle,const uint32 width,const uint32 height)
+    inline void Palette256ToRGBA8(uint32 *target,const uint8 *source,const uint32 *palette,const uint32 width,const uint32 height)
     {
         for(uint y=0;y<height;y++)
         {
             for(uint x=0;x<width;x++)
             {
-                *target=pattle[*source];
+                *target=palette[*source];
 
                 ++target;
                 ++source;
