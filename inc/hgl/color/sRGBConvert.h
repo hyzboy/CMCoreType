@@ -335,11 +335,10 @@ namespace hgl
         switch (tf)
         {
             case TransferFunction::Linear:
-            case TransferFunction::EXTENDED_SRGB_LINEAR:
+            case TransferFunction::LinearSRGB:
                 return c;
 
             case TransferFunction::SRGB:
-            case TransferFunction::LinearSRGB:
             case TransferFunction::DisplayP3:
             case TransferFunction::BT709:
             case TransferFunction::BT2020:
@@ -374,11 +373,10 @@ namespace hgl
         switch (tf)
         {
             case TransferFunction::Linear:
-            case TransferFunction::EXTENDED_SRGB_LINEAR:
+            case TransferFunction::LinearSRGB:
                 return c;
 
             case TransferFunction::SRGB:
-            case TransferFunction::LinearSRGB:
             case TransferFunction::DisplayP3:
             case TransferFunction::BT709:
             case TransferFunction::BT2020:

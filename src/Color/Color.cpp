@@ -27,8 +27,8 @@ namespace hgl
     #undef DEF_COLOR
     #define    DEF_COLOR(eng_name,red,green,blue,chs_name)  {   \
                                                                 red,green,blue, \
-                                                                (red<<24)|(green<<16)|(blue<<8), \
-                                                                (blue<<16)|(green<<8)|red, \
+                                                                (uint32(red)<<24)|(uint32(green)<<16)|(uint32(blue)<<8), \
+                                                                (uint32(blue)<<16)|(uint32(green)<<8)|uint32(red), \
                                                                 float(double(red)/255.0f),   \
                                                                 float(double(green)/255.0f), \
                                                                 float(double(blue)/255.0f),  \
