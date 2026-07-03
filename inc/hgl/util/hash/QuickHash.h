@@ -2,7 +2,7 @@
 
 #include<hgl/CoreType.h>
 #include<type_traits>
-#include<wyhash/wyhash.h>
+#include<hgl/util/hash/wyhash.h>
 
 namespace hgl
 {

@@ -86,6 +86,18 @@ SOURCE_GROUP("Text\\StrChar" FILES ${STR_CHAR_FILES})
 
 ##==================================================================================================
 
+SET(HASH_INCLUDE_PATH ${TYPECORE_HGL_PATH}/util/hash)
+
+SET(HASH_SOURCE_FILES   ${HASH_INCLUDE_PATH}/FNV1a.h
+                        ${HASH_INCLUDE_PATH}/QuickHash.h
+                        ${HASH_INCLUDE_PATH}/SecureHash.h
+                        ${HASH_INCLUDE_PATH}/wyhash.h
+                        ${HASH_INCLUDE_PATH}/wyhash32.h)
+
+SOURCE_GROUP("Hash" FILES ${HASH_INCLUDE_PATH})
+
+##==================================================================================================
+
 SET(TIME_FILES  ${TYPECORE_HGL_PATH}/time/TimeConst.h)
 
 source_group("Time" FILES ${TIME_FILES})
@@ -164,7 +176,8 @@ list(REMOVE_DUPLICATES TYPECORE_HEADERS)
 add_cm_library(CMCoreType "CM" ${CMCORETYPE_ROOT_INCLUDE_PATH}
                     ${TYPECORE_HEADERS}
                     ${TYPECORE_SOURCE_FILES}
-                    ${COLOR_ALL_FILES})
+                    ${COLOR_ALL_FILES}
+                    ${HASH_SOURCE_FILES})
 
 # Set C++ standard to C++20
 set_target_properties(CMCoreType PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
