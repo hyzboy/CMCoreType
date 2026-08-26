@@ -3,6 +3,7 @@
 #include<hgl/color/Color3ub.h>
 #include<hgl/math/ClampUtil.h>
 #include<glm/glm.hpp>
+#include<glm/gtc/packing.hpp>
 
 namespace hgl
 {
@@ -87,6 +88,11 @@ namespace hgl
         uint32 toBGRA8()const{ return HGL_U8_TO_BGRA8(x, y, z, w); }                               ///<输出一个bgra8格式的颜色数据
         uint32 toARGB8()const{ return HGL_U8_TO_ARGB8(x, y, z, w); }                               ///<输出一个argb8格式的颜色数据
         uint32 toABGR8()const{ return HGL_U8_TO_ABGR8(x, y, z, w); }                               ///<输出一个abgr8格式的颜色数据
+
+        // 与 GLSL packUnorm4x8 一致（r 最低字节）：r|g<<8|b<<16|a<<24，
+        // 供直接上传 GPU 用标准 unpackUnorm4x8 解包。注意与 toRGBA8
+        // （r 最高字节）字节序相反。
+        uint32 packUnorm4x8()const{ return glm::packUnorm4x8(glm::vec4(x, y, z, w) / 255.0f); }    ///<输出packUnorm4x8格式的颜色数据
 
         uint8 toGray() const;                                                                       ///<转换为灰度值
         void makeGray();                                                                             ///<将当前色彩变成灰色
