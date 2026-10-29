@@ -45,13 +45,12 @@ namespace hgl
     constexpr const int8      HGL_S8_MIN      =(-0x80);
     constexpr const int16     HGL_S16_MIN     =(-0x8000);
 
-#ifdef _MSC_VER
-    constexpr const int32     HGL_S32_MIN     =(-0x80000000i32);
-    constexpr const int64     HGL_S64_MIN     =(-0x8000000000000000i64);
-#else
-    constexpr const int32     HGL_S32_MIN     =(-0x80000000L);
-    constexpr const int64     HGL_S64_MIN     =(-0x8000000000000000LL);
-#endif//_MSC_VER
+    // `HGL_S32_MIN` / `HGL_S64_MIN` 一律用 `-MAX-1` 形式：
+    // 写字面量 `-0x80000000` 时，字面量本身先溢出到无符号类型，取负再窄化回有符号
+    // 在 constexpr 求值里是越界（MSVC 的 `i32` 自定义后缀 Clang 亦不认），因此不用
+    // 平台分支，统一走恒为正的常量表达式。
+    constexpr const int32     HGL_S32_MIN     =(-0x7FFFFFFF - 1);
+    constexpr const int64     HGL_S64_MIN     =(-0x7FFFFFFFFFFFFFFFLL - 1);
 
     //==================================================================================================
     // 16进制字符 / Hexadecimal Characters
