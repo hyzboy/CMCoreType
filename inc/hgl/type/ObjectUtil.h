@@ -10,7 +10,7 @@ namespace hgl
      * 非平凡类型专用内存管理工具
      * 提供显式构造/析构、内存分配等底层操作
      *
-     * 注意：这些工具函数专为手动内存管理设计，适用于 ObjectArray 等容器。
+     * 注意：这些工具函数专为手动内存管理设计，适用于 PtrArray 等容器。
      * 对于平凡类型（trivially copyable），请使用 MemoryUtil.h 中的高性能函数。
      */
 
