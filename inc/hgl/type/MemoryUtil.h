@@ -158,21 +158,42 @@ namespace hgl
 
     /**
      * 内存清零（单个对象）
+     * 仅允许 trivially copyable 类型：memset 会把对象当作字节块，
+     * 对含 vtable / 非平凡成员（如 std::string）的类型是未定义行为。
+     * 确需绕过时请显式调用 mem_zero_unsafe()。
      */
     template<typename T>
     inline void mem_zero(T &data)
     {
-        //static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_zero requires a trivially copyable type; use mem_zero_unsafe() deliberately if you really need it");
         std::memset(&data, 0, sizeof(T));
     }
 
     /**
      * 内存清零（数组）
+     * 仅允许 trivially copyable 类型，理由同 mem_zero(T&)。
      */
     template<typename T>
     inline void mem_zero(T *data, const size_t count)
     {
-        //static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_zero requires a trivially copyable type; use mem_zero_unsafe() deliberately if you really need it");
+        if(!data || count == 0) return;
+        std::memset(data, 0, count * sizeof(T));
+    }
+
+    /**
+     * 内存清零（不检查类型约束）
+     * 仅供确实需要按字节清零的特殊场景使用，调用者自行承担后果。
+     */
+    template<typename T>
+    inline void mem_zero_unsafe(T &data)
+    {
+        std::memset(&data, 0, sizeof(T));
+    }
+
+    template<typename T>
+    inline void mem_zero_unsafe(T *data, const size_t count)
+    {
         if(!data || count == 0) return;
         std::memset(data, 0, count * sizeof(T));
     }
@@ -183,23 +204,42 @@ namespace hgl
 
     /**
      * 内存比较（单个对象，返回 <0, 0, >0）
-     * 注意：此函数执行字节级比较，对于包含填充字节或指针的类型可能产生不确定的结果
+     * 仅允许 trivially copyable 类型；此函数执行字节级比较，
+     * 对于包含填充字节或指针的类型可能产生不确定的结果。
+     * 推荐优先使用类型自身的 operator== / operator<=>。
      */
     template<typename T>
     inline int mem_compare(const T &a, const T &b)
     {
-        //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_compare requires a trivially copyable type");
         return std::memcmp(&a, &b, sizeof(T));
     }
 
     /**
      * 内存比较（数组，返回 <0, 0, >0）
-     * 注意：此函数执行字节级比较，对于包含填充字节或指针的类型可能产生不确定的结果
+     * 仅允许 trivially copyable 类型；注意填充字节的影响。
      */
     template<typename T>
     inline int mem_compare(const T *a, const T *b, const size_t count)
     {
-        //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_compare requires a trivially copyable type");
+        if(!a || !b || count == 0) return 0;
+        return std::memcmp(a, b, count * sizeof(T));
+    }
+
+    /**
+     * 内存比较（不检查类型约束）
+     * 仅供确实需要按字节比较的特殊场景使用，调用者自行承担后果。
+     */
+    template<typename T>
+    inline int mem_compare_unsafe(const T &a, const T &b)
+    {
+        return std::memcmp(&a, &b, sizeof(T));
+    }
+
+    template<typename T>
+    inline int mem_compare_unsafe(const T *a, const T *b, const size_t count)
+    {
         if(!a || !b || count == 0) return 0;
         return std::memcmp(a, b, count * sizeof(T));
     }
@@ -220,7 +260,7 @@ namespace hgl
     template<typename T>
     inline std::strong_ordering mem_compare_ordering(const T &a, const T &b)
     {
-        //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_compare_ordering requires a trivially copyable type");
         int result = std::memcmp(&a, &b, sizeof(T));
 
         if(result < 0)
@@ -248,7 +288,7 @@ namespace hgl
     template<typename T>
     inline std::strong_ordering mem_compare_ordering(const T *a, const T *b, const size_t count)
     {
-        //static_assert(std::is_trivial_v<T> || std::is_standard_layout_v<T>, "T should be trivial or standard layout for safe byte-wise comparison");
+        static_assert(std::is_trivially_copyable_v<T>, "mem_compare_ordering requires a trivially copyable type");
         if(!a && !b)
             return std::strong_ordering::equal;
 
