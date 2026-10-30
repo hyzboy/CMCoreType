@@ -170,7 +170,13 @@ namespace hgl
     //==================================================================================================
 
     /**
-     * 重新分配内存并移动现有对象
+     * 重新分配内存并搬移现有对象
+     *
+     * 搬移策略遵循 std::vector 的语义：
+     * - 元素可无异常移动（或不可拷贝）时使用移动构造；
+     * - 否则使用拷贝构造，保证强异常安全（源对象保持不变）。
+     * 若构造过程中抛异常，已构造的新元素会被销毁、新内存被释放，再把异常抛出。
+     *
      * @param old_data 旧内存指针
      * @param old_count 旧对象数量
      * @param new_capacity 新分配容量
@@ -183,11 +189,35 @@ namespace hgl
 
         T* new_data = hgl::allocate_raw_memory<T>(new_capacity);
 
+        if(!new_data) return nullptr;
+
+        int built = 0;
+
+        try
+        {
+            if(old_data && old_count > 0)
+            {
+                if constexpr(std::is_nothrow_move_constructible_v<T> || !std::is_copy_constructible_v<T>)
+                {
+                    for(; built < old_count; ++built)
+                        hgl::construct_at_move(new_data + built, std::move(old_data[built]));
+                }
+                else
+                {
+                    for(; built < old_count; ++built)
+                        hgl::construct_at_copy(new_data + built, old_data[built]);
+                }
+            }
+        }
+        catch(...)
+        {
+            hgl::destroy_range(new_data, built);
+            hgl::deallocate_raw_memory(new_data);
+            throw;
+        }
+
         if(old_data && old_count > 0)
         {
-            // 移动构造到新内存
-            hgl::move_construct_range(new_data, old_data, old_count);
-
             // 销毁旧对象
             hgl::destroy_range(old_data, old_count);
 
