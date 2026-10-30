@@ -101,7 +101,7 @@ namespace hgl
         if constexpr(!std::is_trivially_destructible_v<T>)
         {
             for(T* pointer = first; pointer != last; ++pointer)
-                destroy_at(pointer);
+                hgl::destroy_at(pointer);
         }
     }
 
@@ -114,7 +114,7 @@ namespace hgl
     inline void destroy_range(T* data, int count)
     {
         if(data && count > 0)
-            destroy_range(data, data + count);
+            hgl::destroy_range(data, data + count);
     }
 
     //==================================================================================================
@@ -133,7 +133,7 @@ namespace hgl
         if(!destination || !source || count <= 0) return;
 
         for(int i = 0; i < count; ++i)
-            construct_at_copy(destination + i, source[i]);
+            hgl::construct_at_copy(destination + i, source[i]);
     }
 
     /**
@@ -148,7 +148,7 @@ namespace hgl
         if(!destination || !source || count <= 0) return;
 
         for(int i = 0; i < count; ++i)
-            construct_at_move(destination + i, std::move(source[i]));
+            hgl::construct_at_move(destination + i, std::move(source[i]));
     }
 
     /**
@@ -162,7 +162,7 @@ namespace hgl
         if(!destination || count <= 0) return;
 
         for(int i = 0; i < count; ++i)
-            construct_at(destination + i);
+            hgl::construct_at(destination + i);
     }
 
     //==================================================================================================
@@ -181,18 +181,18 @@ namespace hgl
     {
         if(new_capacity <= 0) return nullptr;
 
-        T* new_data = allocate_raw_memory<T>(new_capacity);
+        T* new_data = hgl::allocate_raw_memory<T>(new_capacity);
 
         if(old_data && old_count > 0)
         {
             // 移动构造到新内存
-            move_construct_range(new_data, old_data, old_count);
+            hgl::move_construct_range(new_data, old_data, old_count);
 
             // 销毁旧对象
-            destroy_range(old_data, old_count);
+            hgl::destroy_range(old_data, old_count);
 
             // 释放旧内存
-            deallocate_raw_memory(old_data);
+            hgl::deallocate_raw_memory(old_data);
         }
 
         return new_data;
